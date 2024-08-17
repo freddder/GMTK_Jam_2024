@@ -18,7 +18,7 @@ func _physics_process(delta: float) -> void:
 	global_position -= global_position.direction_to(target_position) * pending_knockback_strength
 	pending_knockback_strength = 0.0
 	
-func take_hit(damage_amount: float, knockback_strength: float, knock):
+func take_hit(damage_amount: float, knockback_strength: float):
 	health -= damage_amount
 	pending_knockback_strength += knockback_strength	
 	if health <= 0:
