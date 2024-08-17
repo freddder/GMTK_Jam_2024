@@ -2,18 +2,24 @@ class_name EnemyCharacter
 extends Area2D
 
 signal on_death(this: EnemyCharacter)
+
 @export var default_speed: float = 35.0
 @export var default_health: float = 100.0
-@export var mass: float = 0.05
+@export var default_mass: float = 0.05
+@export var default_damage: float = 7.5
+@export var default_knockback_strength: float = 40.0
+@export var default_attack_cooldown: float = 0.5
 
 @onready var player: PlayerCharacter = get_tree().get_first_node_in_group("player")
 
 var pending_knockback_strength: float = 0.0
 var health: float = default_health
+var should_damage_player := true
+var is_overlapping_with_player := false
 
 
-func get_knockback_strength() -> float:
-	return maxf(100.0, pending_knockback_strength / mass) if pending_knockback_strength > 0.0 else 0.0
+func get_self_knockback_strength() -> float:
+	return maxf(100.0, pending_knockback_strength / default_mass) if pending_knockback_strength > 0.0 else 0.0
 
 
 func handle_movement(delta: float) -> void:
@@ -24,7 +30,7 @@ func handle_movement(delta: float) -> void:
 
 func handle_knockback(delta: float) -> void:
 	var target_position := player.global_position
-	var knockback_strength_to_apply := get_knockback_strength() * delta
+	var knockback_strength_to_apply := get_self_knockback_strength() * delta
 	global_position -= global_position.direction_to(target_position) * knockback_strength_to_apply
 	pending_knockback_strength = max(pending_knockback_strength - knockback_strength_to_apply, 0.0)
 
@@ -44,3 +50,38 @@ func take_hit(damage: float, knockback_strength: float) -> void:
 func die() -> void:
 	on_death.emit(self)
 	queue_free()
+
+
+func _on_area_entered(area: Area2D) -> void:
+	if area as PlayerCharacter != null:
+		is_overlapping_with_player = true
+		damage_player()
+
+
+func _on_area_exited(area: Area2D) -> void:
+	if area as PlayerCharacter != null:
+		is_overlapping_with_player = false
+
+
+func get_damage() -> float:
+	return default_damage
+
+
+func get_knockback_strength() -> float:
+	return default_knockback_strength
+
+
+func damage_player() -> void:
+	if !$AttackCooldownTimer.is_stopped():
+		return
+
+	var knockback_force := global_position.direction_to(player.global_position) * get_knockback_strength()
+	player.take_hit(get_damage(), knockback_force)
+
+	should_damage_player = false
+	$AttackCooldownTimer.start(default_attack_cooldown)
+	await $AttackCooldownTimer.timeout
+	should_damage_player = true
+
+	if is_overlapping_with_player:
+		damage_player()

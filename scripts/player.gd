@@ -18,6 +18,7 @@ enum AttackType {
 @export var default_walk_speed: float = 300.0
 @export var default_camera_zoom := Vector2(1.2, 1.2)
 @export var knockback_limit: float = 1000.0
+@export var default_health: float = 100.0
 
 @export_category("Swing")
 @export var default_swing_radius: float = 50.0
@@ -53,7 +54,9 @@ var active_attack_zone_data: AttackZoneData
 var attack_area_color := Color.RED
 var attack_area_arc_segments: float = 0.0
 
+var health := default_health
 var last_non_zero_movement_direction := Vector2.ZERO
+var pending_knockback_forces: Array[Vector2]
 
 var last_attack_end_time: Dictionary = {
 	AttackType.Swing: -2.0,
@@ -76,7 +79,7 @@ func handle_movement(delta: float) -> void:
 	var velocity := move_direction * walk_speed * delta
 	position += velocity
 
-	if !move_direction.is_zero_approx():
+	if !velocity.is_zero_approx():
 		last_non_zero_movement_direction = move_direction
 		$AnimatedSprite2D.play("run")
 	else:
@@ -89,10 +92,36 @@ func check_arena_bounds() -> void:
 		position = position.normalized() * Arena.radius
 
 
+func get_knockback_force(force: Vector2) -> Vector2:
+	var min_acceleration: float = 500.0
+	return force.normalized() * minf(force.length(), min_acceleration)
+
+
+func handle_knockback(delta: float) -> void:
+	var forces_to_remove: Array[int]
+	for idx in pending_knockback_forces.size():
+		var pending_force := pending_knockback_forces[idx]
+		var applied_force := get_knockback_force(pending_force) * delta * 20.0
+		position += applied_force
+		pending_knockback_forces[idx] -= applied_force
+
+		# Remove if it was completely used up
+		if (pending_knockback_forces[idx].is_zero_approx() or
+			sign(pending_force.x) != sign(pending_knockback_forces[idx].x) or
+			sign(pending_force.y) != sign(pending_knockback_forces[idx].y)):
+			forces_to_remove.push_back(idx)
+
+	for idx in forces_to_remove:
+		pending_knockback_forces.remove_at(idx)
+
+
 func _physics_process(delta: float) -> void:
-	if should_move():
-		handle_movement(delta)
-	check_arena_bounds()
+	if is_alive():
+		if should_move():
+			handle_movement(delta)
+
+		handle_knockback(delta)
+		check_arena_bounds()
 
 
 func draw_attack_zone_swing_implementation() -> void:
@@ -175,10 +204,10 @@ func draw_attack_zone_ground_pound(attack_zone_data: AttackZoneData) -> void:
 
 func handle_mouse_direction() -> void:
 	var mouse_position := get_local_mouse_position()
-	mouse_direction_angle_rad = atan2(mouse_position.y, mouse_position.x) + PI / 2.0
 
 	# Add half PI (90 degrees) because sprite looks upwards by default,
 	# but rotation at 0 radians faces west
+	mouse_direction_angle_rad = atan2(mouse_position.y, mouse_position.x) + PI / 2.0
 	$MouseDirectionSprite.rotation = mouse_direction_angle_rad
 
 
@@ -187,7 +216,7 @@ func get_facing_direction() -> int:
 
 	# Use current side direction if it's not zero, fallback on last non-zero direction otherwise;
 	# if it's zero as well, add 0.1 so that it'll be positive, i.e. right
-	return sign(move_direction.x if move_direction.x != 0.0
+	return sign(move_direction.x if move_direction.x != 0.0 && should_move()
 		else last_non_zero_movement_direction.x + 0.1)
 
 func handle_animation_side() -> void:
@@ -255,21 +284,24 @@ func handle_charging_sound() -> void:
 
 
 func _process(delta: float) -> void:
-	handle_mouse_direction()
-	handle_attack_zone()
-	handle_charging_sound()
-	handle_animation_side()
+	if is_alive():
+		handle_mouse_direction()
+		handle_attack_zone()
+		handle_charging_sound()
+		handle_animation_side()
 
 
 func set_camera_zoom(zoom: Vector2, duration: float = 0.2) -> void:
 	if duration > 0.0:
-		var tween = get_tree().create_tween()
+		var tween := get_tree().create_tween()
 		tween.tween_property($Camera2D, "zoom", zoom, duration)
 	else:
 		$Camera2D.set_zoom(zoom)
 
 
 func clear_attack_data() -> void:
+	$ChargeSFX.stop()
+
 	$AttackShapeCast2D.shape = null
 	$AttackShapeCast2D.position = Vector2.ZERO
 	$AttackShapeCast2D.rotation = 0
@@ -297,8 +329,6 @@ func save_attack_end_time() -> void:
 
 
 func handle_sound_on_attack_release() -> void:
-	$ChargeSFX.stop()
-
 	match charging_attack_type:
 		AttackType.Swing: $SwingSFX.play()
 		AttackType.Thrust: pass
@@ -390,7 +420,7 @@ func _input(event: InputEvent) -> void:
 
 
 func should_move() -> bool:
-	return !is_charging_attack()
+	return is_alive() && !is_charging_attack()
 
 
 func is_charging_attack() -> bool:
@@ -436,3 +466,35 @@ func get_attack_type_cooldown(attack_type: AttackType) -> float:
 
 func is_attack_on_cooldown(attack_type: AttackType) -> bool:
 	return get_attack_type_cooldown(attack_type) > get_elapsed_time_since_attack_end(attack_type)
+
+
+func take_hit(damage: float, knockback_force: Vector2) -> void:
+	if !is_alive():
+		return
+
+	health -= damage
+	pending_knockback_forces.push_back(knockback_force)
+	print(health)
+	if health <= 0:
+		die()
+
+
+func die() -> void:
+	Events.on_player_death.emit()
+
+	# Don't play any knockback since we're dead
+	pending_knockback_forces.clear()
+
+	# Don't collide with anything
+	collision_mask = 0
+	collision_layer = 0
+
+	# Drop any charging attack
+	clear_attack_data()
+
+	# TODO replace with an actual animation
+	$AnimationPlayer.play("death")
+
+
+func is_alive() -> bool:
+	return health > 0.0

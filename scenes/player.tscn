@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://c7kaxi3ghjur4"]
+[gd_scene load_steps=27 format=3 uid="uid://c7kaxi3ghjur4"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_r52mo"]
 [ext_resource type="Texture2D" uid="uid://ceq63nymo5fx7" path="res://content/sprites/player/idle_atlas.png" id="2_lk2fh"]
@@ -128,8 +128,46 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bq6x7"]
 size = Vector2(35, 59)
 
+[sub_resource type="Animation" id="Animation_d3h3c"]
+resource_name = "death"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ud42k"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lf8bu"]
+_data = {
+"RESET": SubResource("Animation_ud42k"),
+"death": SubResource("Animation_d3h3c")
+}
+
 [node name="Player" type="Area2D" groups=["player"]]
-collision_mask = 2
+collision_layer = 2
+collision_mask = 7
 script = ExtResource("1_r52mo")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -160,3 +198,8 @@ volume_db = -20.0
 
 [node name="ChargeSFX" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_6aufr")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_lf8bu")
+}
