@@ -194,7 +194,7 @@ func handle_attack_zone() -> void:
 		AttackType.Thrust: draw_attack_zone_thrust(get_attack_zone_data_thrust())
 		AttackType.GroundPound: draw_attack_zone_ground_pound((get_attack_zone_data_ground_pound()))
 
-	if is_charging_attack():
+	if is_charging_attack():		
 		var zoom_power := get_charge_power() - 1.0
 		var additional_zoom := zoom_power * 0.2
 		var camera_zoom := default_camera_zoom - Vector2(additional_zoom, additional_zoom)
@@ -247,6 +247,9 @@ func handle_primary_attack_input(event: InputEvent) -> void:
 			if active_attack_zone_data.start_angle <= angle_to && active_attack_zone_data.end_angle >= angle_to:
 				collider.take_hit(scale_damage(default_swing_damage), scale_knockback(default_swing_knockback_strength))
 
+		$ChargeSFX.stop()
+		$SwingSFX.play()
+
 		clear_attack_data()
 
 func handle_secondary_attack_input(event: InputEvent) -> void:
@@ -268,6 +271,8 @@ func handle_secondary_attack_input(event: InputEvent) -> void:
 			var collider := $AttackShapeCast2D.get_collider(collider_index) as Node2D
 			collider.take_hit(scale_damage(default_thrust_damage), scale_knockback(default_thrust_knockback_strength))
 
+		$ChargeSFX.stop()
+
 		clear_attack_data()
 		
 func handle_heavy_attack_input(event: InputEvent) -> void:
@@ -285,6 +290,8 @@ func handle_heavy_attack_input(event: InputEvent) -> void:
 		for collider_index in $AttackShapeCast2D.get_collision_count():
 			var collider := $AttackShapeCast2D.get_collider(collider_index) as Node2D
 			collider.take_hit(scale_damage(default_ground_pound_damage), scale_knockback(default_ground_pound_knockback_strength))
+		
+		$ChargeSFX.stop()
 		
 		clear_attack_data()
 
@@ -305,6 +312,10 @@ func get_charge_power() -> float:
 	var charge_time := get_charging_time_seconds()
 	if charge_time > charge_delay:
 		charge_power *= pow(get_charging_time_seconds() * charge_speed, charge_exp)
+		if not $ChargeSFX.playing:
+			$ChargeSFX.play()
+		else:
+			$ChargeSFX.pitch_scale = charge_time / 2.0
 
 	return charge_power
 
