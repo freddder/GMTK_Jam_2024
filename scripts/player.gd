@@ -1,4 +1,5 @@
-class_name PlayerCharacter extends Area2D
+class_name PlayerCharacter
+extends Area2D
 
 class AttackZoneData:
 	var radius: float = 0.0
@@ -50,6 +51,7 @@ var active_attack_zone_data: AttackZoneData
 var attack_area_color: Color = Color.RED
 var attack_area_arc_segments: float = 0
 
+
 func _ready() -> void:
 	var zoom: float = default_camera_zoom.x * (get_viewport_rect().size.x / 1280)
 	default_camera_zoom = Vector2(zoom, zoom)
@@ -57,21 +59,25 @@ func _ready() -> void:
 	set_camera_zoom(default_camera_zoom, 0.0)
 	clear_attack_data()
 
+
 func handle_movement(delta: float) -> void:
 	var move_direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var walk_speed := default_walk_speed
 	var velocity := move_direction * walk_speed * delta
 	position += velocity
 
+
 func check_arena_bounds() -> void:
 	var distance_from_center := position.length()
 	if distance_from_center > Arena.radius:
 		position = position.normalized() * Arena.radius
 
+
 func _physics_process(delta: float) -> void:
 	if !is_charging_attack():
 		handle_movement(delta)
 	check_arena_bounds()
+
 
 func draw_attack_zone_swing_implementation() -> void:
 	var origin := Vector2.ZERO
@@ -79,28 +85,29 @@ func draw_attack_zone_swing_implementation() -> void:
 	var width := 2.0
 
 	draw_line(origin,
-		Vector2(
-			cos(active_attack_zone_data.start_angle + offset_angle) * active_attack_zone_data.radius,
-			sin(active_attack_zone_data.start_angle + offset_angle) * active_attack_zone_data.radius),
-		attack_area_color, width)
+	Vector2(
+		cos(active_attack_zone_data.start_angle + offset_angle) * active_attack_zone_data.radius,
+		sin(active_attack_zone_data.start_angle + offset_angle) * active_attack_zone_data.radius),
+	attack_area_color, width)
 
 	draw_line(origin,
-		Vector2(
-			cos(active_attack_zone_data.end_angle + offset_angle) * active_attack_zone_data.radius,
-			sin(active_attack_zone_data.end_angle + offset_angle) * active_attack_zone_data.radius),
-		attack_area_color, width)
+	Vector2(
+		cos(active_attack_zone_data.end_angle + offset_angle) * active_attack_zone_data.radius,
+		sin(active_attack_zone_data.end_angle + offset_angle) * active_attack_zone_data.radius),
+	attack_area_color, width)
 
 	draw_arc(origin, active_attack_zone_data.radius,
-		active_attack_zone_data.start_angle + offset_angle, active_attack_zone_data.end_angle + offset_angle,
-		attack_area_arc_segments, attack_area_color, width)
+	active_attack_zone_data.start_angle + offset_angle, active_attack_zone_data.end_angle + offset_angle,
+	attack_area_arc_segments, attack_area_color, width)
+
 
 func draw_attack_zone_thrust_implementation() -> void:
 	var origin := Vector2.ZERO
 
 	var half_thickness := active_attack_zone_data.thickness / 2.0
 	var radius := active_attack_zone_data.radius
-	var local_coords_rect : Array = [
-		[ half_thickness, 0.0 ],  [ half_thickness, radius ],
+	var local_coords_rect: Array = [
+		[ half_thickness, 0.0 ], [ half_thickness, radius ],
 		[ -half_thickness, radius ], [ -half_thickness, 0.0 ]
 	]
 
@@ -113,17 +120,20 @@ func draw_attack_zone_thrust_implementation() -> void:
 
 	draw_polygon(packed_array, colors)
 
+
 func draw_attack_zone_ground_pound_implementation() -> void:
 	var origin := Vector2.ZERO
 	var width := 2.0
 
 	draw_circle(origin, active_attack_zone_data.radius, attack_area_color, width)
 
+
 func _draw() -> void:
 	match charging_attack_type:
 		AttackType.Swing: draw_attack_zone_swing_implementation()
 		AttackType.Thrust: draw_attack_zone_thrust_implementation()
 		AttackType.GroundPound: draw_attack_zone_ground_pound_implementation()
+
 
 func draw_attack_zone_swing(attack_zone_data: AttackZoneData) -> void:
 	attack_area_color = Color.RED
@@ -132,17 +142,20 @@ func draw_attack_zone_swing(attack_zone_data: AttackZoneData) -> void:
 
 	queue_redraw()
 
+
 func draw_attack_zone_thrust(attack_zone_data: AttackZoneData) -> void:
 	attack_area_color = Color.RED
 	active_attack_zone_data = attack_zone_data
 
 	queue_redraw()
 
+
 func draw_attack_zone_ground_pound(attack_zone_data: AttackZoneData) -> void:
 	attack_area_color = Color.RED
 	active_attack_zone_data = attack_zone_data
 
 	queue_redraw()
+
 
 func handle_mouse_direction() -> void:
 	var mouse_position := get_local_mouse_position()
@@ -151,6 +164,7 @@ func handle_mouse_direction() -> void:
 	# Add half PI (90 degrees) because sprite looks upwards by default,
 	# but rotation at 0 radians faces west
 	$MouseDirectionSprite.rotation = mouse_direction_angle_rad
+
 
 func get_attack_zone_data_swing() -> AttackZoneData:
 	var charge_power := get_charge_power()
@@ -167,6 +181,7 @@ func get_attack_zone_data_swing() -> AttackZoneData:
 
 	return attack_zone_data
 
+
 func get_attack_zone_data_thrust() -> AttackZoneData:
 	var charge_power := get_charge_power()
 	var attack_zone_data: AttackZoneData = AttackZoneData.new()
@@ -180,6 +195,7 @@ func get_attack_zone_data_thrust() -> AttackZoneData:
 	attack_zone_data.angle = mouse_direction_angle_rad
 	return attack_zone_data
 
+
 func get_attack_zone_data_ground_pound() -> AttackZoneData:
 	var charge_power := get_charge_power()
 	var attack_zone_data: AttackZoneData = AttackZoneData.new()
@@ -188,6 +204,7 @@ func get_attack_zone_data_ground_pound() -> AttackZoneData:
 	attack_zone_data.radius = default_swing_radius * radius_multiplier
 
 	return attack_zone_data
+
 
 func handle_attack_zone() -> void:
 	match charging_attack_type:
@@ -201,9 +218,20 @@ func handle_attack_zone() -> void:
 		var camera_zoom := default_camera_zoom - Vector2(additional_zoom, additional_zoom)
 		set_camera_zoom(camera_zoom, 0.0)
 
+
+func handle_charging_sound() -> void:
+	if get_charge_power() > 1.0:
+		if not $ChargeSFX.playing:
+			$ChargeSFX.play()
+
+		$ChargeSFX.pitch_scale = get_charge_power() / 2.0
+
+
 func _process(delta: float) -> void:
 	handle_mouse_direction()
 	handle_attack_zone()
+	handle_charging_sound()
+
 
 func set_camera_zoom(zoom: Vector2, duration: float = 0.2) -> void:
 	if duration > 0.0:
@@ -211,6 +239,7 @@ func set_camera_zoom(zoom: Vector2, duration: float = 0.2) -> void:
 		tween.tween_property($Camera2D, "zoom", zoom, duration)
 	else:
 		$Camera2D.set_zoom(zoom)
+
 
 func clear_attack_data() -> void:
 	$AttackShapeCast2D.shape = null
@@ -225,9 +254,11 @@ func clear_attack_data() -> void:
 	# Return to original camera zoom
 	set_camera_zoom(default_camera_zoom, 0.4)
 
+
 func on_attack_started_charging(attack_type: AttackType) -> void:
 	charging_attack_type = attack_type
 	attack_charge_start_time = Time.get_ticks_msec()
+
 
 func handle_primary_attack_input(event: InputEvent) -> void:
 	var attack_type := AttackType.Swing
@@ -242,9 +273,9 @@ func handle_primary_attack_input(event: InputEvent) -> void:
 
 		$AttackShapeCast2D.force_shapecast_update()
 		for collider_index in $AttackShapeCast2D.get_collision_count():
-			var enemy        := $AttackShapeCast2D.get_collider(collider_index) as EnemyCharacter
+			var enemy := $AttackShapeCast2D.get_collider(collider_index) as EnemyCharacter
 			var direction_to := global_position.direction_to(enemy.global_position)
-			var angle_to     := atan2(direction_to.y, direction_to.x) + PI / 2.0
+			var angle_to := atan2(direction_to.y, direction_to.x) + PI / 2.0
 			if active_attack_zone_data.start_angle <= angle_to && active_attack_zone_data.end_angle >= angle_to:
 				enemy.take_hit(scale_damage(default_swing_damage), scale_knockback(default_swing_knockback_strength))
 
@@ -252,6 +283,7 @@ func handle_primary_attack_input(event: InputEvent) -> void:
 		$SwingSFX.play()
 
 		clear_attack_data()
+
 
 func handle_secondary_attack_input(event: InputEvent) -> void:
 	var attack_type := AttackType.Thrust
@@ -276,6 +308,7 @@ func handle_secondary_attack_input(event: InputEvent) -> void:
 
 		clear_attack_data()
 
+
 func handle_heavy_attack_input(event: InputEvent) -> void:
 	var attack_type := AttackType.GroundPound
 	var action_name := "heavy_attack"
@@ -296,6 +329,7 @@ func handle_heavy_attack_input(event: InputEvent) -> void:
 
 		clear_attack_data()
 
+
 func _input(event: InputEvent) -> void:
 	if event.is_action("primary_attack"):
 		handle_primary_attack_input(event)
@@ -304,8 +338,10 @@ func _input(event: InputEvent) -> void:
 	elif event.is_action("heavy_attack"):
 		handle_heavy_attack_input(event)
 
+
 func is_charging_attack() -> bool:
 	return charging_attack_type != AttackType.Invalid
+
 
 func get_charge_power() -> float:
 	var charge_power: float = 1.0
@@ -313,18 +349,17 @@ func get_charge_power() -> float:
 	var charge_time := get_charging_time_seconds()
 	if charge_time > charge_delay:
 		charge_power *= pow(get_charging_time_seconds() * charge_speed, charge_exp)
-		if not $ChargeSFX.playing:
-			$ChargeSFX.play()
-		else:
-			$ChargeSFX.pitch_scale = charge_time / 2.0
 
 	return charge_power
+
 
 func get_charging_time_seconds() -> float:
 	return 0.0 if !is_charging_attack() else (Time.get_ticks_msec() - attack_charge_start_time) / 1000.0
 
+
 func scale_damage(damage: float) -> float:
 	return damage * pow(get_charge_power(), 1.05)
+
 
 func scale_knockback(knockback_strength: float) -> float:
 	return minf(knockback_limit, knockback_strength * pow(get_charge_power(), 1.1))
