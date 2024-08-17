@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 EnemySpawnManager="*res://scenes/enemy_spawn_manager.tscn"
 Arena="*res://scripts/arena.gd"
+Events="*res://scripts/events.gd"
 
 [display]
 

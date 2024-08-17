@@ -1,11 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://7eveuu7rwnjy"]
+[gd_scene load_steps=4 format=3 uid="uid://7eveuu7rwnjy"]
 
+[ext_resource type="Script" path="res://scripts/main_level.gd" id="1_opo1r"]
 [ext_resource type="PackedScene" uid="uid://c7kaxi3ghjur4" path="res://scenes/player.tscn" id="1_wu7kq"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_og2m7"]
 radius = 500.0
 
 [node name="MainLevel" type="Node"]
+script = ExtResource("1_opo1r")
 
 [node name="Player" parent="." instance=ExtResource("1_wu7kq")]
 

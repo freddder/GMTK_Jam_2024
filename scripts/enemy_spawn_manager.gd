@@ -39,11 +39,17 @@ func try_spawn_enemy() -> void:
 	try_spawn_enemy()
 	
 func _ready() -> void:
-	on_game_started()
+	Events.on_game_started.connect(on_game_started)
+	Events.on_game_victory.connect(on_game_terminated)
+	Events.on_game_failed.connect(on_game_terminated)
 
 func on_game_started() -> void:
 	should_spawn_enemies = true
 	try_spawn_enemy()
+
+func on_game_terminated() -> void:
+	should_spawn_enemies = false
+	$SpawnTimer.stop()
 
 func get_random_spawn_point() -> Vector2:
 	var angle := randf() * PI * 2

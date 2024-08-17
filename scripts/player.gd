@@ -168,7 +168,6 @@ func get_attack_zone_data_thrust() -> AttackZoneData:
 	attack_zone_data.thickness = default_thrust_thickness + thickness_offset
 
 	attack_zone_data.angle = mouse_direction_angle_rad
-	print(mouse_direction_angle_rad)
 	return attack_zone_data
 	
 func get_attack_zone_data_ground_pound() -> AttackZoneData:
