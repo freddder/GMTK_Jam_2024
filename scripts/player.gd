@@ -34,7 +34,7 @@ enum AttackType {
 @export var default_ground_pound_radius: float = 100.0
 @export var default_ground_pound_damage: float = 60.0
 @export var default_ground_pound_knockback_strength: float = 40.0
-@export var default_camera_zoom: Vector2 = Vector2(2.3, 2.3)
+@export var default_camera_zoom: Vector2 = Vector2(1.7, 1.7)
 
 @export_category("Charge")
 @export var charge_speed: float = 1.0
@@ -50,6 +50,9 @@ var attack_area_color: Color = Color.RED
 var attack_area_arc_segments: float = 0
 
 func _ready() -> void:
+	var zoom: float = default_camera_zoom.x * (get_viewport_rect().size.x / 1280)
+	default_camera_zoom = Vector2(zoom, zoom)
+	
 	set_camera_zoom(default_camera_zoom, 0.0)
 	clear_attack_data()
 
@@ -184,7 +187,6 @@ func get_attack_zone_data_ground_pound() -> AttackZoneData:
 	attack_zone_data.radius = default_swing_radius * radius_multiplier
 
 	return attack_zone_data
-	
 
 func handle_attack_zone() -> void:
 	match charging_attack_type:
