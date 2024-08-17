@@ -31,13 +31,13 @@ region = Rect2(0, 0, 128, 128)
 atlas = ExtResource("3_wdtuj")
 region = Rect2(128, 0, 128, 128)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_vy61x"]
-atlas = ExtResource("3_wdtuj")
-region = Rect2(256, 0, 128, 128)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_l10si"]
 atlas = ExtResource("3_wdtuj")
 region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vy61x"]
+atlas = ExtResource("3_wdtuj")
+region = Rect2(256, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1gmeg"]
 atlas = ExtResource("3_wdtuj")
@@ -94,10 +94,10 @@ animations = [{
 "texture": SubResource("AtlasTexture_rb4tf")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_vy61x")
+"texture": SubResource("AtlasTexture_l10si")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_l10si")
+"texture": SubResource("AtlasTexture_vy61x")
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_1gmeg")
@@ -122,11 +122,26 @@ animations = [{
 }],
 "loop": true,
 "name": &"run",
-"speed": 5.0
+"speed": 12.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bq6x7"]
 size = Vector2(35, 59)
+
+[sub_resource type="Animation" id="Animation_ud42k"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_d3h3c"]
 resource_name = "death"
@@ -144,21 +159,6 @@ tracks/0/keys = {
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_ud42k"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_lf8bu"]
 _data = {
 "RESET": SubResource("Animation_ud42k"),
@@ -173,6 +173,7 @@ script = ExtResource("1_r52mo")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_l4jrd")
 animation = &"run"
+frame_progress = 0.670955
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.5, 15.5)
