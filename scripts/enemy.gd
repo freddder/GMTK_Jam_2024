@@ -10,6 +10,7 @@ signal on_death(this: EnemyCharacter)
 var pending_knockback_strength: float = 0.0
 var health: float = default_health
 
+
 func _physics_process(delta: float) -> void:
 	var speed := default_speed
 	var target_position := player.global_position
@@ -17,8 +18,8 @@ func _physics_process(delta: float) -> void:
 	global_position -= global_position.direction_to(target_position) * pending_knockback_strength
 	pending_knockback_strength = 0.0
 	
-func take_hit(damage_amount: float, knockback_strength: float):
+func take_hit(damage_amount: float, knockback_strength: float, knock):
 	health -= damage_amount
-	pending_knockback_strength += knockback_strength
+	pending_knockback_strength += knockback_strength	
 	if health <= 0:
 		queue_free()
