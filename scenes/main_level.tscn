@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://7eveuu7rwnjy"]
 
 [ext_resource type="PackedScene" uid="uid://c7kaxi3ghjur4" path="res://scenes/player.tscn" id="1_wu7kq"]
-[ext_resource type="PackedScene" uid="uid://cnvwhtne2klh" path="res://scenes/enemy.tscn" id="2_rw1p6"]
+[ext_resource type="PackedScene" uid="uid://urhl71flqfbw" path="res://scenes/enemy_spawn_point.tscn" id="2_e80n0"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_og2m7"]
 radius = 500.0
@@ -13,5 +13,14 @@ radius = 500.0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_og2m7")
 
-[node name="Enemy" parent="." instance=ExtResource("2_rw1p6")]
-position = Vector2(-141, 139)
+[node name="EnemySpawnPoint" parent="." instance=ExtResource("2_e80n0")]
+position = Vector2(-5, -499)
+
+[node name="EnemySpawnPoint2" parent="." instance=ExtResource("2_e80n0")]
+position = Vector2(-499, 2)
+
+[node name="EnemySpawnPoint3" parent="." instance=ExtResource("2_e80n0")]
+position = Vector2(500, 0)
+
+[node name="EnemySpawnPoint4" parent="." instance=ExtResource("2_e80n0")]
+position = Vector2(-2, 497)

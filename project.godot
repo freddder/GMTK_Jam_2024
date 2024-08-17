@@ -15,6 +15,10 @@ run/main_scene="res://scenes/main_level.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+EnemySpawnManager="*res://scenes/enemy_spawn_manager.tscn"
+
 [display]
 
 window/size/viewport_width=1920
