@@ -22,8 +22,8 @@ func _process(delta):
 		# Spawn an enemy at a random spawn point
 		var point_to_spawn := spawn_points[randi() % spawn_points.size()]
 		
-		var new_enemy = enemy.instantiate()
-		new_enemy.position = point_to_spawn.position
+		#var new_enemy = enemy.instantiate()
+		#new_enemy.position = point_to_spawn.position
+		#get_node('/root/MainLevel').add_child(new_enemy) # probably change this
 		
-		get_node('/root/MainLevel').add_child(new_enemy) # probably change this
 		enemies_count += 1
