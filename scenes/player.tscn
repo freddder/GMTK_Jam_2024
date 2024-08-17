@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://c7kaxi3ghjur4"]
+[gd_scene load_steps=5 format=3 uid="uid://c7kaxi3ghjur4"]
 
 [ext_resource type="Texture2D" uid="uid://btog8yn277yfn" path="res://icon.svg" id="1_gw305"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_r52mo"]
@@ -7,12 +7,9 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bq6x7"]
 size = Vector2(26, 52)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_xvjvi"]
-
 [node name="Player" type="Area2D" groups=["player"]]
 collision_mask = 2
 script = ExtResource("1_r52mo")
-default_camera_zoom = Vector2(1, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.2, 0.4)
@@ -29,7 +26,6 @@ offset = Vector2(0, -40)
 
 [node name="AttackShapeCast2D" type="ShapeCast2D" parent="."]
 enabled = false
-shape = SubResource("CircleShape2D_xvjvi")
 target_position = Vector2(0, 0)
 max_results = 512
 collision_mask = 4
