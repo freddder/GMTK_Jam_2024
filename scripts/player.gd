@@ -474,7 +474,7 @@ func take_hit(damage: float, knockback_force: Vector2) -> void:
 
 	health -= damage
 	pending_knockback_forces.push_back(knockback_force)
-	print(health)
+	print("Player health: ", health)
 	if health <= 0:
 		die()
 
