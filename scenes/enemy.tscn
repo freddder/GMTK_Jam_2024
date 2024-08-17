@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://d1voyx03mvoqy"]
+[gd_scene load_steps=4 format=3 uid="uid://cnvwhtne2klh"]
 
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1_fhxv7"]
 [ext_resource type="Texture2D" uid="uid://btog8yn277yfn" path="res://icon.svg" id="1_mtc0h"]
@@ -17,3 +17,7 @@ texture = ExtResource("1_mtc0h")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_frqxi")
+
+[node name="SpawnTimer" type="Timer" parent="." groups=["enemy"]]
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]

@@ -1,19 +1,12 @@
-extends Area2D
+class_name EnemyCharacter extends Area2D
 
-@export var default_speed: float = 250.0
+signal on_death(this: EnemyCharacter)
 
-var player: Node
+@export var default_speed: float = 35.0
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	player = get_node("../Player")
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+@onready var player : PlayerCharacter = get_tree().get_first_node_in_group("player")
 
 func _physics_process(delta: float) -> void:
-	var direction: Vector2 = (player.position - position).normalized()
-	var velocity := direction * default_speed * delta
-	position += velocity
+	var speed := default_speed
+	var target_position := player.global_position
+	global_position = global_position.move_toward(target_position, speed * delta)

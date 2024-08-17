@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://ckeurucxxeryw"]
+[gd_scene load_steps=2 format=3 uid="uid://c6vrg8oke2bkj"]
 
 [ext_resource type="Script" path="res://scripts/enemy_spawn_manager.gd" id="1_1ju3l"]
 
-[node name="EnemySpawnManager" type="Node2D"]
+[node name="EnemySpawnManager" type="Node"]
 script = ExtResource("1_1ju3l")
+
+[node name="SpawnTimer" type="Timer" parent="."]
+one_shot = true

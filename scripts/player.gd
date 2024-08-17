@@ -1,4 +1,4 @@
-class_name Player extends Area2D
+class_name PlayerCharacter extends Area2D
 
 class AttackZoneData:
 	var radius: float = 0
@@ -38,10 +38,9 @@ func handle_movement(delta: float) -> void:
 	position += velocity
 	
 func check_arena_bounds() -> void:
-	var arena_size := 500.0
 	var distance_from_center := position.length()
-	if distance_from_center > arena_size:
-		position = position.normalized() * arena_size
+	if distance_from_center > Arena.radius:
+		position = position.normalized() * Arena.radius
 
 func _physics_process(delta: float) -> void:
 	if !is_charging_attack():
