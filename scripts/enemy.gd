@@ -37,7 +37,6 @@ func _physics_process(delta: float) -> void:
 func take_hit(damage: float, knockback_strength: float) -> void:
 	health -= damage
 	pending_knockback_strength += knockback_strength
-	print(damage)
 	if health <= 0:
 		die()
 

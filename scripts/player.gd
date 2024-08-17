@@ -25,18 +25,20 @@ enum AttackType {
 @export var swing_angle_limit: float = 230.0
 @export var default_swing_damage: float = 15.0
 @export var default_swing_knockback_strength: float = 25.0
-@export var default_swing_cooldown: float = 0.2
+@export var default_swing_cooldown: float = 0.3
 
 @export_category("Thrust")
 @export var default_thrust_radius: float = 100.0
 @export var default_thrust_thickness: float = 35.0
 @export var default_thrust_damage: float = 20.0
 @export var default_thrust_knockback_strength: float = 37.5
+@export var default_thrust_cooldown: float = 0.4
 
 @export_category("Ground Pound")
 @export var default_ground_pound_radius: float = 100.0
 @export var default_ground_pound_damage: float = 30.0
 @export var default_ground_pound_knockback_strength: float = 50.0
+@export var default_ground_pound_cooldown: float = 0.7
 
 @export_category("Charge")
 @export var charge_speed: float = 1.0
@@ -50,6 +52,12 @@ var charging_attack_type: AttackType = AttackType.Invalid
 var active_attack_zone_data: AttackZoneData
 var attack_area_color: Color = Color.RED
 var attack_area_arc_segments: float = 0
+
+var last_attack_end_time: Dictionary = {
+	AttackType.Swing: -2.0,
+	AttackType.Thrust: -2.0,
+	AttackType.GroundPound: -2.0,
+}
 
 
 func _ready() -> void:
@@ -260,10 +268,32 @@ func on_attack_started_charging(attack_type: AttackType) -> void:
 	attack_charge_start_time = Time.get_ticks_msec()
 
 
+func save_attack_end_time() -> void:
+	assert(last_attack_end_time.has(charging_attack_type))
+	last_attack_end_time[charging_attack_type] = Time.get_ticks_msec()
+
+
+func handle_sound_on_attack_release() -> void:
+	$ChargeSFX.stop()
+
+	match charging_attack_type:
+		AttackType.Swing: $SwingSFX.play()
+		AttackType.Thrust: pass
+		AttackType.GroundPound: pass
+
+
+func on_attack_released() -> void:
+	save_attack_end_time()
+	handle_sound_on_attack_release()
+	clear_attack_data()
+
+
 func handle_primary_attack_input(event: InputEvent) -> void:
 	var attack_type := AttackType.Swing
 	var action_name := "primary_attack"
-	if !is_charging_attack() && event.is_action_pressed(action_name):
+	if (!is_charging_attack()
+		&& !is_attack_on_cooldown(attack_type)
+		&& event.is_action_pressed(action_name)):
 		on_attack_started_charging(attack_type)
 
 	if charging_attack_type == attack_type && event.is_action_released(action_name):
@@ -279,16 +309,15 @@ func handle_primary_attack_input(event: InputEvent) -> void:
 			if active_attack_zone_data.start_angle <= angle_to && active_attack_zone_data.end_angle >= angle_to:
 				enemy.take_hit(scale_damage(default_swing_damage), scale_knockback(default_swing_knockback_strength))
 
-		$ChargeSFX.stop()
-		$SwingSFX.play()
-
-		clear_attack_data()
+		on_attack_released()
 
 
 func handle_secondary_attack_input(event: InputEvent) -> void:
 	var attack_type := AttackType.Thrust
 	var action_name := "secondary_attack"
-	if !is_charging_attack() && event.is_action_pressed(action_name):
+	if (!is_charging_attack()
+		&& !is_attack_on_cooldown(attack_type)
+		&& event.is_action_pressed(action_name)):
 		on_attack_started_charging(attack_type)
 
 	if charging_attack_type == attack_type && event.is_action_released(action_name):
@@ -304,15 +333,15 @@ func handle_secondary_attack_input(event: InputEvent) -> void:
 			var collider := $AttackShapeCast2D.get_collider(collider_index) as EnemyCharacter
 			collider.take_hit(scale_damage(default_thrust_damage), scale_knockback(default_thrust_knockback_strength))
 
-		$ChargeSFX.stop()
-
-		clear_attack_data()
+		on_attack_released()
 
 
 func handle_heavy_attack_input(event: InputEvent) -> void:
 	var attack_type := AttackType.GroundPound
 	var action_name := "heavy_attack"
-	if !is_charging_attack() && event.is_action_pressed(action_name):
+	if (!is_charging_attack()
+		&& !is_attack_on_cooldown(attack_type)
+		&& event.is_action_pressed(action_name)):
 		on_attack_started_charging(attack_type)
 
 	if charging_attack_type == attack_type && event.is_action_released(action_name):
@@ -325,9 +354,7 @@ func handle_heavy_attack_input(event: InputEvent) -> void:
 			var collider := $AttackShapeCast2D.get_collider(collider_index) as EnemyCharacter
 			collider.take_hit(scale_damage(default_ground_pound_damage), scale_knockback(default_ground_pound_knockback_strength))
 
-		$ChargeSFX.stop()
-
-		clear_attack_data()
+		on_attack_released()
 
 
 func _input(event: InputEvent) -> void:
@@ -363,3 +390,22 @@ func scale_damage(damage: float) -> float:
 
 func scale_knockback(knockback_strength: float) -> float:
 	return minf(knockback_limit, knockback_strength * pow(get_charge_power(), 1.1))
+
+
+func get_elapsed_time_since_attack_end(attack_type: AttackType) -> float:
+	assert(last_attack_end_time.has(attack_type))
+	return (Time.get_ticks_msec() - last_attack_end_time.get(attack_type)) / 1000.0
+
+
+func get_attack_type_cooldown(attack_type: AttackType) -> float:
+	var cooldown: float = -1.0
+	match attack_type:
+		AttackType.Swing: cooldown = default_swing_cooldown
+		AttackType.Thrust: cooldown = default_thrust_cooldown
+		AttackType.GroundPound: cooldown = default_ground_pound_cooldown
+
+	return cooldown
+
+
+func is_attack_on_cooldown(attack_type: AttackType) -> bool:
+	return get_attack_type_cooldown(attack_type) > get_elapsed_time_since_attack_end(attack_type)
