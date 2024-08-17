@@ -20,14 +20,20 @@ enum AttackType {
 @export var default_swing_radius: float = 50.0
 @export var default_swing_angle: float = 45.0
 @export var swing_angle_limit: float = 230.0
+@export var default_swing_damage: float = 30.0
+@export var default_swing_knockback_strength: float = 20.0
+@export var default_swing_cooldown: float = 1.0
 
 @export_category("Thrust")
 @export var default_thrust_radius: float = 100.0
 @export var default_thrust_thickness: float = 35.0
+@export var default_thrust_damage: float = 40.0
+@export var default_thrust_knockback_strength: float = 30.0
 
 @export_category("Ground Pound")
 @export var default_ground_pound_radius: float = 100.0
-
+@export var default_ground_pound_damage: float = 60.0
+@export var default_ground_pound_knockback_strength: float = 40.0
 @export var default_camera_zoom: Vector2 = Vector2(2.3, 2.3)
 
 @export_category("Charge")
@@ -237,8 +243,7 @@ func handle_primary_attack_input(event: InputEvent) -> void:
 			var direction_to := global_position.direction_to(collider.global_position)
 			var angle_to := atan2(direction_to.y, direction_to.x) + PI / 2.0
 			if active_attack_zone_data.start_angle <= angle_to && active_attack_zone_data.end_angle >= angle_to:
-				print("Damage ", $AttackShapeCast2D.get_collider(collider_index))
-				collider.queue_free()
+				collider.take_hit(scale_damage(default_swing_damage), scale_knockback(default_swing_knockback_strength))
 
 		clear_attack_data()
 
@@ -259,8 +264,7 @@ func handle_secondary_attack_input(event: InputEvent) -> void:
 		$AttackShapeCast2D.force_shapecast_update()
 		for collider_index in $AttackShapeCast2D.get_collision_count():
 			var collider := $AttackShapeCast2D.get_collider(collider_index) as Node2D
-			print("Damage ", $AttackShapeCast2D.get_collider(collider_index))
-			collider.queue_free()
+			collider.take_hit(scale_damage(default_thrust_damage), scale_knockback(default_thrust_knockback_strength))
 
 		clear_attack_data()
 		
@@ -278,9 +282,8 @@ func handle_heavy_attack_input(event: InputEvent) -> void:
 		$AttackShapeCast2D.force_shapecast_update()
 		for collider_index in $AttackShapeCast2D.get_collision_count():
 			var collider := $AttackShapeCast2D.get_collider(collider_index) as Node2D
-			print("Damage ", $AttackShapeCast2D.get_collider(collider_index))
-			collider.queue_free()
-
+			collider.take_hit(scale_damage(default_ground_pound_damage), scale_knockback(default_ground_pound_knockback_strength))
+		
 		clear_attack_data()
 
 func _input(event: InputEvent) -> void:
@@ -305,3 +308,9 @@ func get_charge_power() -> float:
 
 func get_charging_time_seconds() -> float:
 	return 0.0 if !is_charging_attack() else (Time.get_ticks_msec() - attack_charge_start_time) / 1000.0
+
+func scale_damage(damage: float) -> float:
+	return damage * pow(get_charge_power(), 1.5)
+	
+func scale_knockback(knockback_strength: float) -> float:
+	return knockback_strength * pow(get_charge_power(), 1.5)
