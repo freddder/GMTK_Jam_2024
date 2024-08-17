@@ -16,7 +16,7 @@ enum AttackType {
 }
 
 @export var default_walk_speed: float = 300.0
-@export var default_camera_zoom: Vector2 = Vector2(1.7, 1.7)
+@export var default_camera_zoom := Vector2(1.2, 1.2)
 @export var knockback_limit: float = 1000.0
 
 @export_category("Swing")
@@ -47,11 +47,13 @@ enum AttackType {
 
 var mouse_direction_angle_rad: float = 0.0
 var attack_charge_start_time: float = 0.0
-var charging_attack_type: AttackType = AttackType.Invalid
+var charging_attack_type := AttackType.Invalid
 
 var active_attack_zone_data: AttackZoneData
-var attack_area_color: Color = Color.RED
-var attack_area_arc_segments: float = 0
+var attack_area_color := Color.RED
+var attack_area_arc_segments: float = 0.0
+
+var last_non_zero_movement_direction := Vector2.ZERO
 
 var last_attack_end_time: Dictionary = {
 	AttackType.Swing: -2.0,
@@ -74,6 +76,12 @@ func handle_movement(delta: float) -> void:
 	var velocity := move_direction * walk_speed * delta
 	position += velocity
 
+	if !move_direction.is_zero_approx():
+		last_non_zero_movement_direction = move_direction
+		$AnimatedSprite2D.play("run")
+	else:
+		$AnimatedSprite2D.play("idle")
+
 
 func check_arena_bounds() -> void:
 	var distance_from_center := position.length()
@@ -82,7 +90,7 @@ func check_arena_bounds() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if !is_charging_attack():
+	if should_move():
 		handle_movement(delta)
 	check_arena_bounds()
 
@@ -174,6 +182,17 @@ func handle_mouse_direction() -> void:
 	$MouseDirectionSprite.rotation = mouse_direction_angle_rad
 
 
+func get_facing_direction() -> int:
+	var move_direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+
+	# Use current side direction if it's not zero, fallback on last non-zero direction otherwise;
+	# if it's zero as well, add 0.1 so that it'll be positive, i.e. right
+	return sign(move_direction.x if move_direction.x != 0.0
+		else last_non_zero_movement_direction.x + 0.1)
+
+func handle_animation_side() -> void:
+	$AnimatedSprite2D.flip_h = get_facing_direction() < 0
+
 func get_attack_zone_data_swing() -> AttackZoneData:
 	var charge_power := get_charge_power()
 	var attack_zone_data: AttackZoneData = AttackZoneData.new()
@@ -239,6 +258,7 @@ func _process(delta: float) -> void:
 	handle_mouse_direction()
 	handle_attack_zone()
 	handle_charging_sound()
+	handle_animation_side()
 
 
 func set_camera_zoom(zoom: Vector2, duration: float = 0.2) -> void:
@@ -264,6 +284,9 @@ func clear_attack_data() -> void:
 
 
 func on_attack_started_charging(attack_type: AttackType) -> void:
+	# TODO: replace with attack animation
+	$AnimatedSprite2D.play("idle")
+
 	charging_attack_type = attack_type
 	attack_charge_start_time = Time.get_ticks_msec()
 
@@ -364,6 +387,10 @@ func _input(event: InputEvent) -> void:
 		handle_secondary_attack_input(event)
 	elif event.is_action("heavy_attack"):
 		handle_heavy_attack_input(event)
+
+
+func should_move() -> bool:
+	return !is_charging_attack()
 
 
 func is_charging_attack() -> bool:

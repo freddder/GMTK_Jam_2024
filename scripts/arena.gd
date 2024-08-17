@@ -1,3 +1,3 @@
 extends Node
 
-var radius: float = 500.0
+var radius: float = 700.0
