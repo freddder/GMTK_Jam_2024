@@ -248,6 +248,9 @@ func handle_primary_attack_input(event: InputEvent) -> void:
 			if active_attack_zone_data.start_angle <= angle_to && active_attack_zone_data.end_angle >= angle_to:
 				enemy.take_hit(scale_damage(default_swing_damage), scale_knockback(default_swing_knockback_strength))
 
+		$ChargeSFX.stop()
+		$SwingSFX.play()
+
 		clear_attack_data()
 
 func handle_secondary_attack_input(event: InputEvent) -> void:
@@ -269,6 +272,8 @@ func handle_secondary_attack_input(event: InputEvent) -> void:
 			var collider := $AttackShapeCast2D.get_collider(collider_index) as EnemyCharacter
 			collider.take_hit(scale_damage(default_thrust_damage), scale_knockback(default_thrust_knockback_strength))
 
+		$ChargeSFX.stop()
+
 		clear_attack_data()
 
 func handle_heavy_attack_input(event: InputEvent) -> void:
@@ -286,6 +291,8 @@ func handle_heavy_attack_input(event: InputEvent) -> void:
 		for collider_index in $AttackShapeCast2D.get_collision_count():
 			var collider := $AttackShapeCast2D.get_collider(collider_index) as EnemyCharacter
 			collider.take_hit(scale_damage(default_ground_pound_damage), scale_knockback(default_ground_pound_knockback_strength))
+
+		$ChargeSFX.stop()
 
 		clear_attack_data()
 
@@ -306,6 +313,10 @@ func get_charge_power() -> float:
 	var charge_time := get_charging_time_seconds()
 	if charge_time > charge_delay:
 		charge_power *= pow(get_charging_time_seconds() * charge_speed, charge_exp)
+		if not $ChargeSFX.playing:
+			$ChargeSFX.play()
+		else:
+			$ChargeSFX.pitch_scale = charge_time / 2.0
 
 	return charge_power
 
