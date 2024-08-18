@@ -8,6 +8,12 @@ extends Node2D
 @onready var player := get_parent() as PlayerCharacter
 @onready var player_sprite: AnimatedSprite2D = player.find_child("AnimatedSprite2D")
 
+var attack_radius_before_shrink: float = 0.0
+var last_attack_radius: float = 0.0
+var shrink_total_time: float = 0.3
+var shrink_start_time: float = 0.0
+var is_shrinking := false
+
 var idle_animation_offsets: Array[Vector2] = [
 	Vector2(25.0, 27.0),
 	Vector2(25.0, 25.0),
@@ -52,7 +58,7 @@ func _draw() -> void:
 	var rect := Rect2(-hilt.get_size() / 2.0, hilt.get_size())
 	draw_texture_rect(hilt, rect, false)
 
-	rect.size = blade_core.get_size() + Vector2(0.0, get_blade_length())
+	rect.size = blade_core.get_size() + Vector2(0.0, compute_blade_length())
 	rect.position.x = -rect.size.x / 2.0
 	rect.position.y -= rect.size.y
 
@@ -65,9 +71,27 @@ func _draw() -> void:
 	draw_texture_rect(blade_tip, rect, false)
 
 
-func get_blade_length() -> float:
-	return maxf(blade_core.get_size().x,
-		player.get_charging_attack_radius() - position.length() - hilt.get_size().length() / 2.0)
+func compute_blade_length() -> float:
+	var default_radius := blade_core.get_size().x
+	var radius := player.get_charging_attack_radius()
+
+	if last_attack_radius > radius or is_shrinking:
+		if not is_shrinking:
+			is_shrinking = true
+			shrink_start_time = Time.get_ticks_msec()
+			attack_radius_before_shrink = last_attack_radius
+
+		var shrink_time := (Time.get_ticks_msec() - shrink_start_time) / 1000.0
+		var alpha := minf(shrink_time / shrink_total_time, 1.0)
+		radius = lerp(attack_radius_before_shrink, default_radius, alpha)
+
+		if alpha == 1.0:
+			is_shrinking = false
+
+	var return_value := maxf(default_radius, radius - position.length() - hilt.get_size().length() / 2.0)
+	last_attack_radius = radius
+
+	return return_value
 
 
 func get_horizontal_flip() -> float:
