@@ -47,6 +47,10 @@ enum AttackType {
 @export var charge_exp: float = 0.6
 @export var charge_delay: float = 0.5
 
+@export_category("Dash")
+@export var default_dash_distance : float = 100.0
+@export var default_dash_cooldown: float = 0.9
+
 var mouse_direction_angle_rad: float = 0.0
 var attack_charge_start_time: float = 0.0
 var charging_attack_type := AttackType.Invalid
@@ -64,6 +68,8 @@ var last_attack_end_time: Dictionary = {
 	AttackType.Thrust: -2.0,
 	AttackType.GroundPound: -2.0,
 }
+
+var last_dash_start_time: float = -2.0
 
 
 func _ready() -> void:
@@ -420,6 +426,21 @@ func handle_heavy_attack_input(event: InputEvent) -> void:
 		on_attack_released()
 
 
+func handle_dash_input(event: InputEvent) -> void:
+	if !should_move():
+		return
+
+	var elapsed_time := (Time.get_ticks_msec() - last_dash_start_time) / 1000.0
+	var is_on_cooldown := default_dash_cooldown > elapsed_time
+	if is_on_cooldown:
+		return
+
+#	var dash_direction := Vector2(cos(mouse_direction_angle_rad), sin(mouse_direction_angle_rad))
+	var dash_direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	var dash_strength := default_dash_distance
+	pending_knockback_forces.push_back(dash_direction * dash_strength)
+
+
 func _input(event: InputEvent) -> void:
 	if !is_alive():
 		return
@@ -430,6 +451,8 @@ func _input(event: InputEvent) -> void:
 		handle_secondary_attack_input(event)
 	elif event.is_action("heavy_attack"):
 		handle_heavy_attack_input(event)
+	elif event.is_action_pressed("dash"):
+		handle_dash_input(event)
 
 
 func should_move() -> bool:
