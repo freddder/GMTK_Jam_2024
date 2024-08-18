@@ -48,8 +48,11 @@ enum AttackType {
 @export var charge_delay: float = 0.5
 
 @export_category("Dash")
-@export var default_dash_distance : float = 100.0
-@export var default_dash_cooldown: float = 0.9
+@export var default_dash_duration: float = 0.3
+@export var default_dash_speed: float = 800.0
+@export var default_dash_cooldown: float = 0.4
+@export var dash_motion_trail_copy_lifespan: float = 0.2
+@export var dash_motion_trail_creation_cooldown: float = 0.02
 
 var mouse_direction_angle_rad: float = 0.0
 var attack_charge_start_time: float = 0.0
@@ -70,6 +73,9 @@ var last_attack_end_time: Dictionary = {
 }
 
 var last_dash_start_time: float = -2.0
+var last_dash_end_time: float = -2.0
+var is_dashing := false
+var dash_direction := Vector2.ZERO
 
 
 func _ready() -> void:
@@ -80,7 +86,7 @@ func _ready() -> void:
 	clear_attack_data()
 
 
-func handle_movement(delta: float) -> void:
+func handle_regular_movement(delta: float) -> void:
 	var move_direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var walk_speed := default_walk_speed
 	var velocity := move_direction * walk_speed * delta
@@ -91,6 +97,25 @@ func handle_movement(delta: float) -> void:
 		$AnimatedSprite2D.play("run")
 	else:
 		$AnimatedSprite2D.play("idle")
+
+
+func handle_dash_movement(delta: float) -> bool:
+	var dashing_time := (Time.get_ticks_msec() - last_dash_start_time) / 1000.0
+	var dashing_remaining_time := default_dash_duration - dashing_time
+	is_dashing = dashing_remaining_time > 0.0
+	if !is_dashing:
+		on_dash_finished()
+		return false
+
+	position += dash_direction * default_dash_speed * delta
+	return true
+
+
+func handle_movement(delta: float) -> void:
+	if is_dashing and handle_dash_movement(delta):
+		pass
+	else:
+		handle_regular_movement(delta)
 
 
 func check_arena_bounds() -> void:
@@ -152,8 +177,6 @@ func draw_attack_zone_swing_implementation() -> void:
 
 
 func draw_attack_zone_thrust_implementation() -> void:
-	var origin := Vector2.ZERO
-
 	var half_thickness := active_attack_zone_data.thickness / 2.0
 	var radius := active_attack_zone_data.radius
 	var local_coords_rect: Array = [
@@ -430,15 +453,29 @@ func handle_dash_input(event: InputEvent) -> void:
 	if !should_move():
 		return
 
-	var elapsed_time := (Time.get_ticks_msec() - last_dash_start_time) / 1000.0
+	var elapsed_time := (Time.get_ticks_msec() - last_dash_end_time) / 1000.0
 	var is_on_cooldown := default_dash_cooldown > elapsed_time
 	if is_on_cooldown:
 		return
 
-#	var dash_direction := Vector2(cos(mouse_direction_angle_rad), sin(mouse_direction_angle_rad))
-	var dash_direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	var dash_strength := default_dash_distance
-	pending_knockback_forces.push_back(dash_direction * dash_strength)
+	dash_direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	if !dash_direction.is_zero_approx():
+		on_dash_started()
+
+
+func on_dash_started() -> void:
+	last_dash_start_time = Time.get_ticks_msec()
+	is_dashing = true
+
+	$DashMotionTrailTimer.one_shot = false
+	$DashMotionTrailTimer.start(dash_motion_trail_creation_cooldown)
+
+
+func on_dash_finished() -> void:
+	last_dash_end_time = Time.get_ticks_msec()
+	is_dashing = false
+
+	$DashMotionTrailTimer.stop()
 
 
 func _input(event: InputEvent) -> void:
@@ -505,7 +542,7 @@ func is_attack_on_cooldown(attack_type: AttackType) -> bool:
 
 
 func take_hit(damage: float, knockback_force: Vector2) -> void:
-	if !is_alive():
+	if is_invincible():
 		return
 
 	health -= damage
@@ -538,3 +575,32 @@ func is_alive() -> bool:
 
 func get_charging_attack_radius() -> float:
 	return active_attack_zone_data.radius if active_attack_zone_data else 0.0
+
+
+func is_invincible() -> bool:
+	return is_alive() and is_dashing
+
+
+func create_motion_trail_copy() -> void:
+	var sprite: Sprite2D = Sprite2D.new()
+	sprite.texture = $AnimatedSprite2D.sprite_frames.get_frame_texture(
+		$AnimatedSprite2D.animation, $AnimatedSprite2D.frame)
+
+	var shader: ShaderMaterial = $AnimatedSprite2D.material.duplicate()
+	shader.set_shader_parameter("opacity", 0.3)
+	shader.set_shader_parameter("r", 0.0)
+	shader.set_shader_parameter("g", 0.0)
+	shader.set_shader_parameter("b", 0.8)
+	shader.set_shader_parameter("mix_color", 0.7)
+	sprite.material = shader
+
+	sprite.global_position = global_position
+	sprite.z_index = z_index - 1
+
+	get_parent().add_child(sprite)
+	await get_tree().create_timer(dash_motion_trail_copy_lifespan).timeout
+	sprite.queue_free()
+
+
+func _on_dash_motion_trail_timer_timeout() -> void:
+	create_motion_trail_copy()
