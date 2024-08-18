@@ -7,6 +7,7 @@ signal on_death(this: EnemyCharacter)
 @export var default_health: float = 100.0
 @export var default_mass: float = 0.05
 @export var default_damage: float = 7.5
+@export var default_score : int = 100
 @export var default_knockback_strength: float = 40.0
 @export var default_attack_cooldown: float = 0.5
 @export var min_strength_scale: float = 0.5
@@ -25,6 +26,11 @@ func _ready() -> void:
 	strength_scale = randf_range(min_strength_scale, max_strength_scale)
 	health = default_health * strength_scale
 	scale = Vector2(strength_scale, strength_scale)
+	Events.on_enemy_spawned.emit(self)
+
+
+func get_score() -> int:
+	return default_score * (strength_scale + min_strength_scale)
 
 
 func get_mass() -> float:

@@ -1,12 +1,21 @@
-[gd_scene load_steps=5 format=3 uid="uid://be2uc3fhga108"]
+[gd_scene load_steps=6 format=3 uid="uid://be2uc3fhga108"]
 
 [ext_resource type="Script" path="res://scripts/game_hud.gd" id="1_5bthv"]
+[ext_resource type="Theme" uid="uid://bkbdw0jadsuqp" path="res://content/ui/default_theme.tres" id="2_w200a"]
 [ext_resource type="PackedScene" uid="uid://kvuk00qldxat" path="res://scenes/game_over_menu.tscn" id="2_ysbhh"]
 [ext_resource type="PackedScene" uid="uid://bed63462bdd1j" path="res://scenes/game_victory_menu.tscn" id="3_ihwa7"]
 [ext_resource type="PackedScene" uid="uid://brvq3ts54m1ep" path="res://scenes/pause_menu.tscn" id="4_jmil8"]
 
-[node name="GameHUD" type="Node"]
+[node name="GameHUD" type="CanvasLayer"]
 script = ExtResource("1_5bthv")
+
+[node name="ScoreLabel" type="Label" parent="."]
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 253.0
+offset_bottom = 89.0
+theme = ExtResource("2_w200a")
+text = "Score: 0"
 
 [node name="GameOverHUD" parent="." instance=ExtResource("2_ysbhh")]
 

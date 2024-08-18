@@ -1,2 +1,2 @@
 class_name GameHUD
-extends Node
+extends CanvasLayer
