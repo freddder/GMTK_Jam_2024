@@ -19,6 +19,7 @@ enum AttackType {
 @export var default_camera_zoom := Vector2(1.2, 1.2)
 @export var knockback_limit: float = 1000.0
 @export var default_health: float = 100.0
+@export var camera_offset_distance_from_arena_bounds: float = 250.0
 
 @export_category("Swing")
 @export var default_swing_radius: float = 50.0
@@ -281,12 +282,24 @@ func handle_charging_sound() -> void:
 		$ChargeSFX.pitch_scale = get_charge_power() / 2.0
 
 
+func handle_camera_view() -> void:
+	# Arena is at 0,0, so getting the player position length is effectively getting how far they
+	# went off arena center; same thing applies to direction
+	var distance_from_center := global_position.length()
+	var direction := global_position.normalized()
+
+	var max_distance_from_centre := Arena.radius - camera_offset_distance_from_arena_bounds
+	var target_point := minf(max_distance_from_centre, distance_from_center) * direction
+	$Camera2D.offset = target_point - $Camera2D.global_position
+
+
 func _process(delta: float) -> void:
 	if is_alive():
 		handle_mouse_direction()
 		handle_attack_zone()
 		handle_charging_sound()
 		handle_animation_side()
+		handle_camera_view()
 
 
 func set_camera_zoom(zoom: Vector2, duration: float = 0.2) -> void:
@@ -411,7 +424,7 @@ func handle_heavy_attack_input(event: InputEvent) -> void:
 func _input(event: InputEvent) -> void:
 	if !is_alive():
 		return
-		
+
 	if event.is_action("primary_attack"):
 		handle_primary_attack_input(event)
 	elif event.is_action("secondary_attack"):
