@@ -1,0 +1,15 @@
+[gd_scene load_steps=5 format=3 uid="uid://be2uc3fhga108"]
+
+[ext_resource type="Script" path="res://scripts/game_hud.gd" id="1_5bthv"]
+[ext_resource type="PackedScene" uid="uid://kvuk00qldxat" path="res://scenes/game_over_menu.tscn" id="2_ysbhh"]
+[ext_resource type="PackedScene" uid="uid://bed63462bdd1j" path="res://scenes/game_victory_menu.tscn" id="3_ihwa7"]
+[ext_resource type="PackedScene" uid="uid://brvq3ts54m1ep" path="res://scenes/pause_menu.tscn" id="4_jmil8"]
+
+[node name="GameHUD" type="Node"]
+script = ExtResource("1_5bthv")
+
+[node name="GameOverHUD" parent="." instance=ExtResource("2_ysbhh")]
+
+[node name="GameVictoryMenu" parent="." instance=ExtResource("3_ihwa7")]
+
+[node name="PauseMenu" parent="." instance=ExtResource("4_jmil8")]

@@ -129,21 +129,19 @@ func draw_attack_zone_swing_implementation() -> void:
 	var offset_angle := -PI / 2.0
 	var width := 2.0
 
-	draw_line(origin,
-	Vector2(
-		cos(active_attack_zone_data.start_angle + offset_angle) * active_attack_zone_data.radius,
-		sin(active_attack_zone_data.start_angle + offset_angle) * active_attack_zone_data.radius),
-	attack_area_color, width)
+	draw_line(origin, Vector2(
+			cos(active_attack_zone_data.start_angle + offset_angle) * active_attack_zone_data.radius,
+			sin(active_attack_zone_data.start_angle + offset_angle) * active_attack_zone_data.radius),
+		attack_area_color, width)
 
-	draw_line(origin,
-	Vector2(
-		cos(active_attack_zone_data.end_angle + offset_angle) * active_attack_zone_data.radius,
-		sin(active_attack_zone_data.end_angle + offset_angle) * active_attack_zone_data.radius),
-	attack_area_color, width)
+	draw_line(origin, Vector2(
+			cos(active_attack_zone_data.end_angle + offset_angle) * active_attack_zone_data.radius,
+			sin(active_attack_zone_data.end_angle + offset_angle) * active_attack_zone_data.radius),
+		attack_area_color, width)
 
 	draw_arc(origin, active_attack_zone_data.radius,
-	active_attack_zone_data.start_angle + offset_angle, active_attack_zone_data.end_angle + offset_angle,
-	attack_area_arc_segments, attack_area_color, width)
+		active_attack_zone_data.start_angle + offset_angle, active_attack_zone_data.end_angle + offset_angle,
+		attack_area_arc_segments, attack_area_color, width)
 
 
 func draw_attack_zone_thrust_implementation() -> void:
@@ -411,6 +409,9 @@ func handle_heavy_attack_input(event: InputEvent) -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if !is_alive():
+		return
+		
 	if event.is_action("primary_attack"):
 		handle_primary_attack_input(event)
 	elif event.is_action("secondary_attack"):

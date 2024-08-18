@@ -40,12 +40,18 @@ func get_self_knockback_strength() -> float:
 
 
 func handle_movement(delta: float) -> void:
+	if !should_move():
+		return
+
 	var speed := default_speed / strength_scale
 	var target_position := player.global_position
 	global_position = global_position.move_toward(target_position, speed * delta)
 
 
 func handle_knockback(delta: float) -> void:
+	if pending_knockback_strength == 0.0:
+		return
+
 	var target_position := player.global_position
 	var knockback_strength_to_apply := get_self_knockback_strength() * delta
 	global_position -= global_position.direction_to(target_position) * knockback_strength_to_apply
@@ -103,3 +109,7 @@ func damage_player() -> void:
 
 	if is_overlapping_with_player:
 		damage_player()
+
+
+func should_move() -> bool:
+	return !Events.is_game_terminated

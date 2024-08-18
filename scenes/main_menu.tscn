@@ -1,0 +1,47 @@
+[gd_scene load_steps=5 format=3 uid="uid://der6qvxvkgsn0"]
+
+[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_e5ys8"]
+[ext_resource type="Theme" uid="uid://bkbdw0jadsuqp" path="res://content/ui/default_theme.tres" id="1_mnbn2"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_ako2q"]
+action = &"ui_accept"
+
+[sub_resource type="Shortcut" id="Shortcut_20qb5"]
+events = [SubResource("InputEventAction_ako2q")]
+
+[node name="MainMenu" type="Node"]
+script = ExtResource("1_e5ys8")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="ButtonsContainer" type="VBoxContainer" parent="HUD"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -300.0
+offset_right = 150.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+
+[node name="PlayButton" type="Button" parent="HUD/ButtonsContainer"]
+layout_mode = 2
+theme = ExtResource("1_mnbn2")
+shortcut = SubResource("Shortcut_20qb5")
+text = "Play
+"
+
+[node name="ExitButton" type="Button" parent="HUD/ButtonsContainer"]
+layout_mode = 2
+theme = ExtResource("1_mnbn2")
+text = "Exit
+"
+
+[connection signal="pressed" from="HUD/ButtonsContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="HUD/ButtonsContainer/ExitButton" to="." method="_on_exit_button_pressed"]
