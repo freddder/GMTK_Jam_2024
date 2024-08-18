@@ -141,7 +141,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_qc41p")
 }],
 "loop": false,
-"name": &"damage",
+"name": &"hit_react",
 "speed": 15.0
 }, {
 "frames": [{
@@ -251,13 +251,13 @@ metadata/_edit_group_ = true
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_asjqi")
 sprite_frames = SubResource("SpriteFrames_l4jrd")
-animation = &"damage"
+animation = &"hit_react"
 frame = 7
 frame_progress = 1.0
 metadata/_edit_group_ = true
 
 [node name="SwordSocket" type="Node2D" parent="."]
-position = Vector2(35, 10)
+position = Vector2(19, 22)
 rotation = 0.523599
 script = ExtResource("4_irc1d")
 blade_tip = ExtResource("5_gqm2j")

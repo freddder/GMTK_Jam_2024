@@ -29,6 +29,17 @@ var run_animation_offsets: Array[Vector2] = [
 	Vector2(36.0, 13.0),
 ]
 
+var hit_react_animation_offsets: Array[Vector2] = [
+	Vector2(25.0, 26.0),
+	Vector2(25.0, 26.0),
+	Vector2(21.0, 22.0),
+	Vector2(19.5, 19.0),
+	Vector2(19.0, 19.0),
+	Vector2(20.0, 22.0),
+	Vector2(25.0, 31.0),
+	Vector2(39.0, 20.0),
+]
+
 
 func _process(delta: float) -> void:
 	queue_redraw()
@@ -69,6 +80,8 @@ func get_offset() -> Vector2:
 		return_value = idle_animation_offsets[player_sprite.frame]
 	elif player_sprite.animation == "run":
 		return_value = run_animation_offsets[player_sprite.frame]
+	elif player_sprite.animation == "hit_react":
+		return_value = hit_react_animation_offsets[player_sprite.frame]
 
 	return_value.x *= get_horizontal_flip()
 	return return_value

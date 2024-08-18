@@ -4,7 +4,6 @@ extends Area2D
 var radius_growth_duration: float = 0.5
 var min_radius: float = 0.0
 var max_radius: float = 2000.0
-var started_flashing := false
 
 @onready var spawn_time := Time.get_ticks_msec()
 

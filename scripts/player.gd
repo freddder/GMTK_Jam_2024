@@ -449,10 +449,11 @@ func handle_heavy_attack_input(event: InputEvent) -> void:
 		on_attack_released()
 
 
-func handle_dash_input(event: InputEvent) -> void:
-	if !should_move():
-		return
+func can_dash() -> bool:
+	return should_move()
 
+
+func handle_dash_input(event: InputEvent) -> void:
 	var elapsed_time := (Time.get_ticks_msec() - last_dash_end_time) / 1000.0
 	var is_on_cooldown := default_dash_cooldown > elapsed_time
 	if is_on_cooldown:
@@ -478,24 +479,28 @@ func on_dash_finished() -> void:
 	$DashMotionTrailTimer.stop()
 
 
-func _input(event: InputEvent) -> void:
-	if !is_alive():
-		return
+func can_attack() -> bool:
+	return (is_alive()
+		and not ($AnimatedSprite2D.animation == "hit_react" and $AnimatedSprite2D.is_playing()))
 
-	if event.is_action("primary_attack"):
-		handle_primary_attack_input(event)
-	elif event.is_action("secondary_attack"):
-		handle_secondary_attack_input(event)
-	elif event.is_action("heavy_attack"):
-		handle_heavy_attack_input(event)
-	elif event.is_action_pressed("dash"):
-		handle_dash_input(event)
+
+func _input(event: InputEvent) -> void:
+	if can_attack():
+		if event.is_action("primary_attack"):
+			handle_primary_attack_input(event)
+		elif event.is_action("secondary_attack"):
+			handle_secondary_attack_input(event)
+		elif event.is_action("heavy_attack"):
+			handle_heavy_attack_input(event)
+
+	if can_dash():
+		if event.is_action_pressed("dash"):
+			handle_dash_input(event)
 
 
 func should_move() -> bool:
-	return (is_alive() and !is_charging_attack() and
-	!($AnimatedSprite2D.animation == "damage" and $AnimatedSprite2D.is_playing()))
-
+	return (is_alive() and not is_charging_attack()
+		and not ($AnimatedSprite2D.animation == "hit_react" and $AnimatedSprite2D.is_playing()))
 
 
 func is_charging_attack() -> bool:
@@ -549,7 +554,8 @@ func take_hit(damage: float, knockback_force: Vector2) -> void:
 
 	set_health(health - damage)
 	if is_alive():
-		$AnimatedSprite2D.play("damage")
+		if $AnimatedSprite2D.animation != "hit_react":
+			$AnimatedSprite2D.play("hit_react")
 		pending_knockback_forces.push_back(knockback_force)
 
 
