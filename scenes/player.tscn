@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://c7kaxi3ghjur4"]
+[gd_scene load_steps=43 format=3 uid="uid://c7kaxi3ghjur4"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_r52mo"]
 [ext_resource type="Shader" path="res://content/shaders/motion_trail.gdshader" id="2_kw3n5"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://8hn6efk4l8c8" path="res://content/sprites/sword/sword_blade_tip.png" id="5_gqm2j"]
 [ext_resource type="Texture2D" uid="uid://crrmp66skfilu" path="res://content/sprites/sword/sword_blade_core.png" id="6_m574l"]
 [ext_resource type="Texture2D" uid="uid://dq3c7aq5nul7q" path="res://content/sprites/sword/sword_hilt.png" id="7_37721"]
+[ext_resource type="AudioStream" uid="uid://b586k2ntf54yy" path="res://sfx/player_hurt.wav" id="13_af3yn"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_asjqi"]
 shader = ExtResource("2_kw3n5")
@@ -286,6 +287,9 @@ volume_db = -20.0
 
 [node name="ChargeSFX" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_6aufr")
+
+[node name="HurtSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_af3yn")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

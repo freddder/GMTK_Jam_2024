@@ -551,7 +551,8 @@ func is_attack_on_cooldown(attack_type: AttackType) -> bool:
 func take_hit(damage: float, knockback_force: Vector2) -> void:
 	if is_invincible():
 		return
-
+	
+	$HurtSFX.play()
 	set_health(health - damage)
 	if is_alive():
 		if $AnimatedSprite2D.animation != "hit_react":
