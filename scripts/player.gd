@@ -77,7 +77,6 @@ var last_dash_end_time: float = -2.0
 var is_dashing := false
 var dash_direction := Vector2.ZERO
 
-
 func _ready() -> void:
 	var zoom: float = default_camera_zoom.x * (get_viewport_rect().size.x / 1280)
 	default_camera_zoom = Vector2(zoom, zoom)
@@ -239,6 +238,9 @@ func handle_mouse_direction() -> void:
 
 
 func get_facing_direction() -> int:
+	if is_charging_attack():
+		return sign(get_local_mouse_position().x)
+	
 	var move_direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 
 	# Use current side direction if it's not zero, fallback on last non-zero direction otherwise;
