@@ -252,8 +252,6 @@ metadata/_edit_group_ = true
 material = SubResource("ShaderMaterial_asjqi")
 sprite_frames = SubResource("SpriteFrames_l4jrd")
 animation = &"hit_react"
-frame = 7
-frame_progress = 1.0
 metadata/_edit_group_ = true
 
 [node name="SwordSocket" type="Node2D" parent="."]

@@ -13,6 +13,8 @@ signal on_death(this: EnemyCharacter)
 @export var min_strength_scale: float = 0.5
 @export var max_strength_scale: float = 2.0
 
+@export var drop_chance: int = 10 # out of 100
+
 @onready var player: PlayerCharacter = get_tree().get_first_node_in_group("player")
 
 var pending_knockback_strength: float = 0.0
@@ -72,7 +74,7 @@ func _physics_process(delta: float) -> void:
 func take_hit(damage: float, knockback_strength: float) -> void:
 	health -= damage
 	if health <= 0:
-		die()
+		die(true)
 	else:
 		pending_knockback_strength += knockback_strength / strength_scale
 		$AnimationPlayer.play("hit_react")
@@ -85,8 +87,10 @@ func drop_pickup() -> void:
 	get_tree().get_root().add_child(pickup)
 
 
-func die() -> void:
-	drop_pickup()
+func die(can_drop_pickup: bool) -> void:
+	if can_drop_pickup and randi() % 100 <= drop_chance:
+		drop_pickup()
+	
 	on_death.emit(self)
 	queue_free()
 
