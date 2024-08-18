@@ -238,6 +238,9 @@ func handle_mouse_direction() -> void:
 
 
 func get_facing_direction() -> int:
+	if is_charging_attack():
+		return -sign(global_position.x - get_global_mouse_position().x)
+
 	var move_direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 
 	# Use current side direction if it's not zero, fallback on last non-zero direction otherwise;
