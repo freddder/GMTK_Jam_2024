@@ -69,6 +69,7 @@ func take_hit(damage: float, knockback_strength: float) -> void:
 		die()
 	else:
 		pending_knockback_strength += knockback_strength / get_knockback_resist()
+		$AnimationPlayer.play("hit_react")
 
 
 func die() -> void:
