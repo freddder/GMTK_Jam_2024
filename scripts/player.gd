@@ -511,3 +511,7 @@ func die() -> void:
 
 func is_alive() -> bool:
 	return health > 0.0
+
+
+func get_charging_attack_radius() -> float:
+	return active_attack_zone_data.radius if active_attack_zone_data else 0.0

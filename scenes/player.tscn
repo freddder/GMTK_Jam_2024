@@ -173,13 +173,17 @@ _data = {
 collision_layer = 2
 collision_mask = 7
 script = ExtResource("1_r52mo")
+metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_l4jrd")
 animation = &"run"
+frame_progress = 0.720797
+metadata/_edit_group_ = true
 
 [node name="SwordSocket" type="Node2D" parent="."]
-position = Vector2(50, 0)
+position = Vector2(35, 10)
+rotation = 0.523599
 script = ExtResource("4_irc1d")
 blade_tip = ExtResource("5_gqm2j")
 blade_core = ExtResource("6_m574l")
