@@ -178,7 +178,6 @@ func _draw() -> void:
 		AttackType.Thrust: draw_attack_zone_thrust_implementation()
 		AttackType.GroundPound: draw_attack_zone_ground_pound_implementation()
 
-
 func draw_attack_zone_swing(attack_zone_data: AttackZoneData) -> void:
 	attack_area_color = Color.RED
 	active_attack_zone_data = attack_zone_data
