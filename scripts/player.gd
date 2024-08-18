@@ -22,30 +22,30 @@ enum AttackType {
 @export var camera_offset_distance_from_arena_bounds: float = 250.0
 
 @export_category("Swing")
-@export var default_swing_radius: float = 50.0
-@export var default_swing_angle: float = 45.0
-@export var swing_angle_limit: float = 230.0
-@export var default_swing_damage: float = 15.0
-@export var default_swing_knockback_strength: float = 25.0
-@export var default_swing_cooldown: float = 0.3
+@export var default_swing_radius: float = 90.0
+@export var default_swing_angle: float = 60.0
+@export var swing_angle_limit: float = 150.0
+@export var default_swing_damage: float = 35.0
+@export var default_swing_knockback_strength: float = 20.0
+@export var default_swing_cooldown: float = 1
 
 @export_category("Thrust")
 @export var default_thrust_radius: float = 100.0
-@export var default_thrust_thickness: float = 35.0
-@export var default_thrust_damage: float = 20.0
-@export var default_thrust_knockback_strength: float = 37.5
-@export var default_thrust_cooldown: float = 0.4
+@export var default_thrust_thickness: float = 30.0
+@export var default_thrust_damage: float = 40.0
+@export var default_thrust_knockback_strength: float = 40
+@export var default_thrust_cooldown: float = 1.5
 
 @export_category("Ground Pound")
-@export var default_ground_pound_radius: float = 100.0
+@export var default_ground_pound_radius: float = 50.0
 @export var default_ground_pound_damage: float = 30.0
-@export var default_ground_pound_knockback_strength: float = 50.0
-@export var default_ground_pound_cooldown: float = 0.7
+@export var default_ground_pound_knockback_strength: float = 15.0
+@export var default_ground_pound_cooldown: float = 2.0
 
 @export_category("Charge")
 @export var charge_speed: float = 1.0
 @export var charge_exp: float = 0.6
-@export var charge_delay: float = 1.0
+@export var charge_delay: float = 0.5
 
 var mouse_direction_angle_rad: float = 0.0
 var attack_charge_start_time: float = 0.0
@@ -460,7 +460,7 @@ func scale_damage(damage: float) -> float:
 
 
 func scale_knockback(knockback_strength: float) -> float:
-	return minf(knockback_limit, knockback_strength * pow(get_charge_power(), 1.1))
+	return minf(knockback_limit, knockback_strength * pow(get_charge_power(), 1.8))
 
 
 func get_elapsed_time_since_attack_end(attack_type: AttackType) -> float:

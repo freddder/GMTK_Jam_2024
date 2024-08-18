@@ -28,7 +28,7 @@ func _ready() -> void:
 
 
 func get_mass() -> float:
-	return default_mass * pow(strength_scale, 2.5)
+	return default_mass * strength_scale
 
 
 func get_knockback_resist() -> float:
@@ -68,7 +68,7 @@ func take_hit(damage: float, knockback_strength: float) -> void:
 	if health <= 0:
 		die()
 	else:
-		pending_knockback_strength += knockback_strength / get_knockback_resist()
+		pending_knockback_strength += knockback_strength / strength_scale
 		$AnimationPlayer.play("hit_react")
 
 
