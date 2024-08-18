@@ -91,9 +91,6 @@ func handle_regular_movement(delta: float) -> void:
 	var walk_speed := default_walk_speed
 	var velocity := move_direction * walk_speed * delta
 	position += velocity
-	
-	if $AnimatedSprite2D.animation == "damage" && $AnimatedSprite2D.is_playing():
-		return
 
 	if !velocity.is_zero_approx():
 		last_non_zero_movement_direction = move_direction
@@ -496,7 +493,9 @@ func _input(event: InputEvent) -> void:
 
 
 func should_move() -> bool:
-	return is_alive() && !is_charging_attack()
+	return (is_alive() and !is_charging_attack() and
+	!($AnimatedSprite2D.animation == "damage" and $AnimatedSprite2D.is_playing()))
+
 
 
 func is_charging_attack() -> bool:
@@ -548,9 +547,14 @@ func take_hit(damage: float, knockback_force: Vector2) -> void:
 	if is_invincible():
 		return
 
-	$AnimatedSprite2D.play("damage")
-	health -= damage
-	pending_knockback_forces.push_back(knockback_force)
+	set_health(health - damage)
+	if is_alive():
+		$AnimatedSprite2D.play("damage")
+		pending_knockback_forces.push_back(knockback_force)
+
+
+func set_health(_health: float) -> void:
+	health = clampf(_health, 0.0, default_health)
 	print("Player health: ", health)
 	if health <= 0:
 		die()
@@ -608,3 +612,19 @@ func create_motion_trail_copy() -> void:
 
 func _on_dash_motion_trail_timer_timeout() -> void:
 	create_motion_trail_copy()
+
+
+func activate_pickup(pickup: Pickup) -> void:
+	match pickup.pickup_type:
+		Pickup.Type.Heal: set_health(health + 20.0)
+		Pickup.Type.Wipe: wipe_enemies()
+
+	pickup.queue_free()
+
+
+func wipe_enemies() -> void:
+	var wipe_area_scene: PackedScene = load("res://scenes/wipe_area.tscn")
+	var wipe_area := wipe_area_scene.instantiate()
+#	wipe_area.global_position = global_position
+#	get_tree().get_root().add_child(wipe_area)
+	add_child(wipe_area)

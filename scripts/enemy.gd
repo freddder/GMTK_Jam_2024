@@ -78,7 +78,15 @@ func take_hit(damage: float, knockback_strength: float) -> void:
 		$AnimationPlayer.play("hit_react")
 
 
+func drop_pickup() -> void:
+	var pickup_scene: PackedScene = load("res://scenes/pickup.tscn")
+	var pickup: Pickup = pickup_scene.instantiate()
+	pickup.global_position = global_position
+	get_tree().get_root().add_child(pickup)
+
+
 func die() -> void:
+	drop_pickup()
 	on_death.emit(self)
 	queue_free()
 

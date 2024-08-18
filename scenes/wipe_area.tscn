@@ -1,0 +1,35 @@
+[gd_scene load_steps=9 format=3 uid="uid://cvmdmlup7cu40"]
+
+[ext_resource type="Texture2D" uid="uid://ovew56s12jiu" path="res://content/shaders/circle.png" id="1_ocx3o"]
+[ext_resource type="Shader" path="res://content/shaders/wipe.gdshader" id="1_s6asn"]
+[ext_resource type="Script" path="res://scripts/wipe_area.gd" id="2_4p2t5"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_f33v3"]
+shader = ExtResource("1_s6asn")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_a0wgg"]
+noise_type = 3
+frequency = 0.0141
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_pnfsk"]
+noise = SubResource("FastNoiseLite_a0wgg")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ryoio"]
+shader = ExtResource("1_s6asn")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_pnfsk")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1hb6t"]
+
+[node name="WipeArea" type="Area2D"]
+material = SubResource("ShaderMaterial_f33v3")
+collision_mask = 4
+script = ExtResource("2_4p2t5")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_ryoio")
+texture = ExtResource("1_ocx3o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_1hb6t")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
