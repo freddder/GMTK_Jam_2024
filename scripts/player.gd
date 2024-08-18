@@ -30,7 +30,7 @@ enum AttackType {
 @export var default_swing_cooldown: float = 1
 
 @export_category("Thrust")
-@export var default_thrust_radius: float = 100.0
+@export var default_thrust_radius: float = 130.0
 @export var default_thrust_thickness: float = 30.0
 @export var default_thrust_damage: float = 40.0
 @export var default_thrust_knockback_strength: float = 40
@@ -91,6 +91,9 @@ func handle_regular_movement(delta: float) -> void:
 	var walk_speed := default_walk_speed
 	var velocity := move_direction * walk_speed * delta
 	position += velocity
+	
+	if $AnimatedSprite2D.animation == "damage" && $AnimatedSprite2D.is_playing():
+		return
 
 	if !velocity.is_zero_approx():
 		last_non_zero_movement_direction = move_direction
@@ -515,7 +518,7 @@ func get_charging_time_seconds() -> float:
 
 
 func scale_damage(damage: float) -> float:
-	return damage * pow(get_charge_power(), 1.05)
+	return damage * pow(get_charge_power(), 1.1)
 
 
 func scale_knockback(knockback_strength: float) -> float:
@@ -545,6 +548,7 @@ func take_hit(damage: float, knockback_force: Vector2) -> void:
 	if is_invincible():
 		return
 
+	$AnimatedSprite2D.play("damage")
 	health -= damage
 	pending_knockback_forces.push_back(knockback_force)
 	print("Player health: ", health)
