@@ -60,6 +60,7 @@ var charging_attack_type := AttackType.Invalid
 
 var active_attack_zone_data: AttackZoneData
 var attack_area_color := Color.RED
+var attack_area_width: float = 2.0
 var attack_area_arc_segments: float = 0.0
 
 var health := default_health
@@ -159,21 +160,20 @@ func _physics_process(delta: float) -> void:
 func draw_attack_zone_swing_implementation() -> void:
 	var origin := Vector2.ZERO
 	var offset_angle := -PI / 2.0
-	var width := 2.0
 
 	draw_line(origin, Vector2(
 			cos(active_attack_zone_data.start_angle + offset_angle) * active_attack_zone_data.radius,
 			sin(active_attack_zone_data.start_angle + offset_angle) * active_attack_zone_data.radius),
-		attack_area_color, width)
+		attack_area_color, attack_area_width)
 
 	draw_line(origin, Vector2(
 			cos(active_attack_zone_data.end_angle + offset_angle) * active_attack_zone_data.radius,
 			sin(active_attack_zone_data.end_angle + offset_angle) * active_attack_zone_data.radius),
-		attack_area_color, width)
+		attack_area_color, attack_area_width)
 
 	draw_arc(origin, active_attack_zone_data.radius,
 		active_attack_zone_data.start_angle + offset_angle, active_attack_zone_data.end_angle + offset_angle,
-		attack_area_arc_segments, attack_area_color, width)
+		attack_area_arc_segments, attack_area_color, attack_area_width)
 
 
 func draw_attack_zone_thrust_implementation() -> void:
@@ -184,21 +184,20 @@ func draw_attack_zone_thrust_implementation() -> void:
 		[ -half_thickness, radius ], [ -half_thickness, 0.0 ]
 	]
 
-	var packed_array: PackedVector2Array
+	var local_rotated_coords_rect: Array
 	for coord in local_coords_rect:
-		packed_array.append(Vector2(coord[0], coord[1]).rotated(active_attack_zone_data.angle + PI))
+		local_rotated_coords_rect.append(Vector2(coord[0], coord[1]).rotated(active_attack_zone_data.angle + PI))
 
-	var colors: PackedColorArray
-	colors.append(Color.RED)
-
-	draw_polygon(packed_array, colors)
+	draw_line(local_rotated_coords_rect[0], local_rotated_coords_rect[1], attack_area_color, attack_area_width)
+	draw_line(local_rotated_coords_rect[1], local_rotated_coords_rect[2], attack_area_color, attack_area_width)
+	draw_line(local_rotated_coords_rect[2], local_rotated_coords_rect[3], attack_area_color, attack_area_width)
+	draw_line(local_rotated_coords_rect[3], local_rotated_coords_rect[0], attack_area_color, attack_area_width)
 
 
 func draw_attack_zone_ground_pound_implementation() -> void:
 	var origin := Vector2.ZERO
-	var width := 2.0
 
-	draw_circle(origin, active_attack_zone_data.radius, attack_area_color, width)
+	draw_circle(origin, active_attack_zone_data.radius, attack_area_color, false, attack_area_width)
 
 
 func _draw() -> void:
