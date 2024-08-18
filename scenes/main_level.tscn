@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://7eveuu7rwnjy"]
+[gd_scene load_steps=6 format=3 uid="uid://7eveuu7rwnjy"]
 
 [ext_resource type="Script" path="res://scripts/main_level.gd" id="1_opo1r"]
 [ext_resource type="PackedScene" uid="uid://c7kaxi3ghjur4" path="res://scenes/player.tscn" id="1_wu7kq"]
 [ext_resource type="Texture2D" uid="uid://3qdfit0pa1iq" path="res://content/sprites/arena.png" id="2_2uvne"]
 [ext_resource type="PackedScene" uid="uid://be2uc3fhga108" path="res://scenes/game_hud.tscn" id="4_nefjf"]
+[ext_resource type="AudioStream" uid="uid://8lmxkeje6s6x" path="res://music/battle-theme.wav" id="5_tduye"]
 
 [node name="MainLevel" type="Node"]
 script = ExtResource("1_opo1r")
@@ -12,5 +13,10 @@ script = ExtResource("1_opo1r")
 texture = ExtResource("2_2uvne")
 
 [node name="Player" parent="." instance=ExtResource("1_wu7kq")]
+collision_mask = 7
 
 [node name="GameHUD" parent="." instance=ExtResource("4_nefjf")]
+
+[node name="BattleTheme" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_tduye")
+autoplay = true
