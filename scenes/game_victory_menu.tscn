@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bed63462bdd1j"]
+[gd_scene load_steps=4 format=3 uid="uid://dgigi0x01ccdb"]
 
 [ext_resource type="Script" path="res://scripts/game_victory_menu.gd" id="1_6agr3"]
 [ext_resource type="Theme" uid="uid://bkbdw0jadsuqp" path="res://content/ui/default_theme.tres" id="1_7r5f8"]
+[ext_resource type="FontFile" uid="uid://bi0gex0agxwfh" path="res://content/fonts/Adumu.ttf" id="3_nwkls"]
 
 [node name="GameVictoryMenu" type="CanvasLayer"]
 script = ExtResource("1_6agr3")
@@ -19,6 +20,7 @@ offset_bottom = -63.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_7r5f8")
+theme_override_fonts/font = ExtResource("3_nwkls")
 theme_override_font_sizes/font_size = 80
 text = "Game Victory
 "
@@ -39,12 +41,14 @@ grow_vertical = 2
 [node name="RestartButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("1_7r5f8")
+theme_override_fonts/font = ExtResource("3_nwkls")
 text = "Restart
 "
 
 [node name="MainMenuButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("1_7r5f8")
+theme_override_fonts/font = ExtResource("3_nwkls")
 text = "Main Menu
 "
 

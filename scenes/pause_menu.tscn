@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://brvq3ts54m1ep"]
+[gd_scene load_steps=6 format=3 uid="uid://der4548t8eleq"]
 
 [ext_resource type="Script" path="res://scripts/pause_menu.gd" id="1_q243c"]
 [ext_resource type="Theme" uid="uid://bkbdw0jadsuqp" path="res://content/ui/default_theme.tres" id="2_d7j75"]
 [ext_resource type="Shortcut" uid="uid://ldicu5hglvp2" path="res://content/ui/default_button_shortcut.tres" id="3_nxt2r"]
-[ext_resource type="PackedScene" uid="uid://b581mq5i0olgm" path="res://scenes/settings_menu.tscn" id="4_bfene"]
+[ext_resource type="FontFile" uid="uid://bi0gex0agxwfh" path="res://content/fonts/Adumu.ttf" id="3_wtqal"]
+[ext_resource type="PackedScene" uid="uid://dj3c2202x78v7" path="res://scenes/settings_menu.tscn" id="4_bfene"]
 
 [node name="PauseMenu" type="CanvasLayer"]
 process_mode = 3
@@ -30,9 +31,12 @@ offset_bottom = -63.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_d7j75")
+theme_override_fonts/font = ExtResource("3_wtqal")
 theme_override_font_sizes/font_size = 80
 text = "Game Paused
 "
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchors_preset = 8
@@ -40,10 +44,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -114.0
-offset_top = 40.0
-offset_right = 114.0
-offset_bottom = 188.0
+offset_left = -158.0
+offset_top = -2.0
+offset_right = 162.0
+offset_bottom = 189.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -52,17 +56,20 @@ size_flags_vertical = 4
 [node name="ResumeButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_d7j75")
+theme_override_fonts/font = ExtResource("3_wtqal")
 shortcut = ExtResource("3_nxt2r")
 text = "Resume"
 
 [node name="SettingsButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_d7j75")
+theme_override_fonts/font = ExtResource("3_wtqal")
 text = "Settings"
 
 [node name="QuitButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_d7j75")
+theme_override_fonts/font = ExtResource("3_wtqal")
 text = "Quit"
 
 [node name="SettingsMenu" parent="." instance=ExtResource("4_bfene")]

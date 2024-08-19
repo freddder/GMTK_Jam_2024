@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://d04rb4qsoiyfe"]
+[gd_scene load_steps=8 format=3 uid="uid://d04rb4qsoiyfe"]
 
 [ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_e5ys8"]
 [ext_resource type="Theme" uid="uid://bkbdw0jadsuqp" path="res://content/ui/default_theme.tres" id="1_mnbn2"]
-[ext_resource type="PackedScene" uid="uid://b581mq5i0olgm" path="res://scenes/settings_menu.tscn" id="3_lrfn7"]
+[ext_resource type="PackedScene" uid="uid://dj3c2202x78v7" path="res://scenes/settings_menu.tscn" id="3_lrfn7"]
 [ext_resource type="AudioStream" uid="uid://yvp61qar4qc" path="res://music/intro-theme.wav" id="3_o4xmn"]
+[ext_resource type="FontFile" uid="uid://bi0gex0agxwfh" path="res://content/fonts/Adumu.ttf" id="4_gpti7"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_ako2q"]
 action = &"ui_accept"
@@ -35,6 +36,7 @@ alignment = 1
 [node name="PlayButton" type="Button" parent="HUD/ButtonsContainer"]
 layout_mode = 2
 theme = ExtResource("1_mnbn2")
+theme_override_fonts/font = ExtResource("4_gpti7")
 shortcut = SubResource("Shortcut_20qb5")
 text = "Play
 "
@@ -42,12 +44,14 @@ text = "Play
 [node name="SettingsButton" type="Button" parent="HUD/ButtonsContainer"]
 layout_mode = 2
 theme = ExtResource("1_mnbn2")
+theme_override_fonts/font = ExtResource("4_gpti7")
 text = "Settings
 "
 
 [node name="ExitButton" type="Button" parent="HUD/ButtonsContainer"]
 layout_mode = 2
 theme = ExtResource("1_mnbn2")
+theme_override_fonts/font = ExtResource("4_gpti7")
 text = "Exit
 "
 

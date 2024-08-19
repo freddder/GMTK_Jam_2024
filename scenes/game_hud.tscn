@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://be2uc3fhga108"]
+[gd_scene load_steps=11 format=3 uid="uid://be2uc3fhga108"]
 
 [ext_resource type="Script" path="res://scripts/game_hud.gd" id="1_5bthv"]
 [ext_resource type="Theme" uid="uid://bkbdw0jadsuqp" path="res://content/ui/default_theme.tres" id="2_w200a"]
-[ext_resource type="PackedScene" uid="uid://kvuk00qldxat" path="res://scenes/game_over_menu.tscn" id="2_ysbhh"]
-[ext_resource type="PackedScene" uid="uid://bed63462bdd1j" path="res://scenes/game_victory_menu.tscn" id="3_ihwa7"]
-[ext_resource type="PackedScene" uid="uid://brvq3ts54m1ep" path="res://scenes/pause_menu.tscn" id="4_jmil8"]
+[ext_resource type="PackedScene" path="res://scenes/game_over_menu.tscn" id="2_ysbhh"]
+[ext_resource type="PackedScene" uid="uid://dgigi0x01ccdb" path="res://scenes/game_victory_menu.tscn" id="3_ihwa7"]
+[ext_resource type="FontFile" uid="uid://bi0gex0agxwfh" path="res://content/fonts/Adumu.ttf" id="4_hwwje"]
+[ext_resource type="PackedScene" uid="uid://der4548t8eleq" path="res://scenes/pause_menu.tscn" id="4_jmil8"]
 [ext_resource type="Shader" path="res://content/shaders/speed.gdshader" id="6_c6p5p"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_xw48y"]
@@ -41,6 +42,7 @@ offset_top = 25.0
 offset_right = 253.0
 offset_bottom = 89.0
 theme = ExtResource("2_w200a")
+theme_override_fonts/font = ExtResource("4_hwwje")
 text = "Score: 0"
 
 [node name="GameOverHUD" parent="." instance=ExtResource("2_ysbhh")]

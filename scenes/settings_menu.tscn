@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://b581mq5i0olgm"]
+[gd_scene load_steps=4 format=3 uid="uid://dj3c2202x78v7"]
 
 [ext_resource type="Script" path="res://scripts/settings_menu.gd" id="1_2l747"]
 [ext_resource type="Theme" uid="uid://bkbdw0jadsuqp" path="res://content/ui/default_theme.tres" id="2_ncm81"]
+[ext_resource type="FontFile" uid="uid://bi0gex0agxwfh" path="res://content/fonts/Adumu.ttf" id="3_0fety"]
 
 [node name="SettingsMenu" type="CanvasLayer"]
 script = ExtResource("1_2l747")
@@ -31,6 +32,7 @@ grow_vertical = 2
 layout_mode = 2
 size_flags_horizontal = 4
 theme = ExtResource("2_ncm81")
+theme_override_fonts/font = ExtResource("3_0fety")
 text = "Volume"
 vertical_alignment = 1
 
@@ -46,6 +48,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("2_ncm81")
+theme_override_fonts/font = ExtResource("3_0fety")
 text = "Back"
 
 [connection signal="value_changed" from="VBoxContainer/HSlider" to="." method="_on_h_slider_value_changed"]
