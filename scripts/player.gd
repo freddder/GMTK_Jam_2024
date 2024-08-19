@@ -690,7 +690,7 @@ func get_charge_power() -> float:
 	# This should make the beginning of the charge be a little bit faster
 	var warm_up: float = clamp(log(get_charging_time_seconds() + 1) * 0.1, 0.0, 0.4)
 	additional_power += warm_up
-	print(warm_up)
+#	print(warm_up)
 
 	#	print(_charge_power, " ", additional_power)
 	return _charge_power + additional_power
