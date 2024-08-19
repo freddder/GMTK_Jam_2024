@@ -27,6 +27,14 @@ shader_parameter/noise = SubResource("NoiseTexture2D_htk0c")
 [node name="GameHUD" type="CanvasLayer"]
 script = ExtResource("1_5bthv")
 
+[node name="ChargeEffect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_in1ai")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="ScoreLabel" type="Label" parent="."]
 offset_left = 25.0
 offset_top = 25.0
@@ -40,11 +48,3 @@ text = "Score: 0"
 [node name="GameVictoryMenu" parent="." instance=ExtResource("3_ihwa7")]
 
 [node name="PauseMenu" parent="." instance=ExtResource("4_jmil8")]
-
-[node name="ChargeEffect" type="ColorRect" parent="."]
-material = SubResource("ShaderMaterial_in1ai")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2

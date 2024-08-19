@@ -369,14 +369,14 @@ func handle_sprite_opacity() -> void:
 
 
 func _process(delta: float) -> void:
+	handle_interpolated_charging(delta)
+	handle_camera_view(delta)
+	handle_charging_visual_effects()
 	if is_alive():
 		handle_mouse_direction()
 		handle_attack_zone()
-		handle_interpolated_charging(delta)
-		handle_charging_visual_effects()
 		handle_charging_sound()
 		handle_animation_side()
-		handle_camera_view(delta)
 	handle_sprite_opacity()
 
 
