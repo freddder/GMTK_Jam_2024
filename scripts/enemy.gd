@@ -28,6 +28,7 @@ var is_dying := false
 var enemy_type_strings: Array = [
 	"worm"
 ]
+
 var type := ""
 
 func _ready() -> void:
@@ -35,11 +36,11 @@ func _ready() -> void:
 	strength_scale = randf_range(min_strength_scale, max_strength_scale)
 	health = default_health * strength_scale
 	scale = Vector2(strength_scale, strength_scale)
-	
+
 	# Randomize enemy sprite
 	type = enemy_type_strings[randi() % enemy_type_strings.size()]
 	$AnimatedSprite2D.play("%s_walk" % type, 1 / strength_scale)
-	
+
 	Events.on_enemy_spawned.emit(self)
 
 
@@ -66,7 +67,7 @@ func handle_movement(delta: float) -> void:
 	var speed := default_speed / strength_scale
 	var target_position := player.global_position
 	global_position = global_position.move_toward(target_position, speed * delta)
-	
+
 	$AnimatedSprite2D.flip_h = target_position.x - position.x > 0
 
 
@@ -86,18 +87,16 @@ func _physics_process(delta: float) -> void:
 
 
 func take_hit(damage: float, knockback_strength: float) -> void:
-	if is_dying: return
-	
+	if is_dying:
+		return
+
 	health -= damage
 	if health <= 0:
-		# Make sure this animation matches AnimationPlayer death animation
-		$AnimatedSprite2D.play("%s_death" % type)
-		$AnimationPlayer.play("death")
-		is_dying = true
+		start_dying()
 	else:
 		pending_knockback_strength += knockback_strength / strength_scale
-		$AnimatedSprite2D.play("%s_take_hit" % type)
 		$AnimationPlayer.play("hit_react")
+		$AnimatedSprite2D.play("%s_take_hit" % type)
 
 
 func drop_pickup() -> void:
@@ -105,6 +104,20 @@ func drop_pickup() -> void:
 	var pickup: Pickup = pickup_scene.instantiate()
 	pickup.global_position = global_position
 	get_tree().get_root().add_child(pickup)
+
+
+func start_dying(can_drop_pickup: bool = true) -> void:
+	is_dying = true
+	$AnimationPlayer.play("hit_react")
+
+	# Make sure this animation matches AnimationPlayer death animation
+	$AnimatedSprite2D.play("%s_death" % type)
+	await $AnimatedSprite2D.animation_finished
+
+	$AnimationPlayer.play("death")
+	await $AnimationPlayer.animation_finished
+
+	die(can_drop_pickup)
 
 
 func die(can_drop_pickup: bool) -> void:
@@ -157,6 +170,3 @@ func should_move() -> bool:
 func _on_animation_finished():
 	if $AnimatedSprite2D.animation != "%s_death" % type:
 		$AnimatedSprite2D.play("%s_walk" % type, 1 / strength_scale)
-	else:
-		die(true)
-	
