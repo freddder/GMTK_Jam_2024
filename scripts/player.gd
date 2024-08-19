@@ -356,7 +356,7 @@ func handle_camera_view(delta: float) -> void:
 	var max_distance_from_centre := Arena.radius - camera_offset_distance_from_arena_bounds
 	var target_point := minf(max_distance_from_centre, distance_from_center) * direction
 	$Camera2D.offset = target_point - $Camera2D.global_position
-	
+
 	if get_charging_time_seconds() < 3.0: return
 
 	shake_strength = lerpf(0.0, interpolated_power, shake_scale_rate * delta)
@@ -596,6 +596,9 @@ func _input(event: InputEvent) -> void:
 	if can_dash():
 		if event.is_action_pressed("dash"):
 			handle_dash_input(event)
+
+	if event.is_action_pressed("wipe"):
+		wipe_enemies()
 
 
 func is_playing_attack_finish_animation() -> bool:

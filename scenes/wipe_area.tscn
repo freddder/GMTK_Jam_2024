@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://cvmdmlup7cu40"]
+[gd_scene load_steps=10 format=3 uid="uid://cvmdmlup7cu40"]
 
 [ext_resource type="Texture2D" uid="uid://ovew56s12jiu" path="res://content/shaders/circle.png" id="1_ocx3o"]
 [ext_resource type="Shader" path="res://content/shaders/wipe.gdshader" id="1_s6asn"]
 [ext_resource type="Script" path="res://scripts/wipe_area.gd" id="2_4p2t5"]
+[ext_resource type="AudioStream" uid="uid://bac5nwy3rkp7f" path="res://sfx/stage_clear.wav" id="4_ggyie"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_f33v3"]
 shader = ExtResource("1_s6asn")
@@ -31,5 +32,9 @@ texture = ExtResource("1_ocx3o")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_1hb6t")
+
+[node name="WipeSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_ggyie")
+volume_db = -11.0
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
