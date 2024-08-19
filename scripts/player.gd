@@ -757,7 +757,7 @@ func _on_dash_motion_trail_timer_timeout() -> void:
 
 
 func activate_pickup(pickup: Pickup) -> void:
-	match pickup.pickup_type:
+	match pickup.type:
 		Pickup.Type.Heal: use_heal_pickup()
 		Pickup.Type.Wipe: wipe_enemies()
 
