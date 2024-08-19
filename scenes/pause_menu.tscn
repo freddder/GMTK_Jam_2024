@@ -1,12 +1,21 @@
-[gd_scene load_steps=4 format=3 uid="uid://brvq3ts54m1ep"]
+[gd_scene load_steps=5 format=3 uid="uid://brvq3ts54m1ep"]
 
 [ext_resource type="Script" path="res://scripts/pause_menu.gd" id="1_q243c"]
 [ext_resource type="Theme" uid="uid://bkbdw0jadsuqp" path="res://content/ui/default_theme.tres" id="2_d7j75"]
 [ext_resource type="Shortcut" uid="uid://ldicu5hglvp2" path="res://content/ui/default_button_shortcut.tres" id="3_nxt2r"]
+[ext_resource type="PackedScene" uid="uid://b581mq5i0olgm" path="res://scenes/settings_menu.tscn" id="4_bfene"]
 
 [node name="PauseMenu" type="CanvasLayer"]
 process_mode = 3
 script = ExtResource("1_q243c")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.145098, 0.145098, 0.145098, 0.407843)
 
 [node name="Label" type="Label" parent="."]
 anchors_preset = 8
@@ -46,10 +55,18 @@ theme = ExtResource("2_d7j75")
 shortcut = ExtResource("3_nxt2r")
 text = "Resume"
 
+[node name="SettingsButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_d7j75")
+text = "Settings"
+
 [node name="QuitButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_d7j75")
 text = "Quit"
 
+[node name="SettingsMenu" parent="." instance=ExtResource("4_bfene")]
+
 [connection signal="pressed" from="VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]

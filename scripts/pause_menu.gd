@@ -4,6 +4,7 @@ extends CanvasLayer
 
 func _ready() -> void:
 	hide()
+	$SettingsMenu.hide()
 
 
 func _input(event: InputEvent) -> void:
@@ -20,6 +21,14 @@ func _on_resume_button_pressed() -> void:
 	toggle_pause_game()
 
 
+func _on_settings_button_pressed() -> void:
+	hide()
+	$SettingsMenu.show()
+	await $SettingsMenu.visibility_changed
+	show()	
+
+
 func _on_quit_button_pressed() -> void:
+	get_tree().call_group("enemy", "queue_free")
 	toggle_pause_game()
 	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")

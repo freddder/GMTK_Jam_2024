@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://d04rb4qsoiyfe"]
+[gd_scene load_steps=7 format=3 uid="uid://d04rb4qsoiyfe"]
 
 [ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_e5ys8"]
 [ext_resource type="Theme" uid="uid://bkbdw0jadsuqp" path="res://content/ui/default_theme.tres" id="1_mnbn2"]
+[ext_resource type="PackedScene" uid="uid://b581mq5i0olgm" path="res://scenes/settings_menu.tscn" id="3_lrfn7"]
 [ext_resource type="AudioStream" uid="uid://yvp61qar4qc" path="res://music/intro-theme.wav" id="3_o4xmn"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_ako2q"]
@@ -38,11 +39,19 @@ shortcut = SubResource("Shortcut_20qb5")
 text = "Play
 "
 
+[node name="SettingsButton" type="Button" parent="HUD/ButtonsContainer"]
+layout_mode = 2
+theme = ExtResource("1_mnbn2")
+text = "Settings
+"
+
 [node name="ExitButton" type="Button" parent="HUD/ButtonsContainer"]
 layout_mode = 2
 theme = ExtResource("1_mnbn2")
 text = "Exit
 "
+
+[node name="SettingsMenu" parent="." instance=ExtResource("3_lrfn7")]
 
 [node name="MenuTheme" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_o4xmn")
@@ -50,4 +59,5 @@ volume_db = -11.0
 autoplay = true
 
 [connection signal="pressed" from="HUD/ButtonsContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="HUD/ButtonsContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="HUD/ButtonsContainer/ExitButton" to="." method="_on_exit_button_pressed"]
