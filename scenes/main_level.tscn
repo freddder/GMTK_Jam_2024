@@ -19,5 +19,5 @@ collision_mask = 7
 
 [node name="BattleTheme" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_tduye")
-volume_db = -15.0
+volume_db = -11.0
 autoplay = true

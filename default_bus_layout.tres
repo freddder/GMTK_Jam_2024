@@ -1,0 +1,9 @@
+[gd_resource type="AudioBusLayout" load_steps=2 format=3 uid="uid://bygpq1br8vuqf"]
+
+[sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_pjrgb"]
+resource_name = "LowPassFilter"
+resonance = 0.2
+
+[resource]
+bus/0/effect/0/effect = SubResource("AudioEffectLowPassFilter_pjrgb")
+bus/0/effect/0/enabled = false
