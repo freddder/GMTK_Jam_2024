@@ -1,8 +1,9 @@
-[gd_scene load_steps=100 format=3 uid="uid://c7kaxi3ghjur4"]
+[gd_scene load_steps=109 format=3 uid="uid://c7kaxi3ghjur4"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_r52mo"]
 [ext_resource type="Shader" path="res://content/shaders/motion_trail.gdshader" id="2_kw3n5"]
 [ext_resource type="Texture2D" uid="uid://ceq63nymo5fx7" path="res://content/sprites/player/idle_atlas.png" id="2_lk2fh"]
+[ext_resource type="Texture2D" uid="uid://dh6hfw8damfc0" path="res://content/sprites/player/death_atlas.png" id="3_a0k2a"]
 [ext_resource type="Texture2D" uid="uid://bunc7e6brg5iq" path="res://content/sprites/player/damage_atlas.png" id="3_dwo0a"]
 [ext_resource type="Texture2D" uid="uid://dwya33uhynkjl" path="res://content/sprites/mouse_direction.png" id="3_ja3ln"]
 [ext_resource type="Texture2D" uid="uid://ckrxp0xpth71b" path="res://content/sprites/player/ground_pound_finish_atlas.png" id="3_ji1ox"]
@@ -27,6 +28,50 @@ shader_parameter/r = 1.0
 shader_parameter/g = 1.0
 shader_parameter/b = 1.0
 shader_parameter/mix_color = 0.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wi7mt"]
+atlas = ExtResource("3_a0k2a")
+region = Rect2(0, 0, 160, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ho578"]
+atlas = ExtResource("3_a0k2a")
+region = Rect2(160, 0, 160, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oyslj"]
+atlas = ExtResource("3_a0k2a")
+region = Rect2(320, 0, 160, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3jple"]
+atlas = ExtResource("3_a0k2a")
+region = Rect2(480, 0, 160, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i5b1f"]
+atlas = ExtResource("3_a0k2a")
+region = Rect2(640, 0, 160, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tugnh"]
+atlas = ExtResource("3_a0k2a")
+region = Rect2(800, 0, 160, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d0w8y"]
+atlas = ExtResource("3_a0k2a")
+region = Rect2(960, 0, 160, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_il7uu"]
+atlas = ExtResource("3_a0k2a")
+region = Rect2(1120, 0, 160, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rhr31"]
+atlas = ExtResource("3_a0k2a")
+region = Rect2(1280, 0, 160, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ockpq"]
+atlas = ExtResource("3_a0k2a")
+region = Rect2(1440, 0, 160, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_02o8y"]
+atlas = ExtResource("3_a0k2a")
+region = Rect2(1600, 0, 160, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7iowt"]
 atlas = ExtResource("3_ji1ox")
@@ -328,6 +373,44 @@ region = Rect2(564, 0, 188, 128)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_wi7mt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ho578")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oyslj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3jple")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i5b1f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tugnh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d0w8y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_il7uu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rhr31")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ockpq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_02o8y")
+}],
+"loop": false,
+"name": &"death",
+"speed": 9.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_7iowt")
 }, {
 "duration": 1.0,
@@ -597,43 +680,6 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bq6x7"]
 size = Vector2(35, 59)
 
-[sub_resource type="Animation" id="Animation_ud42k"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_d3h3c"]
-resource_name = "death"
-length = 2.0
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_lf8bu"]
-_data = {
-"RESET": SubResource("Animation_ud42k"),
-"death": SubResource("Animation_d3h3c")
-}
-
 [node name="Player" type="Area2D" groups=["player"]]
 z_index = 10
 position = Vector2(129, 11)
@@ -643,13 +689,14 @@ script = ExtResource("1_r52mo")
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0.439216)
 material = SubResource("ShaderMaterial_asjqi")
 sprite_frames = SubResource("SpriteFrames_l4jrd")
-animation = &"ground_pound_start"
+animation = &"idle"
 metadata/_edit_group_ = true
 
 [node name="SwordSocket" type="Node2D" parent="."]
-position = Vector2(20, -3)
+position = Vector2(70, 46)
 rotation = 0.523599
 script = ExtResource("4_irc1d")
 blade_tip = ExtResource("5_gqm2j")
@@ -683,11 +730,6 @@ stream = ExtResource("5_6aufr")
 
 [node name="HurtSFX" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("19_7knlo")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_lf8bu")
-}
 
 [node name="DashMotionTrailTimer" type="Timer" parent="."]
 

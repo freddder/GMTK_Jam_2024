@@ -118,6 +118,19 @@ var ground_pound_finish_animation_offsets: Array[Vector2] = [
 	Vector2(18.0, 26.0),
 ]
 
+var death_animation_offsets: Array[Vector2] = [
+	Vector2(23.5, 26.0),
+	Vector2(22.0, 26.5),
+	Vector2(21.0, 25.5),
+	Vector2(29.0, 28.0),
+	Vector2(36.0, 28.0),
+	Vector2(49.0, 19.5),
+	Vector2(61.0, 30.0),
+	Vector2(69.0, 46.0),
+	Vector2(69.0, 46.0),
+	Vector2(69.5, 46.0),
+	Vector2(69.5, 46.0),
+]
 
 var thrust_start_animation_rotations: Array[float] = [
 	default_rotation,
@@ -188,6 +201,20 @@ var ground_pound_finish_animation_rotations: Array[float] = [
 	30,
 	20,
 	default_rotation,
+]
+
+var death_animation_rotations: Array[float] = [
+	default_rotation,
+	28,
+	-10,
+	0,
+	15,
+	50,
+	70,
+	85,
+	90,
+	90,
+	90,
 ]
 
 
@@ -262,6 +289,8 @@ func get_custom_offset() -> Vector2:
 		return_value = ground_pound_loop_animation_offsets[player_sprite.frame]
 	elif player_sprite.animation == "ground_pound_finish":
 		return_value = ground_pound_finish_animation_offsets[player_sprite.frame]
+	elif player_sprite.animation == "death":
+		return_value = death_animation_offsets[player_sprite.frame]
 
 	return_value.x *= get_horizontal_flip()
 	return return_value
@@ -281,5 +310,7 @@ func get_custom_rotation() -> float:
 		return_value = ground_pound_loop_animation_rotations[player_sprite.frame]
 	elif player_sprite.animation == "ground_pound_finish":
 		return_value = ground_pound_finish_animation_rotations[player_sprite.frame]
+	elif player_sprite.animation == "death":
+		return_value = death_animation_rotations[player_sprite.frame]
 
 	return deg_to_rad(return_value)
