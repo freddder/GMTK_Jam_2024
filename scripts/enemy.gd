@@ -23,11 +23,21 @@ var strength_scale: float = 0.0
 var should_damage_player := true
 var is_overlapping_with_player := false
 
+var enemy_type_strings: Array = [
+	"worm"
+]
+var type := ""
 
 func _ready() -> void:
+	# Randomize enemy scale
 	strength_scale = randf_range(min_strength_scale, max_strength_scale)
 	health = default_health * strength_scale
 	scale = Vector2(strength_scale, strength_scale)
+	
+	# Randomize enemy sprite
+	type = enemy_type_strings[randi() % enemy_type_strings.size()]
+	$AnimatedSprite2D.play("%s_walk" % type)
+	
 	Events.on_enemy_spawned.emit(self)
 
 
@@ -54,6 +64,8 @@ func handle_movement(delta: float) -> void:
 	var speed := default_speed / strength_scale
 	var target_position := player.global_position
 	global_position = global_position.move_toward(target_position, speed * delta)
+	
+	$AnimatedSprite2D.flip_h = target_position.x - position.x > 0
 
 
 func handle_knockback(delta: float) -> void:
@@ -77,6 +89,7 @@ func take_hit(damage: float, knockback_strength: float) -> void:
 		die(true)
 	else:
 		pending_knockback_strength += knockback_strength / strength_scale
+		$AnimatedSprite2D.play("%s_take_hit" % type)
 		$AnimationPlayer.play("hit_react")
 
 
@@ -132,3 +145,8 @@ func damage_player() -> void:
 
 func should_move() -> bool:
 	return not Events.is_game_terminated
+
+
+func _on_animation_finished():
+	if $AnimatedSprite2D.animation != "%s_death" % type:
+		$AnimatedSprite2D.play("%s_walk" % type)
