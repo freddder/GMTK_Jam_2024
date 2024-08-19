@@ -1,10 +1,11 @@
-[gd_scene load_steps=41 format=3 uid="uid://cnvwhtne2klh"]
+[gd_scene load_steps=45 format=3 uid="uid://cnvwhtne2klh"]
 
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1_fhxv7"]
 [ext_resource type="Texture2D" uid="uid://bmkxb42nm58ja" path="res://content/sprites/enemies/worm-walk.png" id="2_i1qw3"]
 [ext_resource type="Texture2D" uid="uid://bxmptvhxnt8ri" path="res://content/sprites/enemies/slime-death.png" id="2_rb21c"]
 [ext_resource type="Texture2D" uid="uid://35itgysw6xfm" path="res://content/sprites/enemies/worm-death.png" id="2_wb7ea"]
 [ext_resource type="Texture2D" uid="uid://c8u2h2elhbxkx" path="res://content/sprites/enemies/slime-walk.png" id="3_1f3u2"]
+[ext_resource type="Texture2D" uid="uid://bar5jme4ilfv0" path="res://content/sprites/enemies/wolf-death.png" id="4_6vwjx"]
 [ext_resource type="Texture2D" uid="uid://bx1uq2h7dhcap" path="res://content/sprites/enemies/wolf-walk.png" id="4_sp7fw"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jxo1k"]
@@ -38,6 +39,18 @@ region = Rect2(128, 0, 128, 128)
 [sub_resource type="AtlasTexture" id="AtlasTexture_53jo8"]
 atlas = ExtResource("3_1f3u2")
 region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bqr3v"]
+atlas = ExtResource("4_6vwjx")
+region = Rect2(0, 0, 133, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y2os7"]
+atlas = ExtResource("4_6vwjx")
+region = Rect2(133, 0, 133, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ruhdj"]
+atlas = ExtResource("4_6vwjx")
+region = Rect2(0, 0, 133, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_eof37"]
 atlas = ExtResource("4_sp7fw")
@@ -165,6 +178,25 @@ animations = [{
 "loop": true,
 "name": &"slime_walk",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bqr3v")
+}, {
+"duration": 3.0,
+"texture": SubResource("AtlasTexture_y2os7")
+}],
+"loop": false,
+"name": &"wolf_death",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ruhdj")
+}],
+"loop": false,
+"name": &"wolf_take_hit",
+"speed": 1.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -319,8 +351,9 @@ drop_chance = 100
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_cfqfh")
-animation = &"wolf_walk"
-frame_progress = 0.783656
+animation = &"wolf_death"
+frame = 1
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-0.5, 1)

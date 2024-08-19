@@ -28,6 +28,7 @@ var is_dying := false
 var enemy_type_strings: Array = [
 	"worm",
 	"slime",
+	"wolf"
 ]
 var type := ""
 
