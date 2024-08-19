@@ -631,7 +631,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"idle",
-"speed": 6.0
+"speed": 7.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -860,14 +860,18 @@ metadata/_edit_group_ = true
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 self_modulate = Color(1, 1, 1, 0.439216)
 material = SubResource("ShaderMaterial_asjqi")
+position = Vector2(0, -37)
 sprite_frames = SubResource("SpriteFrames_l4jrd")
 animation = &"swing_finish"
-frame = 11
-frame_progress = 0.279397
 metadata/_edit_group_ = true
 
-[node name="SwordSocket" type="Node2D" parent="."]
-position = Vector2(18, 39)
+[node name="MouseDirectionSprite" type="Sprite2D" parent="AnimatedSprite2D"]
+position = Vector2(0, 5)
+texture = ExtResource("3_ja3ln")
+offset = Vector2(0, -68)
+
+[node name="SwordSocket" type="Node2D" parent="AnimatedSprite2D"]
+position = Vector2(38, 14)
 rotation = 0.523599
 script = ExtResource("4_irc1d")
 blade_tip = ExtResource("5_gqm2j")
@@ -875,15 +879,11 @@ blade_core = ExtResource("6_m574l")
 hilt = ExtResource("7_37721")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0.5, 15.5)
+position = Vector2(0, -14)
 shape = SubResource("RectangleShape2D_bq6x7")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 material = SubResource("ShaderMaterial_61set")
-
-[node name="MouseDirectionSprite" type="Sprite2D" parent="."]
-texture = ExtResource("3_ja3ln")
-offset = Vector2(0, -68)
 
 [node name="AttackShapeCast2D" type="ShapeCast2D" parent="."]
 enabled = false

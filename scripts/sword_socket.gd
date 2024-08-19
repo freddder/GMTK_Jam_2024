@@ -6,8 +6,8 @@ extends Node2D
 @export var hilt: Texture2D
 @export var default_rotation: float = 30.0
 
-@onready var player := get_parent() as PlayerCharacter
-@onready var player_sprite: AnimatedSprite2D = player.find_child("AnimatedSprite2D")
+@onready var player_sprite: AnimatedSprite2D = get_parent()
+@onready var player: PlayerCharacter = player_sprite.get_parent()
 
 var attack_radius_before_shrink: float = 0.0
 var last_attack_radius: float = 0.0
@@ -15,25 +15,28 @@ var shrink_total_time: float = 0.3
 var shrink_start_time: float = 0.0
 var is_shrinking := false
 
+var global_offset := Vector2(0.0, 0.0)
+
+
 var idle_animation_offsets: Array[Vector2] = [
-	Vector2(25.0, 27.0),
-	Vector2(25.0, 25.0),
-	Vector2(25.0, 24.0),
-	Vector2(25.0, 25.0),
+	Vector2(22.0, 28.0),
+	Vector2(22.0, 27.5),
+	Vector2(22.0, 27.0),
+	Vector2(22.0, 27.5),
 ]
 
 var run_animation_offsets: Array[Vector2] = [
-	Vector2(35.0, 10.0),
-	Vector2(35.0, 13.0),
-	Vector2(36.0, 14.0),
-	Vector2(36.0, 15.0),
-	Vector2(36.0, 14.0),
-	Vector2(36.0, 12.0),
-	Vector2(36.0, 10.0),
-	Vector2(36.0, 12.0),
-	Vector2(36.0, 14.0),
-	Vector2(36.0, 15.0),
-	Vector2(36.0, 13.0),
+	Vector2(39.0, 14.0),
+	Vector2(39.0, 16.0),
+	Vector2(39.0, 17.0),
+	Vector2(39.0, 18.0),
+	Vector2(39.0, 17.0),
+	Vector2(39.0, 15.0),
+	Vector2(39.0, 15.0),
+	Vector2(39.0, 16.0),
+	Vector2(39.0, 17.0),
+	Vector2(39.0, 18.0),
+	Vector2(39.0, 16.0),
 ]
 
 var hit_react_animation_offsets: Array[Vector2] = [
@@ -64,7 +67,7 @@ var swing_loop_animation_offsets: Array[Vector2] = [
 
 var swing_finish_animation_offsets: Array[Vector2] = [
 	Vector2(36.5, 7.0),
-	Vector2(38.0, 7.5),
+	Vector2(36.0, 7.5),
 	Vector2(35.0, 5.0),
 	Vector2(42.0, 17.0),
 	Vector2(35.0, 38.0),
@@ -74,7 +77,7 @@ var swing_finish_animation_offsets: Array[Vector2] = [
 	Vector2(-3.0, 37.0),
 	Vector2(6.0, 41.0),
 	Vector2(18.0, 39.0),
-	Vector2(25.5, 28.0),
+	Vector2(22.5, 27.5),
 ]
 
 var thrust_start_animation_offsets: Array[Vector2] = [
@@ -198,11 +201,11 @@ var thrust_start_animation_rotations: Array[float] = [
 
 var thrust_loop_animation_rotations: Array[float] = [
 	90,
-	92,
+	90.5,
 	90,
-	88,
+	89.5,
 	90,
-	92,
+	90.5,
 ]
 
 var thrust_finish_animation_rotations: Array[float] = [
@@ -355,6 +358,7 @@ func get_custom_offset() -> Vector2:
 	elif player_sprite.animation == "death":
 		return_value = death_animation_offsets[player_sprite.frame]
 
+	return_value += global_offset
 	return_value.x *= get_horizontal_flip()
 	return return_value
 
