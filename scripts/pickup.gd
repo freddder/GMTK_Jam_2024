@@ -6,6 +6,7 @@ enum Type {
 	Wipe,
 	Invalid, # Always leave invalid as last
 }
+
 var heal_icon := preload("res://content/sprites/pickups/pickup_heal.png")
 var wipe_icon := preload("res://content/sprites/pickups/pickup_wipe.png")
 
@@ -18,6 +19,10 @@ var pickup_type := Type.Invalid
 func _ready() -> void:
 	if pickup_type == Type.Invalid:
 		pickup_type = randomize_pickup_type()
+
+	modulate = Color.TRANSPARENT
+	var tween := get_tree().create_tween()
+	tween.tween_property(self, "modulate", Color.WHITE, 0.3)
 
 
 func _physics_process(delta: float) -> void:

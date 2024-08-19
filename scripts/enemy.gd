@@ -112,6 +112,12 @@ func drop_pickup() -> void:
 
 
 func start_dying(can_drop_pickup: bool = true) -> void:
+	assert(not is_dying)
+	if can_drop_pickup and randi() % 100 <= drop_chance:
+		drop_pickup()
+
+	on_death.emit(self)
+
 	is_dying = true
 	$AnimationPlayer.play("hit_react")
 
@@ -122,14 +128,10 @@ func start_dying(can_drop_pickup: bool = true) -> void:
 	$AnimationPlayer.play("death")
 	await $AnimationPlayer.animation_finished
 
-	die(can_drop_pickup)
+	die()
 
 
-func die(can_drop_pickup: bool) -> void:
-	if can_drop_pickup and randi() % 100 <= drop_chance:
-		drop_pickup()
-
-	on_death.emit(self)
+func die() -> void:
 	queue_free()
 
 
