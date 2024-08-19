@@ -228,7 +228,6 @@ var thrust_finish_animation_rotations: Array[float] = [
 	default_rotation
 ]
 
-
 var ground_pound_start_animation_rotations: Array[float] = [
 	50,
 	55,
@@ -253,10 +252,10 @@ var ground_pound_finish_animation_rotations: Array[float] = [
 	-30,
 	30,
 	45,
-	55,
-	58,
-	65,
-	70,
+	85,
+	90,
+	90,
+	90,
 	40,
 	30,
 	20,

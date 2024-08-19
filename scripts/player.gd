@@ -440,10 +440,21 @@ func save_attack_end_time() -> void:
 
 
 func handle_sound_on_attack_release() -> void:
+	var is_charged: bool = get_charge_power() > 1.0
 	match charging_attack_type:
-		AttackType.Swing: $SwingSFX.play()
-		AttackType.Thrust: pass
-		AttackType.GroundPound: pass
+		AttackType.Swing:
+			if not is_charged:
+				$NormalSwingSFX.play()
+			else:
+				$ChargedSwingSFX.play()
+
+		AttackType.Thrust:
+			if not is_charged:
+				$NormalThrustSFX.play()
+			else:
+				$ChargedThrustSFX.play()
+
+		AttackType.GroundPound: $GroundPoundSFX.play()
 
 
 func get_attack_type_name(attack_type: AttackType) -> String:

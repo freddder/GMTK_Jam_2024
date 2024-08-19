@@ -1,4 +1,4 @@
-[gd_scene load_steps=135 format=3 uid="uid://c7kaxi3ghjur4"]
+[gd_scene load_steps=139 format=3 uid="uid://c7kaxi3ghjur4"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_r52mo"]
 [ext_resource type="Shader" path="res://content/shaders/motion_trail.gdshader" id="2_kw3n5"]
@@ -24,6 +24,10 @@
 [ext_resource type="Texture2D" uid="uid://c7kd6p3usm42e" path="res://content/sprites/player/swing_start_atlas.png" id="12_tn08v"]
 [ext_resource type="AudioStream" uid="uid://b586k2ntf54yy" path="res://sfx/player_hurt.wav" id="19_7knlo"]
 [ext_resource type="AudioStream" uid="uid://oov6dnal1gfb" path="res://sfx/player_death.wav" id="24_rgulg"]
+[ext_resource type="AudioStream" uid="uid://irp8mg5a6s8s" path="res://sfx/ground_pound.wav" id="25_obyko"]
+[ext_resource type="AudioStream" uid="uid://djp55piarmlr2" path="res://sfx/charged-swing.wav" id="25_pad45"]
+[ext_resource type="AudioStream" uid="uid://da2mnqj1ci1ck" path="res://sfx/strike_one.wav" id="26_udejh"]
+[ext_resource type="AudioStream" uid="uid://dvtr6elwtl7rp" path="res://sfx/strike_two.wav" id="27_lndwu"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_asjqi"]
 shader = ExtResource("2_kw3n5")
@@ -893,19 +897,34 @@ collision_mask = 4
 collide_with_areas = true
 collide_with_bodies = false
 
-[node name="SwingSFX" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("4_7t2uk")
-volume_db = -20.0
-
-[node name="ChargeSFX" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("5_6aufr")
-
 [node name="HurtSFX" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("19_7knlo")
 
 [node name="DeathSFX" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("24_rgulg")
-volume_db = -13.0
+volume_db = -8.0
+
+[node name="ChargeSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_6aufr")
+volume_db = 8.0
+
+[node name="NormalSwingSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_7t2uk")
+volume_db = -10.0
+
+[node name="ChargedSwingSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("25_pad45")
+volume_db = -10.0
+
+[node name="NormalThrustSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("26_udejh")
+
+[node name="ChargedThrustSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("27_lndwu")
+
+[node name="GroundPoundSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("25_obyko")
+volume_db = -10.0
 
 [node name="DashMotionTrailTimer" type="Timer" parent="."]
 
