@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://crrmp66skfilu" path="res://content/sprites/sword/sword_blade_core.png" id="6_m574l"]
 [ext_resource type="Texture2D" uid="uid://dq3c7aq5nul7q" path="res://content/sprites/sword/sword_hilt.png" id="7_37721"]
 [ext_resource type="AudioStream" uid="uid://b586k2ntf54yy" path="res://sfx/player_hurt.wav" id="13_af3yn"]
+[ext_resource type="AudioStream" uid="uid://b586k2ntf54yy" path="res://sfx/player_hurt.wav" id="19_7knlo"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_asjqi"]
 shader = ExtResource("2_kw3n5")
@@ -143,7 +144,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"hit_react",
-"speed": 15.0
+"speed": 20.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -289,7 +290,7 @@ volume_db = -20.0
 stream = ExtResource("5_6aufr")
 
 [node name="HurtSFX" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("13_af3yn")
+stream = ExtResource("19_7knlo")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
