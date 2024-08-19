@@ -525,10 +525,16 @@ func release_primary_attack() -> void:
 			enemy.take_hit(scale_damage(default_swing_damage), scale_knockback(default_swing_knockback_strength))
 
 
+func attack_start_fail_due_cooldown(attack_type: AttackType) -> void:
+	$AttackCooldownSFX.play()
+
+
 func handle_generic_attack_input(event: InputEvent, attack_type: AttackType, action_name: String) -> void:
-	if (event.is_action_pressed(action_name) and not is_charging_attack()
-		and not is_attack_on_cooldown(attack_type)):
-		on_attack_started_charging(attack_type)
+	if (event.is_action_pressed(action_name) and not is_charging_attack()):
+		if not is_attack_on_cooldown(attack_type):
+			on_attack_started_charging(attack_type)
+		else:
+			attack_start_fail_due_cooldown(attack_type)
 
 	if charging_attack_type == attack_type and event.is_action_released(action_name):
 		if not can_release_attack:
