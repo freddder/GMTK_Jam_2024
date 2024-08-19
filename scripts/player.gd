@@ -54,6 +54,12 @@ enum AttackType {
 @export var dash_motion_trail_copy_lifespan: float = 0.2
 @export var dash_motion_trail_creation_cooldown: float = 0.02
 
+@export_category("Camera Shake")
+@export var shake_scale_rate: float = 2000.0
+
+@onready var noise_rand := RandomNumberGenerator.new()
+@onready var game_hud := get_parent().find_child("GameHUD") as GameHUD
+
 var mouse_direction_angle_rad: float = 0.0
 var attack_charge_start_time: float = 0.0
 var charging_attack_type := AttackType.Invalid
@@ -81,6 +87,11 @@ var last_dash_end_time: float = 0.0
 var is_dashing := false
 var dash_direction := Vector2.ZERO
 
+var shake_strength: float = 0.0
+
+var interpolated_power: float = 1.0
+var power_interpolation_speed: float = 2.0
+
 
 func _ready() -> void:
 	var zoom: float = default_camera_zoom.x * (get_viewport_rect().size.x / 1280)
@@ -88,6 +99,8 @@ func _ready() -> void:
 
 	set_camera_zoom(default_camera_zoom, 0.0)
 	clear_attack_data()
+
+	noise_rand.randomize()
 
 
 func handle_regular_movement(delta: float) -> void:
@@ -302,9 +315,21 @@ func handle_attack_zone() -> void:
 
 	if is_charging_attack():
 		var zoom_power := get_charge_power() - 1.0
-		var additional_zoom := zoom_power * 0.2
+		var additional_zoom := log(zoom_power * 0.2 + 1.0) / log(5.0)
 		var camera_zoom := default_camera_zoom - Vector2(additional_zoom, additional_zoom)
 		set_camera_zoom(camera_zoom, 0.0)
+
+
+func handle_interpolated_charging(delta: float) -> void:
+	var diff := get_charge_power() - interpolated_power
+	interpolated_power += diff * delta * power_interpolation_speed
+
+
+func handle_charging_visual_effects() -> void:
+	var charge_effect: ColorRect = game_hud.find_child("ChargeEffect")
+	var shader: ShaderMaterial = charge_effect.material
+	var normalized_power := clampf(log(interpolated_power) * 0.7, 0.0, 1.0)
+	shader.set_shader_parameter("line_density", lerp(0.0, 0.36, normalized_power))
 
 
 func handle_charging_sound() -> void:
@@ -315,7 +340,14 @@ func handle_charging_sound() -> void:
 		$ChargeSFX.pitch_scale = get_charge_power() / 2.0
 
 
-func handle_camera_view() -> void:
+func get_random_offset() -> Vector2:
+	return Vector2(
+		noise_rand.randf_range(-shake_strength, shake_strength),
+		noise_rand.randf_range(-shake_strength, shake_strength)
+	)
+
+
+func handle_camera_view(delta: float) -> void:
 	# Arena is at 0,0, so getting the player position length is effectively getting how far they
 	# went off arena center; same thing applies to direction
 	var distance_from_center := global_position.length()
@@ -324,6 +356,10 @@ func handle_camera_view() -> void:
 	var max_distance_from_centre := Arena.radius - camera_offset_distance_from_arena_bounds
 	var target_point := minf(max_distance_from_centre, distance_from_center) * direction
 	$Camera2D.offset = target_point - $Camera2D.global_position
+
+	shake_strength = lerpf(0.0, interpolated_power, shake_scale_rate * delta)
+	if is_attack_animation_ongoing and interpolated_power > 1.0:
+		$Camera2D.offset += get_random_offset()
 
 
 func handle_sprite_opacity() -> void:
@@ -336,9 +372,11 @@ func _process(delta: float) -> void:
 	if is_alive():
 		handle_mouse_direction()
 		handle_attack_zone()
+		handle_interpolated_charging(delta)
+		handle_charging_visual_effects()
 		handle_charging_sound()
 		handle_animation_side()
-		handle_camera_view()
+		handle_camera_view(delta)
 	handle_sprite_opacity()
 
 
@@ -578,7 +616,7 @@ func get_charge_power() -> float:
 	if charge_time > charge_delay:
 		charge_power *= pow(get_charging_time_seconds() * charge_speed, charge_exp)
 
-	return charge_power
+	return maxf(1.0, charge_power)
 
 
 func get_charging_time_seconds() -> float:
