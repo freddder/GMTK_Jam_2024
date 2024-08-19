@@ -1,4 +1,4 @@
-[gd_scene load_steps=139 format=3 uid="uid://c7kaxi3ghjur4"]
+[gd_scene load_steps=140 format=3 uid="uid://c7kaxi3ghjur4"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_r52mo"]
 [ext_resource type="Shader" path="res://content/shaders/motion_trail.gdshader" id="2_kw3n5"]
@@ -28,6 +28,7 @@
 [ext_resource type="AudioStream" uid="uid://djp55piarmlr2" path="res://sfx/charged-swing.wav" id="25_pad45"]
 [ext_resource type="AudioStream" uid="uid://da2mnqj1ci1ck" path="res://sfx/strike_one.wav" id="26_udejh"]
 [ext_resource type="AudioStream" uid="uid://dvtr6elwtl7rp" path="res://sfx/strike_two.wav" id="27_lndwu"]
+[ext_resource type="AudioStream" uid="uid://twqlw3oxcabt" path="res://sfx/heal_sfx.wav" id="29_ggblw"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_asjqi"]
 shader = ExtResource("2_kw3n5")
@@ -924,6 +925,10 @@ stream = ExtResource("27_lndwu")
 
 [node name="GroundPoundSFX" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("25_obyko")
+volume_db = -10.0
+
+[node name="HealSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("29_ggblw")
 volume_db = -10.0
 
 [node name="DashMotionTrailTimer" type="Timer" parent="."]
