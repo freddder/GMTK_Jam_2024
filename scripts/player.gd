@@ -566,6 +566,9 @@ func can_dash() -> bool:
 
 
 func handle_dash_input(event: InputEvent) -> void:
+	if is_dashing:
+		return
+
 	var elapsed_time: float = ((Time.get_ticks_msec() - last_dash_end_time) / 1000.0
 		if last_dash_end_time > 0 else 9999)
 	var is_on_cooldown := default_dash_cooldown > elapsed_time
