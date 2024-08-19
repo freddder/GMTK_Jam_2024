@@ -41,4 +41,4 @@ func get_alpha() -> float:
 
 func _on_area_entered(area: Area2D) -> void:
 	var enemy := area as EnemyCharacter
-	enemy.die()
+	enemy.die(false)
