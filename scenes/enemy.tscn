@@ -299,6 +299,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_frqxi"]
+resource_local_to_scene = true
 size = Vector2(60, 35)
 
 [sub_resource type="Animation" id="Animation_jt48r"]
