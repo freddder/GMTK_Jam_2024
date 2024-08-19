@@ -58,6 +58,8 @@ func get_alpha() -> float:
 
 func _on_area_entered(area: Area2D) -> void:
 	var enemy := area as EnemyCharacter
+	if not enemy:
+		return
 
 	enemy.find_child("AnimatedSprite2D").stop()
 	enemy.is_dying = true
@@ -65,5 +67,8 @@ func _on_area_entered(area: Area2D) -> void:
 	var tween := get_tree().create_tween()
 	tween.tween_property(enemy, "modulate", Color(1.0, 1.0, 1.0, 0.0), 0.1)
 	await tween.finished
+	
+	if not enemy:
+		return
 
 	enemy.die(false)
