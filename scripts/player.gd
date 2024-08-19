@@ -369,14 +369,14 @@ func handle_sprite_opacity() -> void:
 
 
 func _process(delta: float) -> void:
+	handle_interpolated_charging(delta)
+	handle_camera_view(delta)
+	handle_charging_visual_effects()
 	if is_alive():
 		handle_mouse_direction()
 		handle_attack_zone()
-		handle_interpolated_charging(delta)
-		handle_charging_visual_effects()
 		handle_charging_sound()
 		handle_animation_side()
-		handle_camera_view(delta)
 	handle_sprite_opacity()
 
 
@@ -446,7 +446,7 @@ func handle_sound_on_attack_release() -> void:
 
 func get_attack_type_name(attack_type: AttackType) -> String:
 	match attack_type:
-		AttackType.Swing: return "" #"swing"
+		AttackType.Swing: return "swing"
 		AttackType.Thrust: return "thrust"
 		AttackType.GroundPound: return "ground_pound"
 	return ""
@@ -465,7 +465,7 @@ func play_attack_release_animation() -> void:
 
 func get_attack_finish_release_delay() -> float:
 	match charging_attack_type:
-		AttackType.Swing: return 0.0
+		AttackType.Swing: return 0.28
 		AttackType.Thrust: return 0.28
 		AttackType.GroundPound: return 0.28
 	return 0.0

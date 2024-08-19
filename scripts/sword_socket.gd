@@ -47,6 +47,35 @@ var hit_react_animation_offsets: Array[Vector2] = [
 	Vector2(39.0, 20.0),
 ]
 
+var swing_start_animation_offsets: Array[Vector2] = [
+	Vector2(25.5, 28.0),
+	Vector2(27.0, 28.5),
+	Vector2(31.0, 28.0),
+	Vector2(39.0, 20.0),
+	Vector2(36.5, 7.0),
+]
+
+var swing_loop_animation_offsets: Array[Vector2] = [
+	Vector2(36.5, 7.0),
+	Vector2(36.5, 7.0),
+	Vector2(36.5, 7.0),
+	Vector2(36.5, 7.0),
+]
+
+var swing_finish_animation_offsets: Array[Vector2] = [
+	Vector2(36.5, 7.0),
+	Vector2(38.0, 7.5),
+	Vector2(35.0, 5.0),
+	Vector2(42.0, 17.0),
+	Vector2(35.0, 38.0),
+	Vector2(8.0, 43.0),
+	Vector2(-1.0, 38.0),
+	Vector2(-4.0, 36.0),
+	Vector2(-3.0, 37.0),
+	Vector2(6.0, 41.0),
+	Vector2(18.0, 39.0),
+	Vector2(25.5, 28.0),
+]
 
 var thrust_start_animation_offsets: Array[Vector2] = [
 	Vector2(25.5, 28.0),
@@ -82,7 +111,6 @@ var thrust_finish_animation_offsets: Array[Vector2] = [
 	Vector2(37.5, 36.0),
 	Vector2(27.0, 28.0),
 ]
-
 
 var ground_pound_start_animation_offsets: Array[Vector2] = [
 	Vector2(23.0, 33.0),
@@ -130,6 +158,35 @@ var death_animation_offsets: Array[Vector2] = [
 	Vector2(69.0, 46.0),
 	Vector2(69.5, 46.0),
 	Vector2(69.5, 46.0),
+]
+var swing_start_animation_rotations: Array[float] = [
+	default_rotation,
+	25,
+	15,
+	10,
+	0
+]
+
+var swing_loop_animation_rotations: Array[float] = [
+	0,
+	-0.3,
+	0.3,
+	0
+]
+
+var swing_finish_animation_rotations: Array[float] = [
+	0,
+	-2,
+	-5,
+	50,
+	120,
+	170,
+	230,
+	240,
+	235,
+	185,
+	155,
+	default_rotation
 ]
 
 var thrust_start_animation_rotations: Array[float] = [
@@ -277,6 +334,12 @@ func get_custom_offset() -> Vector2:
 		return_value = run_animation_offsets[player_sprite.frame]
 	elif player_sprite.animation == "hit_react":
 		return_value = hit_react_animation_offsets[player_sprite.frame]
+	elif player_sprite.animation == "swing_start":
+		return_value = swing_start_animation_offsets[player_sprite.frame]
+	elif player_sprite.animation == "swing_loop":
+		return_value = swing_loop_animation_offsets[player_sprite.frame]
+	elif player_sprite.animation == "swing_finish":
+		return_value = swing_finish_animation_offsets[player_sprite.frame]
 	elif player_sprite.animation == "thrust_start":
 		return_value = thrust_start_animation_offsets[player_sprite.frame]
 	elif player_sprite.animation == "thrust_loop":
@@ -298,7 +361,13 @@ func get_custom_offset() -> Vector2:
 
 func get_custom_rotation() -> float:
 	var return_value := default_rotation
-	if player_sprite.animation == "thrust_start":
+	if player_sprite.animation == "swing_start":
+		return_value = swing_start_animation_rotations[player_sprite.frame]
+	elif player_sprite.animation == "swing_loop":
+		return_value = swing_loop_animation_rotations[player_sprite.frame]
+	elif player_sprite.animation == "swing_finish":
+		return_value = swing_finish_animation_rotations[player_sprite.frame]
+	elif player_sprite.animation == "thrust_start":
 		return_value = thrust_start_animation_rotations[player_sprite.frame]
 	elif player_sprite.animation == "thrust_loop":
 		return_value = thrust_loop_animation_rotations[player_sprite.frame]
