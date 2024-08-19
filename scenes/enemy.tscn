@@ -1,10 +1,140 @@
-[gd_scene load_steps=7 format=3 uid="uid://cnvwhtne2klh"]
+[gd_scene load_steps=24 format=3 uid="uid://cnvwhtne2klh"]
 
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1_fhxv7"]
-[ext_resource type="Texture2D" uid="uid://btog8yn277yfn" path="res://icon.svg" id="1_mtc0h"]
+[ext_resource type="Texture2D" uid="uid://bmkxb42nm58ja" path="res://content/sprites/enemies/worm-walk.png" id="2_i1qw3"]
+[ext_resource type="Texture2D" uid="uid://35itgysw6xfm" path="res://content/sprites/enemies/worm-death.png" id="2_wb7ea"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_unlty"]
+atlas = ExtResource("2_wb7ea")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iwijs"]
+atlas = ExtResource("2_wb7ea")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o40vh"]
+atlas = ExtResource("2_wb7ea")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ch4sm"]
+atlas = ExtResource("2_wb7ea")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7lc6w"]
+atlas = ExtResource("2_wb7ea")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4fqql"]
+atlas = ExtResource("2_wb7ea")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l4tsy"]
+atlas = ExtResource("2_wb7ea")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b0d1a"]
+atlas = ExtResource("2_wb7ea")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gyuxh"]
+atlas = ExtResource("2_wb7ea")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_85nbp"]
+atlas = ExtResource("2_wb7ea")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bhf5r"]
+atlas = ExtResource("2_wb7ea")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_67yag"]
+atlas = ExtResource("2_i1qw3")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_igoom"]
+atlas = ExtResource("2_i1qw3")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3pvsc"]
+atlas = ExtResource("2_i1qw3")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pppd6"]
+atlas = ExtResource("2_i1qw3")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cfqfh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_unlty")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iwijs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o40vh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ch4sm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7lc6w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4fqql")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l4tsy")
+}],
+"loop": false,
+"name": &"worm_death",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b0d1a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gyuxh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_85nbp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bhf5r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_85nbp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gyuxh")
+}],
+"loop": false,
+"name": &"worm_take_hit",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_67yag")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_igoom")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3pvsc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pppd6")
+}],
+"loop": true,
+"name": &"worm_walk",
+"speed": 4.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_frqxi"]
-size = Vector2(40, 78)
+size = Vector2(63, 54)
 
 [sub_resource type="Animation" id="Animation_jt48r"]
 length = 0.001
@@ -48,11 +178,15 @@ collision_layer = 4
 collision_mask = 3
 script = ExtResource("1_fhxv7")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.3, 0.6)
-texture = ExtResource("1_mtc0h")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_cfqfh")
+animation = &"worm_death"
+frame = 6
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.5, 1)
 shape = SubResource("RectangleShape2D_frqxi")
 
 [node name="AttackCooldownTimer" type="Timer" parent="." groups=["enemy"]]
@@ -65,4 +199,5 @@ libraries = {
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animation_finished"]
 [connection signal="timeout" from="AttackCooldownTimer" to="." method="_on_spawn_timer_timeout"]
