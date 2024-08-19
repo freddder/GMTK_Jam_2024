@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://crtts3hdj1kvn"
-path="res://.godot/imported/slime_jump.wav-4c72b8dc35a34a39ad6b14e061da914f.sample"
+path="res://.godot/imported/slime_hit.wav-0bb2e84d8061523934d7c0e076a63d0d.sample"
 
 [deps]
 
-source_file="res://sfx/slime_jump.wav"
-dest_files=["res://.godot/imported/slime_jump.wav-4c72b8dc35a34a39ad6b14e061da914f.sample"]
+source_file="res://sfx/slime_hit.wav"
+dest_files=["res://.godot/imported/slime_hit.wav-0bb2e84d8061523934d7c0e076a63d0d.sample"]
 
 [params]
 

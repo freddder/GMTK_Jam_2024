@@ -1,12 +1,25 @@
-[gd_scene load_steps=45 format=3 uid="uid://cnvwhtne2klh"]
+[gd_scene load_steps=52 format=3 uid="uid://cnvwhtne2klh"]
 
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1_fhxv7"]
+[ext_resource type="AudioStream" uid="uid://d4b242jhl5tp1" path="res://sfx/worm_death.wav" id="2_dym8l"]
 [ext_resource type="Texture2D" uid="uid://bmkxb42nm58ja" path="res://content/sprites/enemies/worm-walk.png" id="2_i1qw3"]
 [ext_resource type="Texture2D" uid="uid://bxmptvhxnt8ri" path="res://content/sprites/enemies/slime-death.png" id="2_rb21c"]
 [ext_resource type="Texture2D" uid="uid://35itgysw6xfm" path="res://content/sprites/enemies/worm-death.png" id="2_wb7ea"]
 [ext_resource type="Texture2D" uid="uid://c8u2h2elhbxkx" path="res://content/sprites/enemies/slime-walk.png" id="3_1f3u2"]
+[ext_resource type="AudioStream" uid="uid://crtts3hdj1kvn" path="res://sfx/slime_hit.wav" id="3_uyugu"]
 [ext_resource type="Texture2D" uid="uid://bar5jme4ilfv0" path="res://content/sprites/enemies/wolf-death.png" id="4_6vwjx"]
 [ext_resource type="Texture2D" uid="uid://bx1uq2h7dhcap" path="res://content/sprites/enemies/wolf-walk.png" id="4_sp7fw"]
+[ext_resource type="AudioStream" uid="uid://d3r2laa2t1r8c" path="res://sfx/enemy_hit.wav" id="4_weyi4"]
+[ext_resource type="AudioStream" uid="uid://cog8ogyus0j3s" path="res://sfx/slime_death.wav" id="5_v5y3h"]
+
+[sub_resource type="Gradient" id="Gradient_4luk5"]
+colors = PackedColorArray(0.862745, 0.666667, 0.701961, 1, 0.866667, 0.631373, 0.447059, 1)
+
+[sub_resource type="Gradient" id="Gradient_3y5ig"]
+colors = PackedColorArray(0.552941, 0.74902, 0.156863, 1, 0.112579, 0.847656, 0.795971, 1)
+
+[sub_resource type="Gradient" id="Gradient_pw3nv"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jxo1k"]
 atlas = ExtResource("2_rb21c")
@@ -286,7 +299,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_frqxi"]
-size = Vector2(63, 54)
+size = Vector2(60, 35)
 
 [sub_resource type="Animation" id="Animation_jt48r"]
 length = 0.001
@@ -346,17 +359,16 @@ _data = {
 collision_layer = 4
 collision_mask = 3
 script = ExtResource("1_fhxv7")
-drop_chance = 100
+colors = Array[Gradient]([SubResource("Gradient_4luk5"), SubResource("Gradient_3y5ig"), SubResource("Gradient_pw3nv")])
+hit_sounds = Array[AudioStream]([ExtResource("2_dym8l"), ExtResource("3_uyugu"), ExtResource("4_weyi4")])
+death_sounds = Array[AudioStream]([ExtResource("2_dym8l"), ExtResource("5_v5y3h"), null])
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_cfqfh")
-animation = &"wolf_death"
-frame = 1
-frame_progress = 1.0
+animation = &"wolf_walk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-0.5, 1)
 shape = SubResource("RectangleShape2D_frqxi")
 
 [node name="AttackCooldownTimer" type="Timer" parent="." groups=["enemy"]]
@@ -366,6 +378,12 @@ one_shot = true
 libraries = {
 "": SubResource("AnimationLibrary_j6q85")
 }
+
+[node name="HitSFX" type="AudioStreamPlayer" parent="."]
+volume_db = -10.0
+
+[node name="DeathSFX" type="AudioStreamPlayer" parent="."]
+volume_db = -10.0
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]

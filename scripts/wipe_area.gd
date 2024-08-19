@@ -70,7 +70,6 @@ func _on_area_entered(area: Area2D) -> void:
 
 	if not enemy:
 		return
-		
-	enemy.is_dying = false
-	enemy.start_dying(false)
+
+	enemy.on_death.emit(enemy)
 	enemy.queue_free()

@@ -3,6 +3,13 @@ extends Area2D
 
 signal on_death(this: EnemyCharacter)
 
+enum Type {
+	Worm,
+	Slime,
+	Wolf,
+	Invalid
+}
+
 @export var default_speed: float = 35.0
 @export var default_health: float = 100.0
 @export var default_mass: float = 0.05
@@ -12,8 +19,16 @@ signal on_death(this: EnemyCharacter)
 @export var default_attack_cooldown: float = 0.5
 @export var min_strength_scale: float = 0.5
 @export var max_strength_scale: float = 2.0
+@export_range(0, 100) var pickup_drop_chance: float = 10.0
 
-@export var drop_chance: int = 10 # out of 100
+@export var colors: Array[Gradient]
+@export var hit_sounds: Array[AudioStream]
+@export var death_sounds: Array[AudioStream]
+@export var collision_sizes: Array[Vector2] = [
+	Vector2(47.0, 50.0),
+	Vector2(40.0, 44.0),
+	Vector2(60.0, 35.0),
+]
 
 @onready var player: PlayerCharacter = get_tree().get_first_node_in_group("player")
 
@@ -25,27 +40,21 @@ var is_overlapping_with_player := false
 
 var is_dying := false
 
-var enemy_type_strings: Array = [
-	"worm",
-	"slime",
-	"wolf"
-]
-var type := ""
+var type := Type.Invalid
+
 
 func _ready() -> void:
-	# Randomize enemy scale
+	# Randomize strength
 	strength_scale = randf_range(min_strength_scale, max_strength_scale)
 	health = default_health * strength_scale
 	scale = Vector2(strength_scale, strength_scale)
 
-	# Randomize enemy sprite
-	type = enemy_type_strings[randi() % enemy_type_strings.size()]
-	$AnimatedSprite2D.play("%s_walk" % type, 1 / strength_scale)
-
-	# Randomize worm color
-	match type:
-		"worm": $AnimatedSprite2D.modulate = Color(0.861,0.666,0.702) if randi() % 2 == 0 else Color(0.865,0.63,0.448)
-		"slime": $AnimatedSprite2D.modulate = Color(0.551,0.75,0.158)
+	# Randomize visuals and sounds
+	type = randi() % (Type.values().size() - 1)
+	$AnimatedSprite2D.modulate = get_random_color()
+	$HitSFX.stream = hit_sounds[type]
+	$DeathSFX.stream = death_sounds[type]
+	$CollisionShape2D.shape.size = collision_sizes[type]
 
 	Events.on_enemy_spawned.emit(self)
 
@@ -75,6 +84,7 @@ func handle_movement(delta: float) -> void:
 	global_position = global_position.move_toward(target_position, speed * delta)
 
 	$AnimatedSprite2D.flip_h = target_position.x - position.x > 0
+	play_animation("walk", 1.0 / strength_scale)
 
 
 func handle_knockback(delta: float) -> void:
@@ -102,7 +112,8 @@ func take_hit(damage: float, knockback_strength: float) -> void:
 	else:
 		pending_knockback_strength += knockback_strength / strength_scale
 		$AnimationPlayer.play("hit_react")
-		$AnimatedSprite2D.play("%s_take_hit" % type)
+		play_animation("take_hit")
+		$HitSFX.play()
 
 
 func drop_pickup() -> void:
@@ -112,18 +123,23 @@ func drop_pickup() -> void:
 	get_tree().get_root().add_child(pickup)
 
 
-func start_dying(can_drop_pickup: bool = true) -> void:
-	assert(not is_dying)
-	if can_drop_pickup and randi() % 100 <= drop_chance:
+func randomize_pickup_drop() -> void:
+	if randi() % 100 <= pickup_drop_chance:
 		drop_pickup()
 
+func start_dying(can_drop_pickup: bool = true) -> void:
+	assert(not is_dying)
+	if can_drop_pickup:
+		randomize_pickup_drop()
+
 	on_death.emit(self)
-	is_dying = true	
+	is_dying = true
 
 	# Make sure this animation matches AnimationPlayer death animation
-	$AnimatedSprite2D.play("%s_death" % type)
+	play_animation("death")
+	$DeathSFX.play()
 	await $AnimatedSprite2D.animation_finished
-	
+
 	$AnimationPlayer.play("hit_react")
 	$AnimationPlayer.play("death")
 	await $AnimationPlayer.animation_finished
@@ -174,6 +190,19 @@ func should_move() -> bool:
 	return not is_dying and not Events.is_game_terminated
 
 
-func _on_animation_finished():
-	if $AnimatedSprite2D.animation != "%s_death" % type:
-		$AnimatedSprite2D.play("%s_walk" % type, 1 / strength_scale)
+func get_type_string() -> String:
+	match type:
+		Type.Worm: return "worm"
+		Type.Slime: return "slime"
+		Type.Wolf: return "wolf"
+	return "invalid"
+
+
+func get_random_color() -> Color:
+	var gradient := colors[type]
+	return gradient.sample(randf())
+
+
+func play_animation(animation_name: String, custom_speed: float = 1.0) -> void:
+	animation_name = get_type_string() + "_" + animation_name
+	$AnimatedSprite2D.play(animation_name, custom_speed)
