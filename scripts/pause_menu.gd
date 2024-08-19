@@ -7,12 +7,12 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if !Events.is_game_terminated and event.is_action_pressed("pause_game"):
+	if not Events.is_game_terminated and event.is_action_pressed("pause_game"):
 		toggle_pause_game()
 
 
 func toggle_pause_game() -> void:
-	get_tree().paused = !get_tree().paused
+	get_tree().paused = not get_tree().paused
 	show() if get_tree().paused else hide()
 
 
