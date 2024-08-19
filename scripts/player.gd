@@ -449,6 +449,7 @@ func get_attack_type_name(attack_type: AttackType) -> String:
 		AttackType.Swing: return "swing"
 		AttackType.Thrust: return "thrust"
 		AttackType.GroundPound: return "ground_pound"
+
 	return ""
 
 
@@ -682,6 +683,8 @@ func die() -> void:
 
 	# Drop any charging attack
 	clear_attack_data()
+
+	$DeathSFX.play()
 
 	$AnimatedSprite2D.play("death")
 	await $AnimatedSprite2D.animation_finished

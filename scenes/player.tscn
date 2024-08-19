@@ -1,4 +1,4 @@
-[gd_scene load_steps=134 format=3 uid="uid://c7kaxi3ghjur4"]
+[gd_scene load_steps=135 format=3 uid="uid://c7kaxi3ghjur4"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_r52mo"]
 [ext_resource type="Shader" path="res://content/shaders/motion_trail.gdshader" id="2_kw3n5"]
@@ -23,6 +23,7 @@
 [ext_resource type="Texture2D" uid="uid://tkdc1h2wyeho" path="res://content/sprites/player/swing_loop_atlas.png" id="11_m3iq6"]
 [ext_resource type="Texture2D" uid="uid://c7kd6p3usm42e" path="res://content/sprites/player/swing_start_atlas.png" id="12_tn08v"]
 [ext_resource type="AudioStream" uid="uid://b586k2ntf54yy" path="res://sfx/player_hurt.wav" id="19_7knlo"]
+[ext_resource type="AudioStream" uid="uid://oov6dnal1gfb" path="res://sfx/player_death.wav" id="24_rgulg"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_asjqi"]
 shader = ExtResource("2_kw3n5")
@@ -901,6 +902,10 @@ stream = ExtResource("5_6aufr")
 
 [node name="HurtSFX" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("19_7knlo")
+
+[node name="DeathSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("24_rgulg")
+volume_db = -13.0
 
 [node name="DashMotionTrailTimer" type="Timer" parent="."]
 
