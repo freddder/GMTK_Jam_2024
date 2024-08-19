@@ -66,7 +66,7 @@ func get_self_knockback_strength() -> float:
 
 
 func handle_movement(delta: float) -> void:
-	if not should_move():
+	if not should_move() or not player:
 		return
 
 	var speed := default_speed / strength_scale
