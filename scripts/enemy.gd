@@ -23,6 +23,8 @@ var strength_scale: float = 0.0
 var should_damage_player := true
 var is_overlapping_with_player := false
 
+var is_dying := false
+
 var enemy_type_strings: Array = [
 	"worm"
 ]
@@ -36,7 +38,7 @@ func _ready() -> void:
 	
 	# Randomize enemy sprite
 	type = enemy_type_strings[randi() % enemy_type_strings.size()]
-	$AnimatedSprite2D.play("%s_walk" % type)
+	$AnimatedSprite2D.play("%s_walk" % type, 1 / strength_scale)
 	
 	Events.on_enemy_spawned.emit(self)
 
@@ -84,9 +86,14 @@ func _physics_process(delta: float) -> void:
 
 
 func take_hit(damage: float, knockback_strength: float) -> void:
+	if is_dying: return
+	
 	health -= damage
 	if health <= 0:
-		die(true)
+		# Make sure this animation matches AnimationPlayer death animation
+		$AnimatedSprite2D.play("%s_death" % type)
+		$AnimationPlayer.play("death")
+		is_dying = true
 	else:
 		pending_knockback_strength += knockback_strength / strength_scale
 		$AnimatedSprite2D.play("%s_take_hit" % type)
@@ -128,7 +135,7 @@ func get_knockback_strength() -> float:
 
 
 func damage_player() -> void:
-	if not $AttackCooldownTimer.is_stopped():
+	if not $AttackCooldownTimer.is_stopped() or is_dying:
 		return
 
 	var knockback_force := global_position.direction_to(player.global_position) * get_knockback_strength()
@@ -144,9 +151,12 @@ func damage_player() -> void:
 
 
 func should_move() -> bool:
-	return not Events.is_game_terminated
+	return not is_dying and not Events.is_game_terminated
 
 
 func _on_animation_finished():
 	if $AnimatedSprite2D.animation != "%s_death" % type:
-		$AnimatedSprite2D.play("%s_walk" % type)
+		$AnimatedSprite2D.play("%s_walk" % type, 1 / strength_scale)
+	else:
+		die(true)
+	
