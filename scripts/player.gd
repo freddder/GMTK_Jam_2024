@@ -325,6 +325,12 @@ func handle_camera_view() -> void:
 	$Camera2D.offset = target_point - $Camera2D.global_position
 
 
+func handle_sprite_opacity() -> void:
+	# Changing "modulate.a" doesn't change the sprite opacity due to shader; this is a quick workaround
+	var shader: ShaderMaterial = $AnimatedSprite2D.material
+	shader.set_shader_parameter("opacity", modulate.a)
+
+
 func _process(delta: float) -> void:
 	if is_alive():
 		handle_mouse_direction()
@@ -332,6 +338,7 @@ func _process(delta: float) -> void:
 		handle_charging_sound()
 		handle_animation_side()
 		handle_camera_view()
+	handle_sprite_opacity()
 
 
 func set_camera_zoom(zoom: Vector2, duration: float = 0.2) -> void:
@@ -634,8 +641,12 @@ func die() -> void:
 	# Drop any charging attack
 	clear_attack_data()
 
-	# TODO replace with an actual animation
-	$AnimationPlayer.play("death")
+	$AnimatedSprite2D.play("death")
+	await $AnimatedSprite2D.animation_finished
+
+	# Fade out
+	var tween := get_tree().create_tween()
+	tween.tween_property(self, "modulate", Color(1.0, 1.0, 1.0, 0.0), 1.0)
 
 
 func is_alive() -> bool:
