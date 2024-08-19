@@ -26,7 +26,8 @@ var is_overlapping_with_player := false
 var is_dying := false
 
 var enemy_type_strings: Array = [
-	"worm"
+	"worm",
+	"slime"
 ]
 
 var type := ""
@@ -42,9 +43,9 @@ func _ready() -> void:
 	$AnimatedSprite2D.play("%s_walk" % type, 1 / strength_scale)
 
 	# Randomize worm color
-	if type == "worm":
-		var worm_color := Color(0.861,0.666,0.702) if randi() % 2 == 0 else Color(0.865,0.63,0.448)
-		$AnimatedSprite2D.modulate = worm_color
+	match type:
+		"worm": $AnimatedSprite2D.modulate = Color(0.861,0.666,0.702) if randi() % 2 == 0 else Color(0.865,0.63,0.448)
+		"slime": $AnimatedSprite2D.modulate = Color(0.551,0.75,0.158)
 
 	Events.on_enemy_spawned.emit(self)
 
@@ -117,14 +118,13 @@ func start_dying(can_drop_pickup: bool = true) -> void:
 		drop_pickup()
 
 	on_death.emit(self)
-
-	is_dying = true
-	$AnimationPlayer.play("hit_react")
+	is_dying = true	
 
 	# Make sure this animation matches AnimationPlayer death animation
 	$AnimatedSprite2D.play("%s_death" % type)
 	await $AnimatedSprite2D.animation_finished
-
+	
+	$AnimationPlayer.play("hit_react")
 	$AnimationPlayer.play("death")
 	await $AnimationPlayer.animation_finished
 
