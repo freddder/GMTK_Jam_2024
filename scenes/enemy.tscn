@@ -372,6 +372,7 @@ _data = {
 collision_layer = 4
 collision_mask = 3
 script = ExtResource("1_fhxv7")
+pickup_drop_chance = 15.0
 colors = Array[Gradient]([SubResource("Gradient_4luk5"), SubResource("Gradient_3y5ig"), SubResource("Gradient_pw3nv")])
 hit_sounds = Array[AudioStream]([ExtResource("2_dym8l"), ExtResource("3_uyugu"), ExtResource("6_pgywe")])
 death_sounds = Array[AudioStream]([ExtResource("2_dym8l"), ExtResource("5_v5y3h"), null])
