@@ -709,7 +709,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"swing_finish",
-"speed": 13.0
+"speed": 1.0
 }, {
 "frames": [{
 "duration": 1.0,
