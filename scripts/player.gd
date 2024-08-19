@@ -566,6 +566,9 @@ func can_dash() -> bool:
 
 
 func handle_dash_input(event: InputEvent) -> void:
+	if is_dashing:
+		return
+
 	var elapsed_time: float = ((Time.get_ticks_msec() - last_dash_end_time) / 1000.0
 		if last_dash_end_time > 0 else 9999)
 	var is_on_cooldown := default_dash_cooldown > elapsed_time
@@ -749,10 +752,15 @@ func _on_dash_motion_trail_timer_timeout() -> void:
 
 func activate_pickup(pickup: Pickup) -> void:
 	match pickup.pickup_type:
-		Pickup.Type.Heal: set_health(health + 20.0)
+		Pickup.Type.Heal: use_heal_pickup()
 		Pickup.Type.Wipe: wipe_enemies()
 
 	pickup.queue_free()
+
+
+func use_heal_pickup() -> void:
+	set_health(health + 20.0)
+	$HealSFX.play()
 
 
 func wipe_enemies() -> void:
