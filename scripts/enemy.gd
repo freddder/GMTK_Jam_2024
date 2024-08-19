@@ -140,7 +140,7 @@ func start_dying(can_drop_pickup: bool = true) -> void:
 	$DeathSFX.play()
 	await $AnimatedSprite2D.animation_finished
 
-	$AnimationPlayer.play("hit_react")
+	#$AnimationPlayer.play("hit_react")
 	$AnimationPlayer.play("death")
 	await $AnimationPlayer.animation_finished
 

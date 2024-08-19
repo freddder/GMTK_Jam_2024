@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=3 uid="uid://cnvwhtne2klh"]
+[gd_scene load_steps=54 format=3 uid="uid://cnvwhtne2klh"]
 
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1_fhxv7"]
 [ext_resource type="AudioStream" uid="uid://d4b242jhl5tp1" path="res://sfx/worm_death.wav" id="2_dym8l"]
@@ -11,6 +11,8 @@
 [ext_resource type="Texture2D" uid="uid://bx1uq2h7dhcap" path="res://content/sprites/enemies/wolf-walk.png" id="4_sp7fw"]
 [ext_resource type="AudioStream" uid="uid://cog8ogyus0j3s" path="res://sfx/slime_death.wav" id="5_v5y3h"]
 [ext_resource type="AudioStream" uid="uid://dugs4vousxa2p" path="res://sfx/wolf_hit.wav" id="6_pgywe"]
+[ext_resource type="Texture2D" uid="uid://ny5kmvpjk7ft" path="res://content/sprites/enemies/slime_puddle.png" id="7_jycwl"]
+[ext_resource type="Texture2D" uid="uid://dmwq2i8q2kqgr" path="res://content/sprites/enemies/Wolf_Fur.png" id="10_bikco"]
 
 [sub_resource type="Gradient" id="Gradient_4luk5"]
 colors = PackedColorArray(0.862745, 0.666667, 0.701961, 1, 0.866667, 0.631373, 0.447059, 1)
@@ -19,7 +21,7 @@ colors = PackedColorArray(0.862745, 0.666667, 0.701961, 1, 0.866667, 0.631373, 0
 colors = PackedColorArray(0.552941, 0.74902, 0.156863, 1, 0.112579, 0.847656, 0.795971, 1)
 
 [sub_resource type="Gradient" id="Gradient_pw3nv"]
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+colors = PackedColorArray(0.20871, 0.20871, 0.20871, 1, 0.737193, 0.737193, 0.737193, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jxo1k"]
 atlas = ExtResource("2_rb21c")
@@ -154,8 +156,11 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_idy0m")
 }, {
-"duration": 7.0,
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_b1nio")
+}, {
+"duration": 6.0,
+"texture": ExtResource("7_jycwl")
 }],
 "loop": false,
 "name": &"slime_death",
@@ -196,8 +201,11 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_bqr3v")
 }, {
-"duration": 3.0,
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_y2os7")
+}, {
+"duration": 4.0,
+"texture": ExtResource("10_bikco")
 }],
 "loop": false,
 "name": &"wolf_death",
@@ -250,8 +258,11 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_4fqql")
 }, {
-"duration": 13.0,
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_l4tsy")
+}, {
+"duration": 12.0,
+"texture": ExtResource("7_jycwl")
 }],
 "loop": false,
 "name": &"worm_death",
@@ -319,6 +330,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_586gi"]
 resource_name = "death"
+length = 2.0
 step = 0.0
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -327,7 +339,7 @@ tracks/0/path = NodePath(".:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
+"times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
@@ -367,7 +379,9 @@ death_sounds = Array[AudioStream]([ExtResource("2_dym8l"), ExtResource("5_v5y3h"
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_cfqfh")
-animation = &"wolf_walk"
+animation = &"worm_death"
+frame = 7
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_frqxi")
