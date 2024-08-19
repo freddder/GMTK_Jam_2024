@@ -27,9 +27,8 @@ var is_dying := false
 
 var enemy_type_strings: Array = [
 	"worm",
-	"slime"
+	"slime",
 ]
-
 var type := ""
 
 func _ready() -> void:

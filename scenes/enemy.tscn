@@ -1,10 +1,11 @@
-[gd_scene load_steps=35 format=3 uid="uid://cnvwhtne2klh"]
+[gd_scene load_steps=41 format=3 uid="uid://cnvwhtne2klh"]
 
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1_fhxv7"]
 [ext_resource type="Texture2D" uid="uid://bmkxb42nm58ja" path="res://content/sprites/enemies/worm-walk.png" id="2_i1qw3"]
 [ext_resource type="Texture2D" uid="uid://bxmptvhxnt8ri" path="res://content/sprites/enemies/slime-death.png" id="2_rb21c"]
 [ext_resource type="Texture2D" uid="uid://35itgysw6xfm" path="res://content/sprites/enemies/worm-death.png" id="2_wb7ea"]
 [ext_resource type="Texture2D" uid="uid://c8u2h2elhbxkx" path="res://content/sprites/enemies/slime-walk.png" id="3_1f3u2"]
+[ext_resource type="Texture2D" uid="uid://bx1uq2h7dhcap" path="res://content/sprites/enemies/wolf-walk.png" id="4_sp7fw"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jxo1k"]
 atlas = ExtResource("2_rb21c")
@@ -37,6 +38,26 @@ region = Rect2(128, 0, 128, 128)
 [sub_resource type="AtlasTexture" id="AtlasTexture_53jo8"]
 atlas = ExtResource("3_1f3u2")
 region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eof37"]
+atlas = ExtResource("4_sp7fw")
+region = Rect2(0, 0, 144, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_338tk"]
+atlas = ExtResource("4_sp7fw")
+region = Rect2(144, 0, 144, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1jvd5"]
+atlas = ExtResource("4_sp7fw")
+region = Rect2(288, 0, 144, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nuhnv"]
+atlas = ExtResource("4_sp7fw")
+region = Rect2(432, 0, 144, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j24ci"]
+atlas = ExtResource("4_sp7fw")
+region = Rect2(576, 0, 144, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_unlty"]
 atlas = ExtResource("2_wb7ea")
@@ -143,6 +164,26 @@ animations = [{
 }],
 "loop": true,
 "name": &"slime_walk",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eof37")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_338tk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1jvd5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nuhnv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j24ci")
+}],
+"loop": true,
+"name": &"wolf_walk",
 "speed": 5.0
 }, {
 "frames": [{
@@ -278,7 +319,8 @@ drop_chance = 100
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_cfqfh")
-animation = &"worm_take_hit"
+animation = &"wolf_walk"
+frame_progress = 0.783656
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-0.5, 1)
