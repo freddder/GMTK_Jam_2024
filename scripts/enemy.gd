@@ -41,6 +41,11 @@ func _ready() -> void:
 	type = enemy_type_strings[randi() % enemy_type_strings.size()]
 	$AnimatedSprite2D.play("%s_walk" % type, 1 / strength_scale)
 
+	# Randomize worm color
+	if type == "worm":
+		var worm_color := Color(0.861,0.666,0.702) if randi() % 2 == 0 else Color(0.865,0.63,0.448)
+		$AnimatedSprite2D.modulate = worm_color
+
 	Events.on_enemy_spawned.emit(self)
 
 
