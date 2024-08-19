@@ -363,6 +363,11 @@ func get_custom_offset() -> Vector2:
 	return return_value
 
 
+func get_custom_rotation_towards_cursor() -> float:
+	var vec := get_global_mouse_position() - global_position
+	return rad_to_deg(atan2(vec.y, vec.x) + PI / 2.0) * get_horizontal_flip()
+
+
 func get_custom_rotation() -> float:
 	var return_value := default_rotation
 	if player_sprite.animation == "swing_start":
@@ -372,11 +377,14 @@ func get_custom_rotation() -> float:
 	elif player_sprite.animation == "swing_finish":
 		return_value = swing_finish_animation_rotations[player_sprite.frame]
 	elif player_sprite.animation == "thrust_start":
-		return_value = thrust_start_animation_rotations[player_sprite.frame]
+#		return_value = thrust_start_animation_rotations[player_sprite.frame]
+		return_value = get_custom_rotation_towards_cursor()
 	elif player_sprite.animation == "thrust_loop":
-		return_value = thrust_loop_animation_rotations[player_sprite.frame]
+#		return_value = thrust_loop_animation_rotations[player_sprite.frame]
+		return_value = get_custom_rotation_towards_cursor()
 	elif player_sprite.animation == "thrust_finish":
-		return_value = thrust_finish_animation_rotations[player_sprite.frame]
+#		return_value = thrust_finish_animation_rotations[player_sprite.frame]
+		return_value = get_custom_rotation_towards_cursor()
 	elif player_sprite.animation == "ground_pound_start":
 		return_value = ground_pound_start_animation_rotations[player_sprite.frame]
 	elif player_sprite.animation == "ground_pound_loop":
