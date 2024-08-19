@@ -48,7 +48,7 @@ func get_self_knockback_strength() -> float:
 
 
 func handle_movement(delta: float) -> void:
-	if !should_move():
+	if not should_move():
 		return
 
 	var speed := default_speed / strength_scale
@@ -90,7 +90,7 @@ func drop_pickup() -> void:
 func die(can_drop_pickup: bool) -> void:
 	if can_drop_pickup and randi() % 100 <= drop_chance:
 		drop_pickup()
-	
+
 	on_death.emit(self)
 	queue_free()
 
@@ -115,7 +115,7 @@ func get_knockback_strength() -> float:
 
 
 func damage_player() -> void:
-	if !$AttackCooldownTimer.is_stopped():
+	if not $AttackCooldownTimer.is_stopped():
 		return
 
 	var knockback_force := global_position.direction_to(player.global_position) * get_knockback_strength()
@@ -131,4 +131,4 @@ func damage_player() -> void:
 
 
 func should_move() -> bool:
-	return !Events.is_game_terminated
+	return not Events.is_game_terminated

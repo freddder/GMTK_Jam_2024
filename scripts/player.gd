@@ -57,6 +57,8 @@ enum AttackType {
 var mouse_direction_angle_rad: float = 0.0
 var attack_charge_start_time: float = 0.0
 var charging_attack_type := AttackType.Invalid
+var wants_release_attack := false
+var can_release_attack := true
 
 var active_attack_zone_data: AttackZoneData
 var attack_area_color := Color.RED
@@ -68,13 +70,13 @@ var last_non_zero_movement_direction := Vector2.ZERO
 var pending_knockback_forces: Array[Vector2]
 
 var last_attack_end_time: Dictionary = {
-	AttackType.Swing: -2.0,
-	AttackType.Thrust: -2.0,
-	AttackType.GroundPound: -2.0,
+	AttackType.Swing: 0.0,
+	AttackType.Thrust: 0.0,
+	AttackType.GroundPound: 0.0,
 }
 
-var last_dash_start_time: float = -2.0
-var last_dash_end_time: float = -2.0
+var last_dash_start_time: float = 0.0
+var last_dash_end_time: float = 0.0
 var is_dashing := false
 var dash_direction := Vector2.ZERO
 
@@ -93,7 +95,7 @@ func handle_regular_movement(delta: float) -> void:
 	var velocity := move_direction * walk_speed * delta
 	position += velocity
 
-	if !velocity.is_zero_approx():
+	if not velocity.is_zero_approx():
 		last_non_zero_movement_direction = move_direction
 		$AnimatedSprite2D.play("run")
 	else:
@@ -104,7 +106,7 @@ func handle_dash_movement(delta: float) -> bool:
 	var dashing_time := (Time.get_ticks_msec() - last_dash_start_time) / 1000.0
 	var dashing_remaining_time := default_dash_duration - dashing_time
 	is_dashing = dashing_remaining_time > 0.0
-	if !is_dashing:
+	if not is_dashing:
 		on_dash_finished()
 		return false
 
@@ -349,6 +351,9 @@ func clear_attack_data() -> void:
 	active_attack_zone_data = null
 	charging_attack_type = AttackType.Invalid
 
+	wants_release_attack = false
+	can_release_attack = true
+
 	# Clear whatever we have drawn so far
 	queue_redraw()
 
@@ -356,12 +361,28 @@ func clear_attack_data() -> void:
 	set_camera_zoom(default_camera_zoom, 0.4)
 
 
-func on_attack_started_charging(attack_type: AttackType) -> void:
-	# TODO: replace with attack animation
-	$AnimatedSprite2D.play("idle")
+func play_attack_animation_start(attack_type: AttackType) -> void:
+	var animation_name_prefix := get_attack_type_name(attack_type)
+	if animation_name_prefix.is_empty():
+		$AnimatedSprite2D.play("idle")
+		return
 
+	can_release_attack = false
+	$AnimatedSprite2D.play(animation_name_prefix + "_start")
+
+	await $AnimatedSprite2D.animation_finished
+
+	can_release_attack = true
+	if not wants_release_attack:
+		$AnimatedSprite2D.play(animation_name_prefix + "_loop")
+	else:
+		on_attack_released()
+
+
+func on_attack_started_charging(attack_type: AttackType) -> void:
 	charging_attack_type = attack_type
 	attack_charge_start_time = Time.get_ticks_msec()
+	play_attack_animation_start(charging_attack_type)
 
 
 func save_attack_end_time() -> void:
@@ -376,79 +397,105 @@ func handle_sound_on_attack_release() -> void:
 		AttackType.GroundPound: pass
 
 
+func get_attack_type_name(attack_type: AttackType) -> String:
+	match attack_type:
+		AttackType.Swing: return "" #"swing"
+		AttackType.Thrust: return "thrust"
+		AttackType.GroundPound: return "ground_pound"
+	return ""
+
+
+func play_attack_release_animation() -> void:
+	if charging_attack_type != AttackType.Invalid:
+		var animation_name := get_attack_type_name(charging_attack_type) + "_finish"
+		if animation_name != "_finish":
+			$AnimatedSprite2D.play(animation_name)
+			await $AnimatedSprite2D.animation_finished
+		on_attack_animations_finished()
+
+
+func get_attack_finish_release_delay() -> float:
+	match charging_attack_type:
+		AttackType.Swing: return 0.0
+		AttackType.Thrust: return 0.28
+		AttackType.GroundPound: return 0.28
+	return 0.0
+
+
 func on_attack_released() -> void:
-	save_attack_end_time()
 	handle_sound_on_attack_release()
+	play_attack_release_animation()
+
+	# If we have to deal damage during the animation, not when it's done, this is going to help us;
+	# it acts like anim notifies in UE
+	await get_tree().create_timer(get_attack_finish_release_delay()).timeout
+	on_attack_animations_finished()
+
+
+func on_attack_animations_finished() -> void:
+	if charging_attack_type == AttackType.Invalid:
+		return
+
+	match charging_attack_type:
+		AttackType.Swing: release_primary_attack()
+		AttackType.Thrust: release_secondary_attack()
+		AttackType.GroundPound: release_heavy_attack()
+
+	save_attack_end_time()
 	clear_attack_data()
 
 
-func handle_primary_attack_input(event: InputEvent) -> void:
-	var attack_type := AttackType.Swing
-	var action_name := "primary_attack"
-	if (!is_charging_attack()
-		&& !is_attack_on_cooldown(attack_type)
-		&& event.is_action_pressed(action_name)):
+func release_primary_attack() -> void:
+	var attack_circle_shape := CircleShape2D.new()
+	wants_release_attack = false
+	$AttackShapeCast2D.shape = attack_circle_shape
+	attack_circle_shape.radius = active_attack_zone_data.radius
+
+	$AttackShapeCast2D.force_shapecast_update()
+	for collider_index in $AttackShapeCast2D.get_collision_count():
+		var enemy := $AttackShapeCast2D.get_collider(collider_index) as EnemyCharacter
+		var direction_to := global_position.direction_to(enemy.global_position)
+		var angle_to := atan2(direction_to.y, direction_to.x) + PI / 2.0
+		if active_attack_zone_data.start_angle <= angle_to && active_attack_zone_data.end_angle >= angle_to:
+			enemy.take_hit(scale_damage(default_swing_damage), scale_knockback(default_swing_knockback_strength))
+
+
+func handle_generic_attack_input(event: InputEvent, attack_type: AttackType, action_name: String) -> void:
+	if (event.is_action_pressed(action_name) and not is_charging_attack()
+		and not is_attack_on_cooldown(attack_type)):
 		on_attack_started_charging(attack_type)
 
-	if charging_attack_type == attack_type && event.is_action_released(action_name):
-		var attack_circle_shape := CircleShape2D.new()
-		$AttackShapeCast2D.shape = attack_circle_shape
-		attack_circle_shape.radius = active_attack_zone_data.radius
-
-		$AttackShapeCast2D.force_shapecast_update()
-		for collider_index in $AttackShapeCast2D.get_collision_count():
-			var enemy := $AttackShapeCast2D.get_collider(collider_index) as EnemyCharacter
-			var direction_to := global_position.direction_to(enemy.global_position)
-			var angle_to := atan2(direction_to.y, direction_to.x) + PI / 2.0
-			if active_attack_zone_data.start_angle <= angle_to && active_attack_zone_data.end_angle >= angle_to:
-				enemy.take_hit(scale_damage(default_swing_damage), scale_knockback(default_swing_knockback_strength))
+	if charging_attack_type == attack_type and event.is_action_released(action_name):
+		if not can_release_attack:
+			wants_release_attack = true
+			return
 
 		on_attack_released()
 
 
-func handle_secondary_attack_input(event: InputEvent) -> void:
-	var attack_type := AttackType.Thrust
-	var action_name := "secondary_attack"
-	if (!is_charging_attack()
-		&& !is_attack_on_cooldown(attack_type)
-		&& event.is_action_pressed(action_name)):
-		on_attack_started_charging(attack_type)
+func release_secondary_attack() -> void:
+	var attack_rectangle_shape := RectangleShape2D.new()
+	$AttackShapeCast2D.shape = attack_rectangle_shape
+	var angle := active_attack_zone_data.angle - PI / 2.0
+	$AttackShapeCast2D.position = Vector2(cos(angle), sin(angle)) * active_attack_zone_data.radius / 2.0
+	$AttackShapeCast2D.rotation = active_attack_zone_data.angle
+	attack_rectangle_shape.size = Vector2(active_attack_zone_data.thickness, active_attack_zone_data.radius)
 
-	if charging_attack_type == attack_type && event.is_action_released(action_name):
-		var attack_rectangle_shape := RectangleShape2D.new()
-		$AttackShapeCast2D.shape = attack_rectangle_shape
-		var angle := active_attack_zone_data.angle - PI / 2.0
-		$AttackShapeCast2D.position = Vector2(cos(angle), sin(angle)) * active_attack_zone_data.radius / 2.0
-		$AttackShapeCast2D.rotation = active_attack_zone_data.angle
-		attack_rectangle_shape.size = Vector2(active_attack_zone_data.thickness, active_attack_zone_data.radius)
-
-		$AttackShapeCast2D.force_shapecast_update()
-		for collider_index in $AttackShapeCast2D.get_collision_count():
-			var collider := $AttackShapeCast2D.get_collider(collider_index) as EnemyCharacter
-			collider.take_hit(scale_damage(default_thrust_damage), scale_knockback(default_thrust_knockback_strength))
-
-		on_attack_released()
+	$AttackShapeCast2D.force_shapecast_update()
+	for collider_index in $AttackShapeCast2D.get_collision_count():
+		var collider := $AttackShapeCast2D.get_collider(collider_index) as EnemyCharacter
+		collider.take_hit(scale_damage(default_thrust_damage), scale_knockback(default_thrust_knockback_strength))
 
 
-func handle_heavy_attack_input(event: InputEvent) -> void:
-	var attack_type := AttackType.GroundPound
-	var action_name := "heavy_attack"
-	if (!is_charging_attack()
-		&& !is_attack_on_cooldown(attack_type)
-		&& event.is_action_pressed(action_name)):
-		on_attack_started_charging(attack_type)
+func release_heavy_attack() -> void:
+	var attack_circle_shape := CircleShape2D.new()
+	$AttackShapeCast2D.shape = attack_circle_shape
+	attack_circle_shape.radius = active_attack_zone_data.radius
 
-	if charging_attack_type == attack_type && event.is_action_released(action_name):
-		var attack_circle_shape := CircleShape2D.new()
-		$AttackShapeCast2D.shape = attack_circle_shape
-		attack_circle_shape.radius = active_attack_zone_data.radius
-
-		$AttackShapeCast2D.force_shapecast_update()
-		for collider_index in $AttackShapeCast2D.get_collision_count():
-			var collider := $AttackShapeCast2D.get_collider(collider_index) as EnemyCharacter
-			collider.take_hit(scale_damage(default_ground_pound_damage), scale_knockback(default_ground_pound_knockback_strength))
-
-		on_attack_released()
+	$AttackShapeCast2D.force_shapecast_update()
+	for collider_index in $AttackShapeCast2D.get_collision_count():
+		var collider := $AttackShapeCast2D.get_collider(collider_index) as EnemyCharacter
+		collider.take_hit(scale_damage(default_ground_pound_damage), scale_knockback(default_ground_pound_knockback_strength))
 
 
 func can_dash() -> bool:
@@ -456,13 +503,14 @@ func can_dash() -> bool:
 
 
 func handle_dash_input(event: InputEvent) -> void:
-	var elapsed_time := (Time.get_ticks_msec() - last_dash_end_time) / 1000.0
+	var elapsed_time: float = ((Time.get_ticks_msec() - last_dash_end_time) / 1000.0
+		if last_dash_end_time > 0 else 9999)
 	var is_on_cooldown := default_dash_cooldown > elapsed_time
 	if is_on_cooldown:
 		return
 
 	dash_direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	if !dash_direction.is_zero_approx():
+	if not dash_direction.is_zero_approx():
 		on_dash_started()
 
 
@@ -483,26 +531,29 @@ func on_dash_finished() -> void:
 
 func can_attack() -> bool:
 	return (is_alive()
-		and not ($AnimatedSprite2D.animation == "hit_react" and $AnimatedSprite2D.is_playing()))
+		and not ($AnimatedSprite2D.animation == "hit_react" and $AnimatedSprite2D.is_playing())
+		and not is_playing_attack_finish_animation())
 
 
 func _input(event: InputEvent) -> void:
 	if can_attack():
-		if event.is_action("primary_attack"):
-			handle_primary_attack_input(event)
-		elif event.is_action("secondary_attack"):
-			handle_secondary_attack_input(event)
-		elif event.is_action("heavy_attack"):
-			handle_heavy_attack_input(event)
+		handle_generic_attack_input(event, AttackType.Swing, "primary_attack")
+		handle_generic_attack_input(event, AttackType.Thrust, "secondary_attack")
+		handle_generic_attack_input(event, AttackType.GroundPound, "heavy_attack")
 
 	if can_dash():
 		if event.is_action_pressed("dash"):
 			handle_dash_input(event)
 
 
+func is_playing_attack_finish_animation() -> bool:
+	return $AnimatedSprite2D.is_playing() and $AnimatedSprite2D.animation.contains("_finish")
+
+
 func should_move() -> bool:
 	return (is_alive() and not is_charging_attack()
-		and not ($AnimatedSprite2D.animation == "hit_react" and $AnimatedSprite2D.is_playing()))
+		and not ($AnimatedSprite2D.animation == "hit_react" and $AnimatedSprite2D.is_playing())
+		and not is_playing_attack_finish_animation())
 
 
 func is_charging_attack() -> bool:
@@ -520,7 +571,7 @@ func get_charge_power() -> float:
 
 
 func get_charging_time_seconds() -> float:
-	return 0.0 if !is_charging_attack() else (Time.get_ticks_msec() - attack_charge_start_time) / 1000.0
+	return 0.0 if not is_charging_attack() else (Time.get_ticks_msec() - attack_charge_start_time) / 1000.0
 
 
 func scale_damage(damage: float) -> float:
@@ -533,7 +584,8 @@ func scale_knockback(knockback_strength: float) -> float:
 
 func get_elapsed_time_since_attack_end(attack_type: AttackType) -> float:
 	assert(last_attack_end_time.has(attack_type))
-	return (Time.get_ticks_msec() - last_attack_end_time.get(attack_type)) / 1000.0
+	var end_time = last_attack_end_time.get(attack_type)
+	return (Time.get_ticks_msec() - end_time) / 1000.0 if end_time > 0 else 9999.9
 
 
 func get_attack_type_cooldown(attack_type: AttackType) -> float:
@@ -557,7 +609,7 @@ func take_hit(damage: float, knockback_force: Vector2) -> void:
 	$HurtSFX.play()
 	set_health(health - damage)
 	if is_alive():
-		if $AnimatedSprite2D.animation != "hit_react":
+		if not is_charging_attack() and $AnimatedSprite2D.animation != "hit_react":
 			$AnimatedSprite2D.play("hit_react")
 		pending_knockback_forces.push_back(knockback_force)
 
@@ -634,6 +686,4 @@ func activate_pickup(pickup: Pickup) -> void:
 func wipe_enemies() -> void:
 	var wipe_area_scene: PackedScene = load("res://scenes/wipe_area.tscn")
 	var wipe_area := wipe_area_scene.instantiate()
-#	wipe_area.global_position = global_position
-#	get_tree().get_root().add_child(wipe_area)
 	add_child(wipe_area)

@@ -24,10 +24,10 @@ func get_spawn_timer_delay() -> float:
 	return (1.0 / spawn_rate) * spawn_rate_multiplier
 
 func can_spawn_enemy() -> bool:
-	return $SpawnTimer.is_stopped() && should_spawn_enemies && enemy_limit > enemy_count
+	return $SpawnTimer.is_stopped() and should_spawn_enemies and enemy_limit > enemy_count
 
 func try_spawn_enemy() -> void:
-	if !can_spawn_enemy():
+	if not can_spawn_enemy():
 		return
 
 	$SpawnTimer.start(get_spawn_timer_delay())
