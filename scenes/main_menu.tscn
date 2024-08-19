@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://d04rb4qsoiyfe"]
+[gd_scene load_steps=9 format=3 uid="uid://d04rb4qsoiyfe"]
 
 [ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_e5ys8"]
 [ext_resource type="Theme" uid="uid://bkbdw0jadsuqp" path="res://content/ui/default_theme.tres" id="1_mnbn2"]
+[ext_resource type="Texture2D" uid="uid://b61m5ygna3b1" path="res://content/ui/TitleCard.png" id="2_xmcm2"]
 [ext_resource type="PackedScene" uid="uid://dj3c2202x78v7" path="res://scenes/settings_menu.tscn" id="3_lrfn7"]
 [ext_resource type="AudioStream" uid="uid://yvp61qar4qc" path="res://music/intro-theme.wav" id="3_o4xmn"]
 [ext_resource type="FontFile" uid="uid://bi0gex0agxwfh" path="res://content/fonts/Adumu.ttf" id="4_gpti7"]
@@ -14,6 +15,13 @@ events = [SubResource("InputEventAction_ako2q")]
 
 [node name="MainMenu" type="Node"]
 script = ExtResource("1_e5ys8")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(640, 362)
+scale = Vector2(0.51727, 0.400833)
+texture = ExtResource("2_xmcm2")
+
+[node name="SettingsMenu" parent="." instance=ExtResource("3_lrfn7")]
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
@@ -54,8 +62,6 @@ theme = ExtResource("1_mnbn2")
 theme_override_fonts/font = ExtResource("4_gpti7")
 text = "Exit
 "
-
-[node name="SettingsMenu" parent="." instance=ExtResource("3_lrfn7")]
 
 [node name="MenuTheme" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_o4xmn")
