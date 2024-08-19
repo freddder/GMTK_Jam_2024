@@ -15,6 +15,8 @@ enum AttackType {
 	GroundPound,
 }
 
+signal health_changed
+
 @export var default_walk_speed: float = 300.0
 @export var default_camera_zoom := Vector2(1.2, 1.2)
 @export var knockback_limit: float = 1000.0
@@ -685,6 +687,7 @@ func take_hit(damage: float, knockback_force: Vector2) -> void:
 
 func set_health(_health: float) -> void:
 	health = clampf(_health, 0.0, default_health)
+	health_changed.emit()
 	print("Player health: ", health)
 	if health <= 0:
 		die()
