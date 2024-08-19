@@ -59,6 +59,7 @@ var attack_charge_start_time: float = 0.0
 var charging_attack_type := AttackType.Invalid
 var wants_release_attack := false
 var can_release_attack := true
+var is_attack_animation_ongoing := false
 
 var active_attack_zone_data: AttackZoneData
 var attack_area_color := Color.RED
@@ -240,7 +241,7 @@ func handle_mouse_direction() -> void:
 
 
 func get_facing_direction() -> int:
-	if is_charging_attack():
+	if is_attack_animation_ongoing:
 		return -sign(global_position.x - get_global_mouse_position().x)
 
 	var move_direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
@@ -387,6 +388,7 @@ func play_attack_animation_start(attack_type: AttackType) -> void:
 
 
 func on_attack_started_charging(attack_type: AttackType) -> void:
+	is_attack_animation_ongoing = true
 	charging_attack_type = attack_type
 	attack_charge_start_time = Time.get_ticks_msec()
 	play_attack_animation_start(charging_attack_type)
@@ -418,6 +420,8 @@ func play_attack_release_animation() -> void:
 		if animation_name != "_finish":
 			$AnimatedSprite2D.play(animation_name)
 			await $AnimatedSprite2D.animation_finished
+
+		is_attack_animation_ongoing = false
 		on_attack_animations_finished()
 
 
