@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://d3r2laa2t1r8c"
-path="res://.godot/imported/enemy_hit.wav-4895823b39b6bd6ce1d9467499c65418.sample"
+uid="uid://dugs4vousxa2p"
+path="res://.godot/imported/wolf_hit.wav-98e5fa20846f279d28032e4ddecd6e91.sample"
 
 [deps]
 
-source_file="res://sfx/enemy_hit.wav"
-dest_files=["res://.godot/imported/enemy_hit.wav-4895823b39b6bd6ce1d9467499c65418.sample"]
+source_file="res://sfx/wolf_hit.wav"
+dest_files=["res://.godot/imported/wolf_hit.wav-98e5fa20846f279d28032e4ddecd6e91.sample"]
 
 [params]
 
