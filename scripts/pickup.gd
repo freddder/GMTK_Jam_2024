@@ -4,12 +4,14 @@ extends Node2D
 enum Type {
 	Heal,
 	Wipe,
+	Haste,
 	Invalid, # Always leave invalid as last
 }
 
 @export var drop_chances: Gradient
 @export var heal_icon: Texture2D = preload("res://content/sprites/pickups/pickup_heal.png")
 @export var wipe_icon: Texture2D = preload("res://content/sprites/pickups/pickup_wipe.png")
+@export var haste_icon: Texture2D = preload("res://content/sprites/pickups/pickup_haste.png")
 
 @onready var player: PlayerCharacter = get_tree().get_first_node_in_group("player")
 
@@ -24,6 +26,7 @@ func _ready() -> void:
 	match type:
 		Type.Heal: $Sprite2D.set_texture(heal_icon)
 		Type.Wipe: $Sprite2D.set_texture(wipe_icon)
+		Type.Haste: $Sprite2D.set_texture(haste_icon)
 
 	modulate = Color.TRANSPARENT
 	var tween := get_tree().create_tween()

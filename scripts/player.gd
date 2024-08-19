@@ -19,6 +19,7 @@ signal health_changed
 
 @export var default_walk_speed: float = 300.0
 @export var default_camera_zoom := Vector2(1.2, 1.2)
+@export var min_camera_zoom := Vector2(0.7, 0.7)
 @export var knockback_limit: float = 1000.0
 @export var default_health: float = 100.0
 @export var camera_offset_distance_from_arena_bounds: float = 250.0
@@ -45,9 +46,10 @@ signal health_changed
 @export var default_ground_pound_cooldown: float = 2.0
 
 @export_category("Charge")
-@export var charge_speed: float = 1.0
-@export var charge_exp: float = 0.6
+@export var charge_speed: float = 0.2
 @export var charge_delay: float = 0.5
+@export var charge_boost_power: float = 1.3
+@export var seconds_for_charge_boost: float = 10.0
 
 @export_category("Dash")
 @export var default_dash_duration: float = 0.3
@@ -55,9 +57,21 @@ signal health_changed
 @export var default_dash_cooldown: float = 0.4
 @export var dash_motion_trail_copy_lifespan: float = 0.2
 @export var dash_motion_trail_creation_cooldown: float = 0.02
+@export var dash_motion_trail_color := Color(0.0, 0.0, 0.8, 0.3)
+@export var dash_motion_trail_mix_color: float = 0.7
 
 @export_category("Camera Shake")
 @export var shake_scale_rate: float = 500.0
+@export var shake_scale_delay: float = 3.0
+
+@export_category("Haste")
+@export var haste_duration: float = 10.0
+@export var haste_move_speed_multiplier : float = 1.6
+@export var haste_dash_speed_multiplier: float = 1.6
+@export var haste_charge_speed_multiplier: float = 2.0
+@export var haste_motion_trail_creation_cooldown: float = 0.06
+@export var haste_motion_trail_color := Color(0.0, 0.78, 0.8, 0.3)
+@export var haste_motion_trail_mix_color: float = 0.7
 
 @onready var noise_rand := RandomNumberGenerator.new()
 @onready var game_hud := get_parent().find_child("GameHUD") as GameHUD
@@ -75,6 +89,7 @@ var attack_area_width: float = 2.0
 var attack_area_arc_segments: float = 0.0
 
 var health := default_health
+var _charge_power: float = 0.0
 var last_non_zero_movement_direction := Vector2.ZERO
 var pending_knockback_forces: Array[Vector2]
 
@@ -107,7 +122,8 @@ func _ready() -> void:
 
 func handle_regular_movement(delta: float) -> void:
 	var move_direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	var walk_speed := default_walk_speed
+	var walk_speed_multiplier := haste_move_speed_multiplier if is_haste_active() else 1.0
+	var walk_speed := default_walk_speed * walk_speed_multiplier
 	var velocity := move_direction * walk_speed * delta
 	position += velocity
 
@@ -126,7 +142,9 @@ func handle_dash_movement(delta: float) -> bool:
 		on_dash_finished()
 		return false
 
-	position += dash_direction * default_dash_speed * delta
+	var dash_speed_multiplier := haste_move_speed_multiplier if is_haste_active() else 1.0
+	var dash_speed := default_dash_speed * dash_speed_multiplier
+	position += dash_direction * dash_speed * delta
 	return true
 
 
@@ -317,9 +335,23 @@ func handle_attack_zone() -> void:
 
 	if is_charging_attack():
 		var zoom_power := get_charge_power() - 1.0
-		var additional_zoom := log(zoom_power * 0.2 + 1.0) / log(5.0)
+		var additional_zoom := log(zoom_power * 0.2 + 1.0) / log(10.0)
 		var camera_zoom := default_camera_zoom - Vector2(additional_zoom, additional_zoom)
 		set_camera_zoom(camera_zoom, 0.0)
+
+
+func handle_charging(delta: float) -> void:
+	if not is_charging_attack():
+		_charge_power = 1.0
+
+	if not is_charge_post_delay():
+		return
+
+	# Haste buff
+	var charge_speed_multiplier := haste_charge_speed_multiplier if is_haste_active() else 1.0
+
+	var additional_charge := charge_speed * charge_speed_multiplier
+	_charge_power += additional_charge * delta
 
 
 func handle_interpolated_charging(delta: float) -> void:
@@ -359,7 +391,8 @@ func handle_camera_view(delta: float) -> void:
 	var target_point := minf(max_distance_from_centre, distance_from_center) * direction
 	$Camera2D.offset = target_point - $Camera2D.global_position
 
-	if get_charging_time_seconds() < 3.0: return
+	if shake_scale_delay > get_charging_time_seconds():
+		return
 
 	shake_strength = lerpf(0.0, interpolated_power, shake_scale_rate * delta)
 	if is_attack_animation_ongoing and interpolated_power > 1.0:
@@ -373,6 +406,7 @@ func handle_sprite_opacity() -> void:
 
 
 func _process(delta: float) -> void:
+	handle_charging(delta)
 	handle_interpolated_charging(delta)
 	handle_camera_view(delta)
 	handle_charging_visual_effects()
@@ -381,10 +415,14 @@ func _process(delta: float) -> void:
 		handle_attack_zone()
 		handle_charging_sound()
 		handle_animation_side()
+
 	handle_sprite_opacity()
 
 
 func set_camera_zoom(zoom: Vector2, duration: float = 0.2) -> void:
+	zoom.x = max(zoom.x, min_camera_zoom.x)
+	zoom.y = max(zoom.y, min_camera_zoom.y)
+
 	if duration > 0.0:
 		var tween := get_tree().create_tween()
 		tween.tween_property($Camera2D, "zoom", zoom, duration)
@@ -619,8 +657,8 @@ func _input(event: InputEvent) -> void:
 		if event.is_action_pressed("dash"):
 			handle_dash_input(event)
 
-	if event.is_action_pressed("wipe"):
-		wipe_enemies()
+	if event.is_action_pressed("debug"):
+		activate_haste()
 
 
 func is_playing_attack_finish_animation() -> bool:
@@ -637,14 +675,25 @@ func is_charging_attack() -> bool:
 	return charging_attack_type != AttackType.Invalid
 
 
+func is_charge_post_delay() -> bool:
+	return get_charging_time_seconds() > charge_delay
+
+
 func get_charge_power() -> float:
-	var charge_power: float = 1.0
+	var additional_power: float = 0.0
 
-	var charge_time := get_charging_time_seconds()
-	if charge_time > charge_delay:
-		charge_power *= pow(get_charging_time_seconds() * charge_speed, charge_exp)
+	var charging_time := get_charging_time_seconds()
+	if charging_time >= seconds_for_charge_boost:
+		var base := charging_time - seconds_for_charge_boost
+		additional_power = pow(base, charge_boost_power)
 
-	return maxf(1.0, charge_power)
+	# This should make the beginning of the charge be a little bit faster
+	var warm_up: float = clamp(log(get_charging_time_seconds() + 1) * 0.1, 0.0, 0.4)
+	additional_power += warm_up
+	print(warm_up)
+
+	#	print(_charge_power, " ", additional_power)
+	return _charge_power + additional_power
 
 
 func get_charging_time_seconds() -> float:
@@ -694,14 +743,11 @@ func take_hit(damage: float, knockback_force: Vector2) -> void:
 func set_health(_health: float) -> void:
 	health = clampf(_health, 0.0, default_health)
 	health_changed.emit()
-	print("Player health: ", health)
 	if health <= 0:
 		die()
 
 
 func die() -> void:
-	Events.on_player_death.emit()
-
 	# Don't play any knockback since we're dead
 	pending_knockback_forces.clear()
 
@@ -709,8 +755,12 @@ func die() -> void:
 	collision_mask = 0
 	collision_layer = 0
 
+	$HasteTimer.stop()
+
 	# Drop any charging attack
 	clear_attack_data()
+
+	Events.on_player_death.emit()
 
 	$DeathSFX.play()
 
@@ -734,20 +784,21 @@ func is_invincible() -> bool:
 	return is_alive() and is_dashing
 
 
-func create_motion_trail_copy() -> void:
+func create_motion_trail_copy(color: Color, mix_color: float) -> void:
 	var sprite: Sprite2D = Sprite2D.new()
 	sprite.texture = $AnimatedSprite2D.sprite_frames.get_frame_texture(
 		$AnimatedSprite2D.animation, $AnimatedSprite2D.frame)
 
 	var shader: ShaderMaterial = $AnimatedSprite2D.material.duplicate()
-	shader.set_shader_parameter("opacity", 0.3)
-	shader.set_shader_parameter("r", 0.0)
-	shader.set_shader_parameter("g", 0.0)
-	shader.set_shader_parameter("b", 0.8)
-	shader.set_shader_parameter("mix_color", 0.7)
+	shader.set_shader_parameter("r", color.r)
+	shader.set_shader_parameter("g", color.g)
+	shader.set_shader_parameter("b", color.b)
+	shader.set_shader_parameter("opacity", color.a)
+	shader.set_shader_parameter("mix_color", mix_color)
 	sprite.material = shader
 
-	sprite.global_position = global_position
+	sprite.global_position = $AnimatedSprite2D.global_position
+	sprite.flip_h = $AnimatedSprite2D.flip_h
 	sprite.z_index = z_index - 1
 
 	get_parent().add_child(sprite)
@@ -756,13 +807,14 @@ func create_motion_trail_copy() -> void:
 
 
 func _on_dash_motion_trail_timer_timeout() -> void:
-	create_motion_trail_copy()
+	create_motion_trail_copy(dash_motion_trail_color, dash_motion_trail_mix_color)
 
 
 func activate_pickup(pickup: Pickup) -> void:
 	match pickup.type:
 		Pickup.Type.Heal: use_heal_pickup()
 		Pickup.Type.Wipe: wipe_enemies()
+		Pickup.Type.Haste: activate_haste()
 
 	pickup.queue_free()
 
@@ -776,3 +828,20 @@ func wipe_enemies() -> void:
 	var wipe_area_scene: PackedScene = load("res://scenes/wipe_area.tscn")
 	var wipe_area := wipe_area_scene.instantiate()
 	add_child(wipe_area)
+
+
+func activate_haste() -> void:
+	$HasteTimer.start(haste_duration)
+	$HasteTrailTimer.start(haste_motion_trail_creation_cooldown)
+
+
+func is_haste_active() -> bool:
+	return not $HasteTimer.is_stopped()
+
+
+func _on_haste_timer_timeout() -> void:
+	$HasteTrailTimer.stop()
+
+
+func _on_haste_trail_timer_timeout() -> void:
+	create_motion_trail_copy(haste_motion_trail_color, haste_motion_trail_mix_color)
