@@ -46,9 +46,9 @@ var type := Type.Invalid
 
 func _ready() -> void:
 	# Randomize strength
-	strength_scale = randf_range(min_strength_scale, max_strength_scale)
-	health = default_health * strength_scale
+	strength_scale = randf_range(min_strength_scale, max_strength_scale) * get_free_play_size_scale()
 	scale = Vector2(strength_scale, strength_scale)
+	health = default_health * strength_scale * get_free_play_health_scale()
 
 	# Randomize visuals and sounds
 	type = randi() % (Type.values().size() - 1)
@@ -108,11 +108,11 @@ func take_hit(damage: float, knockback_strength: float) -> void:
 		return
 
 	health -= damage
+	$AnimationPlayer.play("hit_react")
 	if health <= 0:
 		start_dying()
 	else:
 		pending_knockback_strength += knockback_strength / strength_scale
-		$AnimationPlayer.play("hit_react")
 		play_animation("take_hit")
 		$HitSFX.play()
 
@@ -163,7 +163,7 @@ func _on_area_exited(area: Area2D) -> void:
 
 
 func get_damage() -> float:
-	return default_damage * strength_scale
+	return default_damage * strength_scale * get_free_play_damage_scale()
 
 
 func get_knockback_strength() -> float:
@@ -206,3 +206,22 @@ func get_random_color() -> Color:
 func play_animation(animation_name: String, custom_speed: float = 1.0) -> void:
 	animation_name = get_type_string() + "_" + animation_name
 	$AnimatedSprite2D.play(animation_name, custom_speed)
+
+
+func _get_free_play_base_scale(scalar: float) -> float:
+	return 1.0 + log(FreePlayManager.get_scale() + 1.0) * scalar
+
+
+func get_free_play_health_scale() -> float:
+#	print("health ", _get_free_play_base_scale(0.4))
+	return (_get_free_play_base_scale(0.4))
+
+
+func get_free_play_damage_scale() -> float:
+#	print("damage ", _get_free_play_base_scale(0.1))
+	return (_get_free_play_base_scale(0.1))
+
+
+func get_free_play_size_scale() -> float:
+#	print("scale ", _get_free_play_base_scale(0.3))
+	return (_get_free_play_base_scale(0.3))
