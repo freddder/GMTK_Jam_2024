@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://7eveuu7rwnjy"]
+[gd_scene load_steps=8 format=3 uid="uid://7eveuu7rwnjy"]
 
 [ext_resource type="Script" path="res://scripts/main_level.gd" id="1_opo1r"]
 [ext_resource type="PackedScene" uid="uid://c7kaxi3ghjur4" path="res://scenes/player.tscn" id="1_wu7kq"]
@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://be2uc3fhga108" path="res://scenes/game_hud.tscn" id="4_nefjf"]
 [ext_resource type="AudioStream" uid="uid://7v147yi1onv" path="res://music/battle-theme.wav" id="5_tduye"]
 [ext_resource type="AudioStream" uid="uid://dvre62quxjyn3" path="res://music/death-theme.wav" id="6_vm5v5"]
-[ext_resource type="PackedScene" uid="uid://lh11v325wtko" path="res://scenes/boss.tscn" id="8_qat0o"]
 
 [node name="MainLevel" type="Node"]
 script = ExtResource("1_opo1r")
