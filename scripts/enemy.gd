@@ -77,7 +77,7 @@ func get_self_knockback_strength() -> float:
 
 
 func handle_movement(delta: float) -> void:
-	if not should_move() or not player:
+	if not should_move():
 		return
 
 	var speed := default_speed / strength_scale
@@ -186,8 +186,12 @@ func damage_player() -> void:
 		damage_player()
 
 
+func is_in_hit_react() -> bool:
+	return $AnimatedSprite2D.is_playing() and $AnimatedSprite2D.animation.contains("take_hit")
+
+
 func should_move() -> bool:
-	return not is_dying and not Events.is_game_terminated
+	return not is_dying and not Events.is_game_terminated and not is_in_hit_react() and player
 
 
 func get_type_string() -> String:

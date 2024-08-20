@@ -30,9 +30,9 @@ func _draw() -> void:
 	var inner_color := Color(1.0, 0.0, 0.0, 0.1)
 	var radius := get_radius()
 
-	draw_circle(Vector2.ZERO, radius, outer_color, false)
+	draw_circle(Vector2.ZERO, radius, outer_color, false, 2.5)
 	draw_circle(Vector2.ZERO, radius, inner_color, true)
-	draw_circle(Vector2.ZERO, radius * progress, outer_color, false)
+	draw_circle(Vector2.ZERO, radius * progress, outer_color, false, 2.5)
 
 
 func explode() -> void:
