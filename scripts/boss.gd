@@ -51,7 +51,7 @@ func _ready() -> void:
 	# debug
 #	await get_tree().create_timer(1.0).timeout
 #	$AttackTimer.stop()
-#	#	create_explosions()
+#	attack_explosions()
 #	attack_charge()
 
 
@@ -209,9 +209,16 @@ func create_explosions() -> void:
 		get_parent().add_child(explosion)
 
 
+func play_cast_animation() -> void:
+	$AnimatedSprite2D.play("cast_start")
+	await $AnimatedSprite2D.animation_finished
+	$AnimatedSprite2D.play("cast_loop")
+
+
 func attack_explosions() -> void:
 	is_casting = true
-	$AnimatedSprite2D.play("cast")
+
+	play_cast_animation()
 	await get_tree().create_timer(pre_explosion_delay).timeout
 
 	create_explosions()

@@ -1,13 +1,47 @@
-[gd_scene load_steps=56 format=3 uid="uid://lh11v325wtko"]
+[gd_scene load_steps=66 format=3 uid="uid://lh11v325wtko"]
 
 [ext_resource type="Script" path="res://scripts/boss.gd" id="1_7rlbb"]
 [ext_resource type="Texture2D" uid="uid://bymay4dyeq4s5" path="res://content/sprites/boss/boss_chicken_idle.png" id="1_gotnm"]
+[ext_resource type="Texture2D" uid="uid://tc5kglo33dht" path="res://content/sprites/boss/boss_chicken_cast_loop.png" id="2_6wgte"]
 [ext_resource type="Texture2D" uid="uid://ci6o7oupfx5rj" path="res://content/sprites/boss/boss_chicken_walk.png" id="2_amfyi"]
 [ext_resource type="Texture2D" uid="uid://ospmwyyrbls8" path="res://content/sprites/boss/boss_chicken_death.png" id="2_qr6ud"]
 [ext_resource type="Texture2D" uid="uid://bdcc4hy122r0h" path="res://content/sprites/boss/boss_chicken_stun.png" id="2_scmm8"]
+[ext_resource type="Texture2D" uid="uid://t6pmtrra1t6l" path="res://content/sprites/boss/boss_chicken_cast_start.png" id="3_3tove"]
 [ext_resource type="Texture2D" uid="uid://t6deui0wbh32" path="res://content/sprites/boss/boss_chicken_stun_recover.png" id="4_xy1ml"]
 [ext_resource type="Texture2D" uid="uid://defixfettwjbk" path="res://content/sprites/boss/boss_chicken_charge_warmup.png" id="5_fc4vl"]
 [ext_resource type="Texture2D" uid="uid://dqsodbcnx6stb" path="res://content/sprites/boss/boss_chicken_hit_react.png" id="5_mq7oc"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bmcty"]
+atlas = ExtResource("2_6wgte")
+region = Rect2(0, 0, 560, 350)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rrng3"]
+atlas = ExtResource("2_6wgte")
+region = Rect2(560, 0, 560, 350)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rcr5o"]
+atlas = ExtResource("2_6wgte")
+region = Rect2(1120, 0, 560, 350)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kh7y3"]
+atlas = ExtResource("2_6wgte")
+region = Rect2(1680, 0, 560, 350)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vhaef"]
+atlas = ExtResource("3_3tove")
+region = Rect2(0, 0, 560, 350)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hupfw"]
+atlas = ExtResource("3_3tove")
+region = Rect2(560, 0, 560, 350)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dqgkf"]
+atlas = ExtResource("3_3tove")
+region = Rect2(1120, 0, 560, 350)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rb8j5"]
+atlas = ExtResource("3_3tove")
+region = Rect2(1680, 0, 560, 350)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_d1vh4"]
 atlas = ExtResource("2_amfyi")
@@ -175,6 +209,40 @@ region = Rect2(2240, 0, 560, 350)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_rcyij"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bmcty")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rrng3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rcr5o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kh7y3")
+}],
+"loop": true,
+"name": &"cast_loop",
+"speed": 9.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vhaef")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hupfw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dqgkf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rb8j5")
+}],
+"loop": false,
+"name": &"cast_start",
+"speed": 9.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_d1vh4")
@@ -410,7 +478,9 @@ script = ExtResource("1_7rlbb")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_rcyij")
-animation = &"charge_stun_loop"
+animation = &"cast_start"
+frame = 3
+frame_progress = 1.0
 
 [node name="HeadSocket" type="Node2D" parent="AnimatedSprite2D"]
 position = Vector2(-82, -71)
