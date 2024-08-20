@@ -50,6 +50,7 @@ autoplay = true
 bus = &"BGM"
 
 [node name="VictoryTheme" type="AudioStreamPlayer" parent="."]
+process_mode = 2
 stream = ExtResource("8_6ux2u")
 volume_db = -10.0
 bus = &"BGM"

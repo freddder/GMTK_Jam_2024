@@ -9,7 +9,7 @@ enum AttackType {
 }
 
 @export var default_speed: float = 35.0
-@export var default_health: float = 50#1000.0
+@export var default_health: float = 1000.0
 @export var default_damage: float = 19.5
 @export var default_attack_cooldown: float = 1.0
 @export var default_knockback_strength: float = 200.0
