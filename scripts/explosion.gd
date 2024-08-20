@@ -44,9 +44,12 @@ func explode() -> void:
 		var damage := default_damage * (inv_distance_norm * damage_dist_multiplier)
 		var knockback := direction * default_knockback_strength * (inv_distance_norm * knockback_dist_multiplier)
 		player.take_hit(damage, knockback)
-
+		
+	$Explosion.play()
 	$AnimatedSprite2D.play("explode")
 	await $AnimatedSprite2D.animation_finished
+	if $Explosion.playing:
+		await $Explosion.finished
 	queue_free()
 
 
