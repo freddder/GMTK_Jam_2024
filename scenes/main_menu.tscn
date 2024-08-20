@@ -24,6 +24,7 @@ scale = Vector2(0.51727, 0.400833)
 texture = ExtResource("2_xmcm2")
 
 [node name="SettingsMenu" parent="." instance=ExtResource("3_lrfn7")]
+visible = false
 
 [node name="MainMenuButton" type="TextureButton" parent="SettingsMenu"]
 offset_left = 553.0
@@ -66,29 +67,65 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 alignment = 1
 
-[node name="PlayButton" type="Button" parent="HUD/ButtonsContainer"]
-layout_mode = 2
+[node name="PlayButton" type="TextureButton" parent="HUD"]
+offset_left = 490.0
+offset_top = 377.0
+offset_right = 1128.0
+offset_bottom = 667.0
+scale = Vector2(0.46975, 0.272769)
 theme = ExtResource("1_mnbn2")
-theme_override_fonts/font = ExtResource("4_gpti7")
 shortcut = SubResource("Shortcut_20qb5")
 shortcut_in_tooltip = false
-text = "Play
-"
+texture_normal = ExtResource("4_5376x")
 
-[node name="SettingsButton" type="Button" parent="HUD/ButtonsContainer"]
-layout_mode = 2
-theme = ExtResource("1_mnbn2")
+[node name="Label" type="Label" parent="HUD/PlayButton"]
+layout_mode = 0
+offset_left = 229.91
+offset_top = 43.9932
+offset_right = 338.91
+offset_bottom = 107.993
+scale = Vector2(1.84882, 3.62451)
 theme_override_fonts/font = ExtResource("4_gpti7")
-shortcut_in_tooltip = false
-text = "Settings
-"
+text = "Play"
 
-[node name="ExitButton" type="Button" parent="HUD/ButtonsContainer"]
-visible = false
-layout_mode = 2
+[node name="SettingsButton" type="TextureButton" parent="HUD"]
+offset_left = 490.0
+offset_top = 460.0
+offset_right = 1128.0
+offset_bottom = 750.0
+scale = Vector2(0.470279, 0.265476)
 theme = ExtResource("1_mnbn2")
-theme_override_fonts/font = ExtResource("4_gpti7")
 shortcut_in_tooltip = false
+texture_normal = ExtResource("4_5376x")
+
+[node name="Label" type="Label" parent="HUD/SettingsButton"]
+layout_mode = 0
+offset_left = 95.688
+offset_top = 37.6682
+offset_right = 320.688
+offset_bottom = 101.668
+scale = Vector2(2.05969, 3.742)
+theme_override_fonts/font = ExtResource("4_gpti7")
+text = "Settings"
+
+[node name="ExitButton" type="TextureButton" parent="HUD"]
+offset_left = 490.0
+offset_top = 542.0
+offset_right = 790.0
+offset_bottom = 603.0
+scale = Vector2(0.46975, 0.272769)
+theme = ExtResource("1_mnbn2")
+shortcut_in_tooltip = false
+texture_normal = ExtResource("4_5376x")
+
+[node name="Label" type="Label" parent="HUD/ExitButton"]
+layout_mode = 0
+offset_left = 229.91
+offset_top = 62.3238
+offset_right = 329.91
+offset_bottom = 126.324
+scale = Vector2(1.84882, 3.62451)
+theme_override_fonts/font = ExtResource("4_gpti7")
 text = "Exit
 "
 
@@ -117,6 +154,6 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
 [connection signal="pressed" from="SettingsMenu/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
-[connection signal="pressed" from="HUD/ButtonsContainer/PlayButton" to="." method="_on_play_button_pressed"]
-[connection signal="pressed" from="HUD/ButtonsContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
-[connection signal="pressed" from="HUD/ButtonsContainer/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="pressed" from="HUD/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="HUD/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="HUD/ExitButton" to="." method="_on_exit_button_pressed"]
