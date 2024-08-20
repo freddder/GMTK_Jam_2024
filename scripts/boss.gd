@@ -128,12 +128,18 @@ func start_dying(can_drop_pickup: bool = true) -> void:
 	collision_layer = 0
 	collision_mask = 0
 
+	# Make player invincible while the boss is dying
+	player.should_be_invincible = true
+
 	$AttackTimer.stop()
 	$AnimatedSprite2D.play("death")
 	$DeathSFX.play()
 	await $AnimatedSprite2D.animation_finished
 
 	Events.on_game_victory.emit()
+	await FreePlayManager.on_started
+
+	player.should_be_invincible = false
 
 	$AnimationPlayer.play("death")
 	await $AnimationPlayer.animation_finished
@@ -223,6 +229,9 @@ func attack_explosions() -> void:
 	play_cast_animation()
 	await get_tree().create_timer(pre_explosion_delay).timeout
 
+	if is_dying:
+		return
+
 	create_explosions()
 
 	await get_tree().create_timer(explosion_animation_duration).timeout
@@ -234,6 +243,9 @@ func attack_charge() -> void:
 	is_casting = true
 	$AnimatedSprite2D.play("charge_warmup")
 	await get_tree().create_timer(randf_range(charge_warmup_min_duration, charge_warmup_max_duration)).timeout
+
+	if is_dying:
+		return
 
 	# Try to charge way off arena
 	charge_target = global_position.direction_to(player.global_position) * 9999.0
@@ -256,6 +268,9 @@ func on_charge_hit_wall() -> void:
 
 	play_stun_animation()
 	await get_tree().create_timer(charge_stun_duration).timeout
+
+	if is_dying:
+		return
 
 	$AnimatedSprite2D.play("charge_stun_recover")
 	await $AnimatedSprite2D.animation_finished
