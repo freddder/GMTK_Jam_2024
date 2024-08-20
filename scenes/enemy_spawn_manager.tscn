@@ -9,7 +9,7 @@ script = ExtResource("1_1ju3l")
 one_shot = true
 
 [node name="BossSpawnTimer" type="Timer" parent="."]
-wait_time = 10.0
+wait_time = 90.0
 one_shot = true
 
 [connection signal="timeout" from="BossSpawnTimer" to="." method="_on_boss_spawn_timer_timeout"]
