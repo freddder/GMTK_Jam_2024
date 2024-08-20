@@ -1,5 +1,7 @@
 extends Node
 
+signal on_started()
+
 var _should_scale := false
 var scaling_time: float = 0.0
 
@@ -15,6 +17,7 @@ func _process(delta: float) -> void:
 func start_scaling() -> void:
 	process_mode = PROCESS_MODE_PAUSABLE
 	_should_scale = true
+	on_started.emit()
 
 
 func stop_scaling() -> void:
