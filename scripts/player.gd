@@ -107,6 +107,7 @@ var last_dash_start_time: float = 0.0
 var last_dash_end_time: float = 0.0
 var is_dashing := false
 var dash_direction := Vector2.ZERO
+var should_be_invincible := false
 
 var shake_strength: float = 0.0
 
@@ -122,6 +123,7 @@ func _ready() -> void:
 	clear_attack_data()
 
 	noise_rand.randomize()
+	handle_post_normal_game_logic()
 
 
 func handle_regular_movement(delta: float) -> void:
@@ -828,7 +830,7 @@ func get_charging_attack_radius() -> float:
 
 
 func is_invincible() -> bool:
-	return is_alive() and is_dashing
+	return is_alive() and (is_dashing or should_be_invincible)
 
 
 func create_motion_trail_copy(color: Color, mix_color: float) -> void:
@@ -895,3 +897,11 @@ func _on_haste_trail_timer_timeout() -> void:
 
 func _on_death_sfx_finished():
 	Events.done_playing_death_sfx.emit()
+
+
+func handle_post_normal_game_logic() -> void:
+	await Events.on_game_victory
+	should_be_invincible = true
+	await FreePlayManager.on_started
+	wipe_enemies()
+	should_be_invincible = false
