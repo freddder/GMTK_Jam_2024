@@ -2,12 +2,12 @@
 
 [ext_resource type="Script" path="res://scripts/game_hud.gd" id="1_5bthv"]
 [ext_resource type="Theme" uid="uid://bkbdw0jadsuqp" path="res://content/ui/default_theme.tres" id="2_w200a"]
-[ext_resource type="PackedScene" path="res://scenes/game_over_menu.tscn" id="2_ysbhh"]
-[ext_resource type="PackedScene" uid="uid://dgigi0x01ccdb" path="res://scenes/game_victory_menu.tscn" id="3_ihwa7"]
+[ext_resource type="PackedScene" uid="uid://kvuk00qldxat" path="res://scenes/game_over_menu.tscn" id="2_ysbhh"]
+[ext_resource type="PackedScene" uid="uid://bed63462bdd1j" path="res://scenes/game_victory_menu.tscn" id="3_ihwa7"]
 [ext_resource type="Texture2D" uid="uid://5f5d4wba2gj6" path="res://content/ui/health-bar-bg.png" id="3_ylupe"]
 [ext_resource type="Texture2D" uid="uid://bavdhyd6av368" path="res://content/ui/health-bar-fill.png" id="4_dlg05"]
 [ext_resource type="FontFile" uid="uid://bi0gex0agxwfh" path="res://content/fonts/Adumu.ttf" id="4_hwwje"]
-[ext_resource type="PackedScene" uid="uid://der4548t8eleq" path="res://scenes/pause_menu.tscn" id="4_jmil8"]
+[ext_resource type="PackedScene" uid="uid://brvq3ts54m1ep" path="res://scenes/pause_menu.tscn" id="4_jmil8"]
 [ext_resource type="Texture2D" uid="uid://dpnskf0brpyb4" path="res://content/ui/health symbol.png" id="5_nd5tf"]
 [ext_resource type="Shader" path="res://content/shaders/speed.gdshader" id="6_c6p5p"]
 
@@ -65,7 +65,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="GameOverHUD" parent="." instance=ExtResource("2_ysbhh")]
-layer = 2
 visible = false
 
 [node name="GameVictoryMenu" parent="." instance=ExtResource("3_ihwa7")]
