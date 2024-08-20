@@ -14,7 +14,7 @@ func _ready() -> void:
 	Events.on_game_started.connect(on_game_started)
 	Events.on_game_victory.connect(on_game_terminated)
 	Events.on_game_failed.connect(on_game_terminated)
-	
+
 
 func get_spawn_timer_delay() -> float:
 	# Relative scale
