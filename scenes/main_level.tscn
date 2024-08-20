@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://7eveuu7rwnjy"]
+[gd_scene load_steps=10 format=3 uid="uid://7eveuu7rwnjy"]
 
 [ext_resource type="Script" path="res://scripts/main_level.gd" id="1_opo1r"]
 [ext_resource type="PackedScene" uid="uid://c7kaxi3ghjur4" path="res://scenes/player.tscn" id="1_wu7kq"]
@@ -8,6 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://7v147yi1onv" path="res://music/battle-theme.wav" id="5_tduye"]
 [ext_resource type="AudioStream" uid="uid://dvre62quxjyn3" path="res://music/death-theme.wav" id="6_vm5v5"]
 [ext_resource type="AudioStream" uid="uid://b6ojct57km5dt" path="res://music/win-theme.wav" id="8_6ux2u"]
+[ext_resource type="AudioStream" uid="uid://pd2pun3j863f" path="res://music/boss-theme.wav" id="8_jaoni"]
 
 [node name="MainLevel" type="Node"]
 script = ExtResource("1_opo1r")
@@ -47,6 +48,11 @@ bus = &"BGM"
 stream = ExtResource("5_tduye")
 volume_db = -15.0
 autoplay = true
+bus = &"BGM"
+
+[node name="BossTheme" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_jaoni")
+volume_db = -10.0
 bus = &"BGM"
 
 [node name="VictoryTheme" type="AudioStreamPlayer" parent="."]
