@@ -1,13 +1,14 @@
-[gd_scene load_steps=14 format=3 uid="uid://be2uc3fhga108"]
+[gd_scene load_steps=15 format=3 uid="uid://be2uc3fhga108"]
 
 [ext_resource type="Script" path="res://scripts/game_hud.gd" id="1_5bthv"]
 [ext_resource type="Theme" uid="uid://bkbdw0jadsuqp" path="res://content/ui/default_theme.tres" id="2_w200a"]
-[ext_resource type="PackedScene" uid="uid://kvuk00qldxat" path="res://scenes/game_over_menu.tscn" id="2_ysbhh"]
-[ext_resource type="PackedScene" uid="uid://bed63462bdd1j" path="res://scenes/game_victory_menu.tscn" id="3_ihwa7"]
+[ext_resource type="PackedScene" path="res://scenes/game_over_menu.tscn" id="2_ysbhh"]
+[ext_resource type="PackedScene" uid="uid://dgigi0x01ccdb" path="res://scenes/game_victory_menu.tscn" id="3_ihwa7"]
+[ext_resource type="Texture2D" uid="uid://b0umboai2s0rm" path="res://content/ui/pause_icon.png" id="3_vn2o3"]
 [ext_resource type="Texture2D" uid="uid://5f5d4wba2gj6" path="res://content/ui/health-bar-bg.png" id="3_ylupe"]
 [ext_resource type="Texture2D" uid="uid://bavdhyd6av368" path="res://content/ui/health-bar-fill.png" id="4_dlg05"]
 [ext_resource type="FontFile" uid="uid://bi0gex0agxwfh" path="res://content/fonts/Adumu.ttf" id="4_hwwje"]
-[ext_resource type="PackedScene" uid="uid://brvq3ts54m1ep" path="res://scenes/pause_menu.tscn" id="4_jmil8"]
+[ext_resource type="PackedScene" uid="uid://der4548t8eleq" path="res://scenes/pause_menu.tscn" id="4_jmil8"]
 [ext_resource type="Texture2D" uid="uid://dpnskf0brpyb4" path="res://content/ui/health symbol.png" id="5_nd5tf"]
 [ext_resource type="Shader" path="res://content/shaders/speed.gdshader" id="6_c6p5p"]
 
@@ -64,6 +65,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="PauseButton" type="TextureButton" parent="."]
+offset_left = 1238.0
+offset_top = 1.0
+offset_right = 1534.0
+offset_bottom = 297.0
+scale = Vector2(0.139, 0.139)
+texture_normal = ExtResource("3_vn2o3")
+
 [node name="GameOverHUD" parent="." instance=ExtResource("2_ysbhh")]
 visible = false
 
@@ -73,3 +82,5 @@ visible = false
 
 [node name="PauseMenu" parent="." instance=ExtResource("4_jmil8")]
 visible = false
+
+[connection signal="pressed" from="PauseButton" to="." method="_on_pause_button_pressed"]

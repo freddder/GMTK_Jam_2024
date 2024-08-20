@@ -10,3 +10,7 @@ func _ready():
 
 func update_health_bar():
 	$HealthBar.value = player.health / player.default_health
+
+
+func _on_pause_button_pressed():
+	$PauseMenu.toggle_pause_game()
