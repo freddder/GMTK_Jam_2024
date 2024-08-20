@@ -51,7 +51,7 @@ _data = {
 "float": SubResource("Animation_cahun")
 }
 
-[node name="Pickup" type="Node2D"]
+[node name="Pickup" type="Node2D" groups=["pickups"]]
 script = ExtResource("1_wvtu1")
 drop_chances = SubResource("Gradient_ogqcc")
 
