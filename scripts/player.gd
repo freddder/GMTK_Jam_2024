@@ -904,4 +904,5 @@ func handle_post_normal_game_logic() -> void:
 	should_be_invincible = true
 	await FreePlayManager.on_started
 	wipe_enemies()
+	set_health(default_health)
 	should_be_invincible = false
