@@ -116,7 +116,7 @@ func take_hit(damage: float, knockback_strength: float) -> void:
 	$AnimationPlayer.play("hit_react")
 	if health <= 0:
 		start_dying()
-	elif not is_casting or not is_in_charge or not is_stunned:
+	elif not is_casting and not is_in_charge and not is_stunned:
 		$HitSFX.play()
 		$AnimatedSprite2D.play("hit_react")
 
@@ -134,11 +134,11 @@ func start_dying(can_drop_pickup: bool = true) -> void:
 	await $AnimatedSprite2D.animation_finished
 
 	Events.on_game_victory.emit()
-	# TODO wait on_free_play_started
-	#$AnimationPlayer.play("death")
-	#await $AnimationPlayer.animation_finished
 
-	#die()
+	$AnimationPlayer.play("death")
+	await $AnimationPlayer.animation_finished
+
+	die()
 
 
 func die() -> void:
@@ -213,7 +213,8 @@ func create_explosions() -> void:
 func play_cast_animation() -> void:
 	$AnimatedSprite2D.play("cast_start")
 	await $AnimatedSprite2D.animation_finished
-	$AnimatedSprite2D.play("cast_loop")
+	if $AnimatedSprite2D.animation == "cast_start":
+		$AnimatedSprite2D.play("cast_loop")
 
 
 func attack_explosions() -> void:
@@ -245,7 +246,8 @@ func attack_charge() -> void:
 func play_stun_animation() -> void:
 	$AnimatedSprite2D.play("charge_stun_start")
 	await $AnimatedSprite2D.animation_finished
-	$AnimatedSprite2D.play("charge_stun_loop")
+	if $AnimatedSprite2D.animation == "charge_stun_start":
+		$AnimatedSprite2D.play("charge_stun_loop")
 
 
 func on_charge_hit_wall() -> void:

@@ -1,11 +1,28 @@
-[gd_scene load_steps=4 format=3 uid="uid://bed63462bdd1j"]
+[gd_scene load_steps=8 format=3 uid="uid://bed63462bdd1j"]
 
 [ext_resource type="Script" path="res://scripts/game_victory_menu.gd" id="1_6agr3"]
 [ext_resource type="Theme" uid="uid://bkbdw0jadsuqp" path="res://content/ui/default_theme.tres" id="1_7r5f8"]
 [ext_resource type="FontFile" uid="uid://bi0gex0agxwfh" path="res://content/fonts/Adumu.ttf" id="3_nwkls"]
+[ext_resource type="Texture2D" uid="uid://dlpjm5qqqwt8e" path="res://content/ui/button_bg_ui.png" id="4_ntpby"]
+[ext_resource type="Texture2D" uid="uid://dba7cxtxpb1nn" path="res://content/ui/victory.png" id="5_yvguc"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_ako2q"]
+action = &"ui_accept"
+
+[sub_resource type="Shortcut" id="Shortcut_jqe0t"]
+events = [SubResource("InputEventAction_ako2q")]
 
 [node name="GameVictoryMenu" type="CanvasLayer"]
+process_mode = 3
 script = ExtResource("1_6agr3")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.145098, 0.145098, 0.145098, 0.407843)
 
 [node name="Label" type="Label" parent="."]
 anchors_preset = 8
@@ -13,44 +30,124 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -233.0
-offset_top = -160.0
-offset_right = 233.0
-offset_bottom = -63.0
+offset_left = -382.01
+offset_top = -301.5
+offset_right = 420.99
+offset_bottom = -181.5
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_7r5f8")
 theme_override_fonts/font = ExtResource("3_nwkls")
-theme_override_font_sizes/font_size = 80
+theme_override_font_sizes/font_size = 120
 text = "Game Victory
 "
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="MainMenuButton" type="TextureButton" parent="."]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -156.0
-offset_top = 40.0
-offset_right = 156.0
-offset_bottom = 188.0
+offset_left = -511.175
+offset_top = 240.0
+offset_right = 126.825
+offset_bottom = 530.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="RestartButton" type="Button" parent="VBoxContainer"]
-layout_mode = 2
+scale = Vector2(0.46975, 0.272769)
 theme = ExtResource("1_7r5f8")
-theme_override_fonts/font = ExtResource("3_nwkls")
-text = "Restart
-"
+shortcut = SubResource("Shortcut_jqe0t")
+shortcut_in_tooltip = false
+texture_normal = ExtResource("4_ntpby")
 
-[node name="MainMenuButton" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-theme = ExtResource("1_7r5f8")
+[node name="Label" type="Label" parent="MainMenuButton"]
+layout_mode = 0
+offset_left = 81.6136
+offset_top = 69.0
+offset_right = 340.614
+offset_bottom = 133.0
+scale = Vector2(1.84882, 3.62451)
 theme_override_fonts/font = ExtResource("3_nwkls")
 text = "Main Menu
 "
 
-[connection signal="pressed" from="VBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
+[node name="RestartButton" type="TextureButton" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = 240.0
+offset_right = 488.0
+offset_bottom = 530.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.46975, 0.272769)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_7r5f8")
+shortcut = SubResource("Shortcut_jqe0t")
+shortcut_in_tooltip = false
+texture_normal = ExtResource("4_ntpby")
+
+[node name="Label" type="Label" parent="RestartButton"]
+layout_mode = 0
+offset_left = 130.0
+offset_top = 65.0
+offset_right = 343.0
+offset_bottom = 129.0
+scale = Vector2(1.84882, 3.62451)
+theme_override_fonts/font = ExtResource("3_nwkls")
+text = "Restart
+"
+
+[node name="FreePlayButton" type="TextureButton" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 217.515
+offset_top = 240.0
+offset_right = 855.515
+offset_bottom = 530.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.46975, 0.272769)
+theme = ExtResource("1_7r5f8")
+shortcut = SubResource("Shortcut_jqe0t")
+shortcut_in_tooltip = false
+texture_normal = ExtResource("4_ntpby")
+
+[node name="Label" type="Label" parent="FreePlayButton"]
+layout_mode = 0
+offset_left = 94.3864
+offset_top = 69.0
+offset_right = 353.386
+offset_bottom = 133.0
+scale = Vector2(1.84882, 3.62451)
+theme_override_fonts/font = ExtResource("3_nwkls")
+text = "Free Play
+"
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -295.0
+offset_top = -176.0
+offset_right = 1696.0
+offset_bottom = 1105.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.3, 0.3)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("5_yvguc")
+
+[connection signal="pressed" from="MainMenuButton" to="." method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="FreePlayButton" to="." method="_on_free_play_button_pressed"]
