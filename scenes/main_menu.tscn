@@ -84,6 +84,7 @@ text = "Settings
 "
 
 [node name="ExitButton" type="Button" parent="HUD/ButtonsContainer"]
+visible = false
 layout_mode = 2
 theme = ExtResource("1_mnbn2")
 theme_override_fonts/font = ExtResource("4_gpti7")
