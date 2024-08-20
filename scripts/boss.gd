@@ -167,6 +167,7 @@ func delay_attack() -> void:
 
 
 func create_explosions() -> void:
+	# Randomly spawn explosions on the whole arena
 	var explosion_amount := randi_range(explosion_min_amount, explosion_max_amount)
 	for idx in explosion_amount:
 		var explosion: Explosion = explosion_scene.instantiate()
@@ -178,7 +179,8 @@ func create_explosions() -> void:
 		explosion.global_position = direction * distance
 		get_parent().add_child(explosion)
 
-	var scripted_explosion_amount := randi() % 5
+	# Spawn explosions specifically around the player
+	var scripted_explosion_amount := randi_range(3, 7)
 	var scripted_explosion_max_distance := 200.0
 	for idx in scripted_explosion_amount:
 		var explosion: Explosion = explosion_scene.instantiate()
