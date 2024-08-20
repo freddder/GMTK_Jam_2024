@@ -27,26 +27,26 @@ signal health_changed
 @export var wipe_area_scene: PackedScene = load("res://scenes/wipe_area.tscn")
 
 @export_category("Swing")
-@export var default_swing_radius: float = 90.0
+@export var default_swing_radius: float = 120.0
 @export var default_swing_angle: float = 60.0
 @export var swing_angle_limit: float = 150.0
 @export var default_swing_damage: float = 40.0
-@export var swing_charge_speed: float = 0.3
+@export var swing_charge_speed: float = 0.45
 @export var default_swing_knockback_strength: float = 20.0
 @export var default_swing_cooldown: float = 1
 
 @export_category("Thrust")
-@export var default_thrust_radius: float = 130.0
+@export var default_thrust_radius: float = 150.0
 @export var default_thrust_thickness: float = 30.0
 @export var default_thrust_damage: float = 50.0
-@export var thrust_charge_speed: float = 0.4
+@export var thrust_charge_speed: float = 0.6
 @export var default_thrust_knockback_strength: float = 30
 @export var default_thrust_cooldown: float = 1.5
 
 @export_category("Ground Pound")
-@export var default_ground_pound_radius: float = 50.0
-@export var default_ground_pound_damage: float = 15.0
-@export var ground_pound_charge_speed: float = 0.5
+@export var default_ground_pound_radius: float = 40.0
+@export var default_ground_pound_damage: float = 85.0
+@export var ground_pound_charge_speed: float = 0.3
 @export var default_ground_pound_knockback_strength: float = 35.0
 @export var default_ground_pound_cooldown: float = 10.0
 
@@ -328,7 +328,7 @@ func get_attack_zone_data_ground_pound() -> AttackZoneData:
 	var attack_zone_data: AttackZoneData = AttackZoneData.new()
 
 	var radius_multiplier := maxf(1.0, pow(charge_power, 1.13))
-	attack_zone_data.radius = default_swing_radius * radius_multiplier
+	attack_zone_data.radius = default_ground_pound_radius * radius_multiplier
 
 	return attack_zone_data
 
