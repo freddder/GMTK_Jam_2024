@@ -5,7 +5,7 @@ extends CanvasLayer
 
 func _ready() -> void:
 	var slider_value := 1.0 - (AudioServer.get_bus_volume_db(0) / min_volume_db)
-	$OptionsTab/HSlider.set_value_no_signal(slider_value)
+	$OptionsTab/MusicSlider.set_value_no_signal(slider_value)
 	AudioServer.set_bus_mute(0, slider_value == 0.0)
 
 

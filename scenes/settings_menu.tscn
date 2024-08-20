@@ -32,11 +32,21 @@ position = Vector2(644, 366)
 scale = Vector2(0.341293, 0.341293)
 texture = ExtResource("2_6gvys")
 
-[node name="HSlider" type="HSlider" parent="OptionsTab"]
+[node name="MusicSlider" type="HSlider" parent="OptionsTab"]
 offset_left = -377.974
 offset_top = -307.653
 offset_right = 732.026
 offset_bottom = -260.653
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.02
+value = 1.0
+
+[node name="SFXSlider" type="HSlider" parent="OptionsTab"]
+offset_left = -377.974
+offset_top = 32.2303
+offset_right = 732.026
+offset_bottom = 79.2303
 size_flags_vertical = 4
 max_value = 1.0
 step = 0.02
@@ -60,7 +70,7 @@ offset_top = 142.0
 offset_right = 932.0
 offset_bottom = 182.0
 
-[connection signal="value_changed" from="OptionsTab/HSlider" to="." method="_on_h_slider_value_changed"]
+[connection signal="value_changed" from="OptionsTab/MusicSlider" to="." method="_on_h_slider_value_changed"]
 [connection signal="pressed" from="OptionsButton" to="." method="_on_options_button_pressed"]
 [connection signal="pressed" from="ControlsButton" to="." method="_on_controls_button_pressed"]
 [connection signal="pressed" from="CreditsButton" to="." method="_on_credits_button_pressed"]
