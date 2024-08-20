@@ -6,6 +6,7 @@ func _ready() -> void:
 	Events.on_game_started.emit()
 	Events.on_player_death.connect(_on_player_death)
 	Events.on_enemy_spawned.connect(_on_enemy_spawned)
+	Events.on_boss_spawned.connect(_on_boss_spawned)
 	Events.done_playing_death_sfx.connect(play_death_theme)
 
 	var tween := get_tree().create_tween()
@@ -29,6 +30,12 @@ func _on_enemy_spawned(enemy: EnemyCharacter) -> void:
 
 func _on_enemy_death(enemy: EnemyCharacter) -> void:
 	add_score(enemy.get_score())
+
+func _on_boss_spawned(boss: BossCharacter) -> void:
+	boss.on_death.connect(_on_boss_death)
+
+func _on_boss_death(boss: BossCharacter)-> void:
+	add_score(boss.default_score)
 
 
 func add_score(_score: float) -> void:

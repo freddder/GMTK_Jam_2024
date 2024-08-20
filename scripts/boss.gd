@@ -1,6 +1,8 @@
 class_name BossCharacter
 extends Area2D
 
+signal on_death(this: BossCharacter)
+
 enum AttackType {
 	Explosions,
 	Charge
@@ -11,6 +13,7 @@ enum AttackType {
 @export var default_damage: float = 19.5
 @export var default_attack_cooldown: float = 1.0
 @export var default_knockback_strength: float = 200.0
+@export var default_score: int = 2000
 
 @export var attack_min_delay: float = 3.0
 @export var attack_max_delay: float = 15.0
@@ -44,9 +47,11 @@ var charge_target := Vector2.ZERO
 
 func _ready() -> void:
 	delay_attack()
-
+	
 	Events.on_game_victory.connect(on_game_victory)
 	Events.on_game_failed.connect(on_game_failed)
+	
+	Events.on_boss_spawned.emit(self)
 
 	# debug
 #	await get_tree().create_timer(1.0).timeout
@@ -124,6 +129,7 @@ func take_hit(damage: float, knockback_strength: float) -> void:
 func start_dying(can_drop_pickup: bool = true) -> void:
 	assert(not is_dying)
 
+	on_death.emit(self)
 	is_dying = true
 	collision_layer = 0
 	collision_mask = 0
