@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://7eveuu7rwnjy"]
+[gd_scene load_steps=9 format=3 uid="uid://7eveuu7rwnjy"]
 
 [ext_resource type="Script" path="res://scripts/main_level.gd" id="1_opo1r"]
 [ext_resource type="PackedScene" uid="uid://c7kaxi3ghjur4" path="res://scenes/player.tscn" id="1_wu7kq"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://be2uc3fhga108" path="res://scenes/game_hud.tscn" id="4_nefjf"]
 [ext_resource type="AudioStream" uid="uid://7v147yi1onv" path="res://music/battle-theme.wav" id="5_tduye"]
 [ext_resource type="AudioStream" uid="uid://dvre62quxjyn3" path="res://music/death-theme.wav" id="6_vm5v5"]
+[ext_resource type="PackedScene" uid="uid://lh11v325wtko" path="res://scenes/boss.tscn" id="8_qat0o"]
 
 [node name="MainLevel" type="Node"]
 script = ExtResource("1_opo1r")
@@ -34,48 +35,48 @@ texture = ExtResource("2_53sg7")
 
 [node name="Player" parent="." instance=ExtResource("1_wu7kq")]
 collision_mask = 7
-default_walk_speed = null
-default_camera_zoom = null
-min_camera_zoom = null
-knockback_limit = null
-default_health = null
-camera_offset_distance_from_arena_bounds = null
-default_swing_radius = null
-default_swing_angle = null
-swing_angle_limit = null
-default_swing_damage = null
-swing_charge_speed = null
-default_swing_knockback_strength = null
-default_swing_cooldown = null
-default_thrust_radius = null
-default_thrust_thickness = null
-default_thrust_damage = null
-thrust_charge_speed = null
-default_thrust_knockback_strength = null
-default_thrust_cooldown = null
-default_ground_pound_radius = null
-default_ground_pound_damage = null
-ground_pound_charge_speed = null
-default_ground_pound_knockback_strength = null
-default_ground_pound_cooldown = null
-charge_delay = null
-charge_boost_power = null
-seconds_for_charge_boost = null
-default_dash_duration = null
-default_dash_speed = null
-default_dash_cooldown = null
-dash_motion_trail_copy_lifespan = null
-dash_motion_trail_creation_cooldown = null
-dash_motion_trail_color = null
-dash_motion_trail_mix_color = null
-shake_scale_delay = null
-haste_duration = null
-haste_move_speed_multiplier = null
-haste_dash_speed_multiplier = null
-haste_charge_speed_multiplier = null
-haste_motion_trail_creation_cooldown = null
-haste_motion_trail_color = null
-haste_motion_trail_mix_color = null
+default_walk_speed = 300.0
+default_camera_zoom = Vector2(1.2, 1.2)
+min_camera_zoom = Vector2(0.7, 0.7)
+knockback_limit = 1000.0
+default_health = 100.0
+camera_offset_distance_from_arena_bounds = 250.0
+default_swing_radius = 90.0
+default_swing_angle = 60.0
+swing_angle_limit = 150.0
+default_swing_damage = 40.0
+swing_charge_speed = 0.3
+default_swing_knockback_strength = 20.0
+default_swing_cooldown = 1.0
+default_thrust_radius = 130.0
+default_thrust_thickness = 30.0
+default_thrust_damage = 50.0
+thrust_charge_speed = 0.4
+default_thrust_knockback_strength = 30.0
+default_thrust_cooldown = 1.5
+default_ground_pound_radius = 50.0
+default_ground_pound_damage = 7.0
+ground_pound_charge_speed = 0.4
+default_ground_pound_knockback_strength = 35.0
+default_ground_pound_cooldown = 10.0
+charge_delay = 0.5
+charge_boost_power = 1.3
+seconds_for_charge_boost = 13.0
+default_dash_duration = 0.3
+default_dash_speed = 800.0
+default_dash_cooldown = 0.4
+dash_motion_trail_copy_lifespan = 0.2
+dash_motion_trail_creation_cooldown = 0.02
+dash_motion_trail_color = Color(0, 0, 0.8, 0.3)
+dash_motion_trail_mix_color = 0.7
+shake_scale_delay = 3.0
+haste_duration = 7.0
+haste_move_speed_multiplier = 1.6
+haste_dash_speed_multiplier = 2.0
+haste_charge_speed_multiplier = 1.7
+haste_motion_trail_creation_cooldown = 0.06
+haste_motion_trail_color = Color(0, 0.78, 0.8, 0.3)
+haste_motion_trail_mix_color = 0.7
 
 [node name="GameHUD" parent="." instance=ExtResource("4_nefjf")]
 
@@ -89,3 +90,6 @@ stream = ExtResource("5_tduye")
 volume_db = -15.0
 autoplay = true
 bus = &"BGM"
+
+[node name="Boss" parent="." instance=ExtResource("8_qat0o")]
+position = Vector2(306, 396)

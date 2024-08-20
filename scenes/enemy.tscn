@@ -381,9 +381,7 @@ death_sounds = Array[AudioStream]([ExtResource("2_dym8l"), ExtResource("5_v5y3h"
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_cfqfh")
-animation = &"worm_death"
-frame = 7
-frame_progress = 1.0
+animation = &"slime_walk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_frqxi")
@@ -407,4 +405,3 @@ bus = &"SFX"
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animation_finished"]
-[connection signal="timeout" from="AttackCooldownTimer" to="." method="_on_spawn_timer_timeout"]

@@ -568,7 +568,7 @@ func release_primary_attack() -> void:
 
 	$AttackShapeCast2D.force_shapecast_update()
 	for collider_index in $AttackShapeCast2D.get_collision_count():
-		var enemy := $AttackShapeCast2D.get_collider(collider_index) as EnemyCharacter
+		var enemy = $AttackShapeCast2D.get_collider(collider_index)
 		var direction_to := global_position.direction_to(enemy.global_position)
 		var angle_to := atan2(direction_to.y, direction_to.x) + PI / 2.0
 		if active_attack_zone_data.start_angle <= angle_to && active_attack_zone_data.end_angle >= angle_to:
@@ -604,7 +604,7 @@ func release_secondary_attack() -> void:
 
 	$AttackShapeCast2D.force_shapecast_update()
 	for collider_index in $AttackShapeCast2D.get_collision_count():
-		var collider := $AttackShapeCast2D.get_collider(collider_index) as EnemyCharacter
+		var collider = $AttackShapeCast2D.get_collider(collider_index)
 		collider.take_hit(scale_damage(default_thrust_damage), scale_knockback(default_thrust_knockback_strength))
 
 
@@ -634,7 +634,7 @@ func release_heavy_attack() -> void:
 
 	$AttackShapeCast2D.force_shapecast_update()
 	for collider_index in $AttackShapeCast2D.get_collision_count():
-		var collider := $AttackShapeCast2D.get_collider(collider_index) as EnemyCharacter
+		var collider = $AttackShapeCast2D.get_collider(collider_index)
 		collider.take_hit(scale_damage(default_ground_pound_damage), scale_knockback(default_ground_pound_knockback_strength))
 
 	create_ground_pound_sprite(active_attack_zone_data.radius * 2.0)

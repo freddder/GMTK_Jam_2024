@@ -108,12 +108,12 @@ func take_hit(damage: float, knockback_strength: float) -> void:
 		return
 
 	health -= damage
-	$AnimationPlayer.play("hit_react")
+	play_animation("take_hit")
 	if health <= 0:
 		start_dying()
 	else:
 		pending_knockback_strength += knockback_strength / strength_scale
-		play_animation("take_hit")
+		$AnimationPlayer.play("hit_react")
 		$HitSFX.play()
 
 
@@ -134,13 +134,13 @@ func start_dying(can_drop_pickup: bool = true) -> void:
 
 	on_death.emit(self)
 	is_dying = true
+	collision_layer = 0
+	collision_mask = 0
 
-	# Make sure this animation matches AnimationPlayer death animation
 	play_animation("death")
 	$DeathSFX.play()
 	await $AnimatedSprite2D.animation_finished
 
-	#$AnimationPlayer.play("hit_react")
 	$AnimationPlayer.play("death")
 	await $AnimationPlayer.animation_finished
 
