@@ -1,4 +1,4 @@
-[gd_scene load_steps=66 format=3 uid="uid://lh11v325wtko"]
+[gd_scene load_steps=67 format=3 uid="uid://lh11v325wtko"]
 
 [ext_resource type="Script" path="res://scripts/boss.gd" id="1_7rlbb"]
 [ext_resource type="Texture2D" uid="uid://bymay4dyeq4s5" path="res://content/sprites/boss/boss_chicken_idle.png" id="1_gotnm"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://t6deui0wbh32" path="res://content/sprites/boss/boss_chicken_stun_recover.png" id="4_xy1ml"]
 [ext_resource type="Texture2D" uid="uid://defixfettwjbk" path="res://content/sprites/boss/boss_chicken_charge_warmup.png" id="5_fc4vl"]
 [ext_resource type="Texture2D" uid="uid://dqsodbcnx6stb" path="res://content/sprites/boss/boss_chicken_hit_react.png" id="5_mq7oc"]
+[ext_resource type="AudioStream" uid="uid://bam8psvc266eh" path="res://sfx/boss-death.wav" id="11_ikuay"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bmcty"]
 atlas = ExtResource("2_6wgte")
@@ -505,6 +506,8 @@ libraries = {
 bus = &"SFX"
 
 [node name="DeathSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_ikuay")
+volume_db = -10.0
 bus = &"SFX"
 
 [node name="AttackTimer" type="Timer" parent="."]
