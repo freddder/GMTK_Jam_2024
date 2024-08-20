@@ -692,7 +692,20 @@ func _input(event: InputEvent) -> void:
 			handle_dash_input(event)
 
 	if event.is_action_pressed("debug"):
-		activate_haste()
+		create_debug_explosions()
+
+
+func create_debug_explosions() -> void:
+	var explosion_scene: PackedScene = load("res://scenes/explosion.tscn")
+	for idx in 20:
+		var explosion: Explosion = explosion_scene.instantiate()
+
+		var angle := randf() * 2 * PI
+		var direction := Vector2(cos(angle), sin(angle))
+		var distance := randf() * Arena.radius
+
+		explosion.global_position = direction * distance
+		get_parent().add_child(explosion)
 
 
 func is_playing_attack_finish_animation() -> bool:
