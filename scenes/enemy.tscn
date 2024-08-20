@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=3 uid="uid://cnvwhtne2klh"]
+[gd_scene load_steps=57 format=3 uid="uid://cnvwhtne2klh"]
 
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1_fhxv7"]
 [ext_resource type="AudioStream" uid="uid://d4b242jhl5tp1" path="res://sfx/worm_death.wav" id="2_dym8l"]
@@ -14,6 +14,7 @@
 [ext_resource type="AudioStream" uid="uid://dugs4vousxa2p" path="res://sfx/wolf_hit.wav" id="6_pgywe"]
 [ext_resource type="Texture2D" uid="uid://ny5kmvpjk7ft" path="res://content/sprites/enemies/slime_puddle.png" id="7_jycwl"]
 [ext_resource type="Texture2D" uid="uid://dmwq2i8q2kqgr" path="res://content/sprites/enemies/Wolf_Fur.png" id="10_bikco"]
+[ext_resource type="Texture2D" uid="uid://cavgam8binuqo" path="res://content/sprites/enemies/wolf-hit.png" id="12_tnro1"]
 
 [sub_resource type="Gradient" id="Gradient_4luk5"]
 colors = PackedColorArray(0.862745, 0.666667, 0.701961, 1, 0.866667, 0.631373, 0.447059, 1)
@@ -64,9 +65,13 @@ region = Rect2(0, 0, 133, 128)
 atlas = ExtResource("4_6vwjx")
 region = Rect2(133, 0, 133, 128)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ruhdj"]
-atlas = ExtResource("4_6vwjx")
-region = Rect2(0, 0, 133, 128)
+[sub_resource type="AtlasTexture" id="AtlasTexture_uk1y0"]
+atlas = ExtResource("12_tnro1")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i7p3y"]
+atlas = ExtResource("12_tnro1")
+region = Rect2(128, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rimlt"]
 atlas = ExtResource("4_sp7fw")
@@ -214,11 +219,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ruhdj")
+"texture": SubResource("AtlasTexture_uk1y0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i7p3y")
 }],
 "loop": false,
 "name": &"wolf_take_hit",
-"speed": 1.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -238,7 +246,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"wolf_walk",
-"speed": 5.0
+"speed": 7.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -373,6 +381,7 @@ _data = {
 collision_layer = 4
 collision_mask = 3
 script = ExtResource("1_fhxv7")
+min_strength_scale = 0.8
 pickup_drop_chance = 15.0
 colors = Array[Gradient]([SubResource("Gradient_4luk5"), SubResource("Gradient_3y5ig"), SubResource("Gradient_pw3nv")])
 hit_sounds = Array[AudioStream]([ExtResource("6_pgywe"), ExtResource("3_uyugu"), ExtResource("6_pgywe")])
@@ -382,8 +391,7 @@ death_sounds = Array[AudioStream]([ExtResource("2_dym8l"), ExtResource("5_v5y3h"
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_cfqfh")
 animation = &"wolf_walk"
-frame = 1
-frame_progress = 0.290576
+frame_progress = 0.582739
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_frqxi")
