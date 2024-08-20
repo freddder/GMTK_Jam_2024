@@ -89,7 +89,7 @@ var is_attack_animation_ongoing := false
 
 var active_attack_zone_data: AttackZoneData
 var attack_area_color := Color.RED
-var attack_area_width: float = 2.0
+var attack_area_width: float = 2.5
 var attack_area_arc_segments: float = 0.0
 
 var health := default_health
