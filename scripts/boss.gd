@@ -234,11 +234,17 @@ func attack_charge() -> void:
 	is_in_charge = true
 
 
+func play_stun_animation() -> void:
+	$AnimatedSprite2D.play("charge_stun_start")
+	await $AnimatedSprite2D.animation_finished
+	$AnimatedSprite2D.play("charge_stun_loop")
+
+
 func on_charge_hit_wall() -> void:
 	is_in_charge = false
 	is_stunned = true
 
-	$AnimatedSprite2D.play("charge_stun")
+	play_stun_animation()
 	await get_tree().create_timer(charge_stun_duration).timeout
 
 	$AnimatedSprite2D.play("charge_stun_recover")

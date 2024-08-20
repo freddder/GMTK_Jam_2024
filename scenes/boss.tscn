@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=3 uid="uid://lh11v325wtko"]
+[gd_scene load_steps=56 format=3 uid="uid://lh11v325wtko"]
 
 [ext_resource type="Script" path="res://scripts/boss.gd" id="1_7rlbb"]
 [ext_resource type="Texture2D" uid="uid://bymay4dyeq4s5" path="res://content/sprites/boss/boss_chicken_idle.png" id="1_gotnm"]
@@ -68,6 +68,26 @@ region = Rect2(2240, 0, 560, 350)
 [sub_resource type="AtlasTexture" id="AtlasTexture_mhafy"]
 atlas = ExtResource("4_xy1ml")
 region = Rect2(2800, 0, 560, 350)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p3ba8"]
+atlas = ExtResource("2_qr6ud")
+region = Rect2(0, 0, 560, 350)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ivqj7"]
+atlas = ExtResource("2_qr6ud")
+region = Rect2(560, 0, 560, 350)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kcpbj"]
+atlas = ExtResource("2_qr6ud")
+region = Rect2(1120, 0, 560, 350)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_35kg2"]
+atlas = ExtResource("2_qr6ud")
+region = Rect2(1680, 0, 560, 350)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b2ycm"]
+atlas = ExtResource("2_qr6ud")
+region = Rect2(2240, 0, 560, 350)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yr8iu"]
 atlas = ExtResource("5_fc4vl")
@@ -189,7 +209,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_t8goa")
 }],
 "loop": true,
-"name": &"charge_stun",
+"name": &"charge_stun_loop",
 "speed": 12.0
 }, {
 "frames": [{
@@ -213,6 +233,26 @@ animations = [{
 }],
 "loop": false,
 "name": &"charge_stun_recover",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p3ba8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ivqj7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kcpbj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_35kg2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b2ycm")
+}],
+"loop": false,
+"name": &"charge_stun_start",
 "speed": 8.0
 }, {
 "frames": [{
@@ -370,7 +410,7 @@ script = ExtResource("1_7rlbb")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_rcyij")
-animation = &"charge_stun_recover"
+animation = &"charge_stun_loop"
 
 [node name="HeadSocket" type="Node2D" parent="AnimatedSprite2D"]
 position = Vector2(-82, -71)
