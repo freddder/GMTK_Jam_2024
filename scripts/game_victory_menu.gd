@@ -16,12 +16,15 @@ func _on_game_victory() -> void:
 func _on_restart_button_pressed() -> void:
 	get_tree().paused = false
 	get_tree().call_group("enemy", "queue_free")
+	get_tree().call_group("boss", "queue_free")
 	get_tree().change_scene_to_file("res://scenes/main_level.tscn")
 
 
 func _on_main_menu_button_pressed() -> void:
 	get_tree().paused = false
 	get_tree().call_group("enemy", "queue_free")
+	get_tree().call_group("boss", "queue_free")
+
 	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
 
 

@@ -134,7 +134,6 @@ func start_dying(can_drop_pickup: bool = true) -> void:
 	await $AnimatedSprite2D.animation_finished
 
 	Events.on_game_victory.emit()
-	await FreePlayManager.on_started
 
 	$AnimationPlayer.play("death")
 	await $AnimationPlayer.animation_finished
