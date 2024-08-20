@@ -653,6 +653,7 @@ func on_dash_started() -> void:
 	last_dash_start_time = Time.get_ticks_msec()
 	is_dashing = true
 
+	$DashSFX.play()
 	$DashMotionTrailTimer.one_shot = false
 	$DashMotionTrailTimer.start(dash_motion_trail_creation_cooldown)
 
