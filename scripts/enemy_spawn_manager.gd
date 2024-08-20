@@ -14,6 +14,7 @@ func _ready() -> void:
 	Events.on_game_started.connect(on_game_started)
 	Events.on_game_victory.connect(on_game_terminated)
 	Events.on_game_failed.connect(on_game_terminated)
+	FreePlayManager.on_started.connect(on_freeplay_started)
 
 
 func get_spawn_timer_delay() -> float:
@@ -59,6 +60,11 @@ func on_game_terminated() -> void:
 	should_spawn_enemies = false
 	$SpawnTimer.stop()
 	$BossSpawnTimer.stop()
+
+
+func on_freeplay_started() -> void:
+	should_spawn_enemies = true
+	try_spawn_enemy()
 
 
 func get_random_spawn_point() -> Vector2:
