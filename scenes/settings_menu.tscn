@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dj3c2202x78v7"]
+[gd_scene load_steps=5 format=3 uid="uid://b581mq5i0olgm"]
 
 [ext_resource type="Script" path="res://scripts/settings_menu.gd" id="1_2l747"]
 [ext_resource type="Texture2D" uid="uid://b7eff5sl4omxs" path="res://content/ui/options_ui.png" id="2_6gvys"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://c1v2n3dwtcm4" path="res://content/ui/credits_ui.png" id="4_btxrc"]
 
 [node name="SettingsMenu" type="CanvasLayer"]
+layer = 2
 script = ExtResource("1_2l747")
 
 [node name="ColorRect" type="ColorRect" parent="."]

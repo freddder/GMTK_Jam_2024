@@ -6,7 +6,7 @@ extends CanvasLayer
 func _ready():
 	player.health_changed.connect(update_health_bar)
 	update_health_bar()
-	
+
+
 func update_health_bar():
-	$HealthBar.value = player.health * 100 / player.default_health
-	
+	$HealthBar.value = player.health / player.default_health

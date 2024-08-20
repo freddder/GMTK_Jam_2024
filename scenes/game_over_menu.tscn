@@ -4,6 +4,7 @@
 [ext_resource type="Theme" uid="uid://bkbdw0jadsuqp" path="res://content/ui/default_theme.tres" id="2_gsmq4"]
 
 [node name="GameOverHUD" type="CanvasLayer"]
+layer = 2
 script = ExtResource("1_jojhx")
 
 [node name="Label" type="Label" parent="."]
