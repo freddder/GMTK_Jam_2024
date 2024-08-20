@@ -14,9 +14,6 @@ func _on_game_victory() -> void:
 
 
 func _on_restart_button_pressed() -> void:
-	EnemySpawnManager.boss_spawned = false
-	EnemySpawnManager.boss_timer = 0.0
-	FreePlayManager._should_scale = false
 	get_tree().paused = false
 	get_tree().call_group("enemy", "queue_free")
 	get_tree().call_group("boss", "queue_free")
@@ -32,7 +29,6 @@ func _on_main_menu_button_pressed() -> void:
 
 
 func _on_free_play_button_pressed() -> void:
-	FreePlayManager._should_scale = true
 	get_tree().paused = false
 	hide()
 	Events.is_game_terminated = false

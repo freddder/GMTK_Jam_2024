@@ -8,6 +8,8 @@ var scaling_time: float = 0.0
 
 func _ready() -> void:
 	stop_scaling()
+	Events.on_game_started.connect(stop_scaling)
+	Events.on_game_failed.connect(stop_scaling)
 
 
 func _process(delta: float) -> void:

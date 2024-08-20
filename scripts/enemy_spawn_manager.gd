@@ -5,11 +5,16 @@ extends Node
 @export var boss_scene: PackedScene = preload("res://scenes/boss.tscn")
 @export var spawn_rate: float = 1.0
 @export var enemy_limit: int = 100
-@export var boss_spawn_time_seconds: float = 10.0
 
 var enemy_count: int = 0
 var should_spawn_enemies: bool = false
 
+
+func _ready() -> void:
+	Events.on_game_started.connect(on_game_started)
+	Events.on_game_victory.connect(on_game_terminated)
+	Events.on_game_failed.connect(on_game_terminated)
+	
 
 func get_spawn_timer_delay() -> float:
 	# Relative scale
@@ -44,23 +49,16 @@ func try_spawn_enemy() -> void:
 	try_spawn_enemy()
 
 
-func _ready() -> void:
-	Events.on_game_started.connect(on_game_started)
-	Events.on_game_victory.connect(on_game_terminated)
-	Events.on_game_failed.connect(on_game_terminated)
-
-	await get_tree().create_timer(boss_spawn_time_seconds).timeout
-	spawn_boss()
-
-
 func on_game_started() -> void:
 	should_spawn_enemies = true
 	try_spawn_enemy()
+	$BossSpawnTimer.start()
 
 
 func on_game_terminated() -> void:
 	should_spawn_enemies = false
 	$SpawnTimer.stop()
+	$BossSpawnTimer.stop()
 
 
 func get_random_spawn_point() -> Vector2:
@@ -94,3 +92,7 @@ func _on_enemy_death(enemy: EnemyCharacter) -> void:
 	# The spawner could stop spawning due to limit, so try to start the spawning
 	# process once again; the request will be ignored if the process is already running
 	try_spawn_enemy()
+
+
+func _on_boss_spawn_timer_timeout() -> void:
+	spawn_boss()
