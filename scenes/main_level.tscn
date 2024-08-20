@@ -52,7 +52,7 @@ bus = &"BGM"
 
 [node name="BossTheme" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("8_jaoni")
-volume_db = -10.0
+volume_db = -15.0
 bus = &"BGM"
 
 [node name="VictoryTheme" type="AudioStreamPlayer" parent="."]

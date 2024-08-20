@@ -9,6 +9,7 @@ func _ready() -> void:
 	Events.on_boss_spawned.connect(_on_boss_spawned)
 	Events.on_game_victory.connect(play_victory_theme)
 	Events.done_playing_death_sfx.connect(play_death_theme)
+	FreePlayManager.on_started.connect(on_freeplay_started)
 
 	var tween := get_tree().create_tween()
 	var original_volume: float = $BattleTheme.volume_db
@@ -37,15 +38,25 @@ func _on_boss_spawned(boss: BossCharacter) -> void:
 	$BattleTheme.stop()
 	$BossTheme.play()
 
-func _on_boss_death(boss: BossCharacter)-> void:
+
+func _on_boss_death(boss: BossCharacter) -> void:
 	add_score(boss.default_score)
+
 
 func add_score(_score: float) -> void:
 	score += _score
 	$GameHUD/ScoreLabel.text = "Score: " + str(score)
 
+
 func play_death_theme() -> void:
 	$DeathTheme.play()
 
+
 func play_victory_theme() -> void:
 	$VictoryTheme.play()
+	$BossTheme.stop()
+
+
+func on_freeplay_started() -> void:
+	$VictoryTheme.stop()
+	$BattleTheme.play()
