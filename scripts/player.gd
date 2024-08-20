@@ -31,6 +31,7 @@ signal health_changed
 @export var default_swing_angle: float = 60.0
 @export var swing_angle_limit: float = 150.0
 @export var default_swing_damage: float = 35.0
+@export var swing_charge_speed: float = 0.2
 @export var default_swing_knockback_strength: float = 20.0
 @export var default_swing_cooldown: float = 1
 
@@ -38,17 +39,18 @@ signal health_changed
 @export var default_thrust_radius: float = 130.0
 @export var default_thrust_thickness: float = 30.0
 @export var default_thrust_damage: float = 40.0
+@export var thrust_charge_speed: float = 0.2
 @export var default_thrust_knockback_strength: float = 40
 @export var default_thrust_cooldown: float = 1.5
 
 @export_category("Ground Pound")
 @export var default_ground_pound_radius: float = 50.0
 @export var default_ground_pound_damage: float = 30.0
+@export var ground_pound_charge_speed: float = 0.2
 @export var default_ground_pound_knockback_strength: float = 15.0
 @export var default_ground_pound_cooldown: float = 2.0
 
 @export_category("Charge")
-@export var charge_speed: float = 0.2
 @export var charge_delay: float = 0.5
 @export var charge_boost_power: float = 1.3
 @export var seconds_for_charge_boost: float = 10.0
@@ -342,6 +344,14 @@ func handle_attack_zone() -> void:
 		set_camera_zoom(camera_zoom, 0.0)
 
 
+func get_charge_speed(attack_type: AttackType) -> float:
+	match attack_type:
+		AttackType.Swing: return swing_charge_speed
+		AttackType.Thrust: return thrust_charge_speed
+		AttackType.GroundPound: return ground_pound_charge_speed
+	return 0.0
+
+
 func handle_charging(delta: float) -> void:
 	if not is_charging_attack():
 		_charge_power = 1.0
@@ -352,7 +362,7 @@ func handle_charging(delta: float) -> void:
 	# Haste buff
 	var charge_speed_multiplier := haste_charge_speed_multiplier if is_haste_active() else 1.0
 
-	var additional_charge := charge_speed * charge_speed_multiplier
+	var additional_charge := get_charge_speed(charging_attack_type) * charge_speed_multiplier
 	_charge_power += additional_charge * delta
 
 
