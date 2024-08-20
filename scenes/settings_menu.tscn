@@ -70,7 +70,8 @@ offset_top = 142.0
 offset_right = 932.0
 offset_bottom = 182.0
 
-[connection signal="value_changed" from="OptionsTab/MusicSlider" to="." method="_on_h_slider_value_changed"]
+[connection signal="value_changed" from="OptionsTab/MusicSlider" to="." method="_on_music_slider_value_changed"]
+[connection signal="value_changed" from="OptionsTab/SFXSlider" to="." method="_on_sfx_slider_value_changed"]
 [connection signal="pressed" from="OptionsButton" to="." method="_on_options_button_pressed"]
 [connection signal="pressed" from="ControlsButton" to="." method="_on_controls_button_pressed"]
 [connection signal="pressed" from="CreditsButton" to="." method="_on_credits_button_pressed"]

@@ -89,6 +89,7 @@ text = "Exit
 stream = ExtResource("3_o4xmn")
 volume_db = -11.0
 autoplay = true
+bus = &"BGM"
 
 [connection signal="pressed" from="SettingsMenu/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
 [connection signal="pressed" from="HUD/ButtonsContainer/PlayButton" to="." method="_on_play_button_pressed"]
