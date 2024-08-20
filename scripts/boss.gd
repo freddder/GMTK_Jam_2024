@@ -51,7 +51,7 @@ func _ready() -> void:
 	# debug
 #	await get_tree().create_timer(1.0).timeout
 #	$AttackTimer.stop()
-#	#	create_explosions()
+#	attack_explosions()
 #	attack_charge()
 
 
@@ -209,9 +209,16 @@ func create_explosions() -> void:
 		get_parent().add_child(explosion)
 
 
+func play_cast_animation() -> void:
+	$AnimatedSprite2D.play("cast_start")
+	await $AnimatedSprite2D.animation_finished
+	$AnimatedSprite2D.play("cast_loop")
+
+
 func attack_explosions() -> void:
 	is_casting = true
-	$AnimatedSprite2D.play("cast")
+
+	play_cast_animation()
 	await get_tree().create_timer(pre_explosion_delay).timeout
 
 	create_explosions()
@@ -234,11 +241,17 @@ func attack_charge() -> void:
 	is_in_charge = true
 
 
+func play_stun_animation() -> void:
+	$AnimatedSprite2D.play("charge_stun_start")
+	await $AnimatedSprite2D.animation_finished
+	$AnimatedSprite2D.play("charge_stun_loop")
+
+
 func on_charge_hit_wall() -> void:
 	is_in_charge = false
 	is_stunned = true
 
-	$AnimatedSprite2D.play("charge_stun")
+	play_stun_animation()
 	await get_tree().create_timer(charge_stun_duration).timeout
 
 	$AnimatedSprite2D.play("charge_stun_recover")

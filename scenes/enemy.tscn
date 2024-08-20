@@ -68,25 +68,25 @@ region = Rect2(133, 0, 133, 128)
 atlas = ExtResource("4_6vwjx")
 region = Rect2(0, 0, 133, 128)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_eof37"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_rimlt"]
 atlas = ExtResource("4_sp7fw")
-region = Rect2(0, 0, 144, 128)
+region = Rect2(0, 0, 128, 128)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_338tk"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_mq77u"]
 atlas = ExtResource("4_sp7fw")
-region = Rect2(144, 0, 144, 128)
+region = Rect2(128, 0, 128, 128)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_1jvd5"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_ty5s4"]
 atlas = ExtResource("4_sp7fw")
-region = Rect2(288, 0, 144, 128)
+region = Rect2(256, 0, 128, 128)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_nuhnv"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_vh1rm"]
 atlas = ExtResource("4_sp7fw")
-region = Rect2(432, 0, 144, 128)
+region = Rect2(384, 0, 128, 128)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_j24ci"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_r5dy4"]
 atlas = ExtResource("4_sp7fw")
-region = Rect2(576, 0, 144, 128)
+region = Rect2(512, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_unlty"]
 atlas = ExtResource("2_wb7ea")
@@ -222,19 +222,19 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_eof37")
+"texture": SubResource("AtlasTexture_rimlt")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_338tk")
+"texture": SubResource("AtlasTexture_mq77u")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_1jvd5")
+"texture": SubResource("AtlasTexture_ty5s4")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_nuhnv")
+"texture": SubResource("AtlasTexture_vh1rm")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_j24ci")
+"texture": SubResource("AtlasTexture_r5dy4")
 }],
 "loop": true,
 "name": &"wolf_walk",
@@ -381,7 +381,9 @@ death_sounds = Array[AudioStream]([ExtResource("2_dym8l"), ExtResource("5_v5y3h"
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_cfqfh")
-animation = &"slime_walk"
+animation = &"wolf_walk"
+frame = 1
+frame_progress = 0.290576
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_frqxi")
