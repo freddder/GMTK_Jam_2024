@@ -2,13 +2,13 @@
 
 [ext_resource type="Script" path="res://scripts/game_hud.gd" id="1_5bthv"]
 [ext_resource type="Theme" uid="uid://bkbdw0jadsuqp" path="res://content/ui/default_theme.tres" id="2_w200a"]
-[ext_resource type="PackedScene" path="res://scenes/game_over_menu.tscn" id="2_ysbhh"]
-[ext_resource type="PackedScene" uid="uid://dgigi0x01ccdb" path="res://scenes/game_victory_menu.tscn" id="3_ihwa7"]
+[ext_resource type="PackedScene" uid="uid://kvuk00qldxat" path="res://scenes/game_over_menu.tscn" id="2_ysbhh"]
+[ext_resource type="PackedScene" uid="uid://bed63462bdd1j" path="res://scenes/game_victory_menu.tscn" id="3_ihwa7"]
 [ext_resource type="Texture2D" uid="uid://b0umboai2s0rm" path="res://content/ui/pause_icon.png" id="3_vn2o3"]
 [ext_resource type="Texture2D" uid="uid://5f5d4wba2gj6" path="res://content/ui/health-bar-bg.png" id="3_ylupe"]
 [ext_resource type="Texture2D" uid="uid://bavdhyd6av368" path="res://content/ui/health-bar-fill.png" id="4_dlg05"]
 [ext_resource type="FontFile" uid="uid://bi0gex0agxwfh" path="res://content/fonts/Adumu.ttf" id="4_hwwje"]
-[ext_resource type="PackedScene" uid="uid://der4548t8eleq" path="res://scenes/pause_menu.tscn" id="4_jmil8"]
+[ext_resource type="PackedScene" uid="uid://brvq3ts54m1ep" path="res://scenes/pause_menu.tscn" id="4_jmil8"]
 [ext_resource type="Texture2D" uid="uid://dpnskf0brpyb4" path="res://content/ui/health symbol.png" id="5_nd5tf"]
 [ext_resource type="Shader" path="res://content/shaders/speed.gdshader" id="6_c6p5p"]
 
@@ -33,15 +33,15 @@ shader_parameter/noise = SubResource("NoiseTexture2D_htk0c")
 script = ExtResource("1_5bthv")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(51, 42)
+position = Vector2(54, 56)
 scale = Vector2(0.359375, 0.359375)
 texture = ExtResource("5_nd5tf")
 
 [node name="HealthBar" type="TextureProgressBar" parent="."]
-offset_left = 83.0
-offset_top = -22.0
-offset_right = 487.0
-offset_bottom = 106.0
+offset_left = 87.0
+offset_top = -8.0
+offset_right = 491.0
+offset_bottom = 120.0
 max_value = 1.0
 step = 0.0
 value = 1.0
@@ -49,10 +49,10 @@ texture_under = ExtResource("3_ylupe")
 texture_progress = ExtResource("4_dlg05")
 
 [node name="ScoreLabel" type="Label" parent="."]
-offset_left = 25.0
-offset_top = 79.0
-offset_right = 253.0
-offset_bottom = 143.0
+offset_left = 34.0
+offset_top = 105.0
+offset_right = 262.0
+offset_bottom = 169.0
 theme = ExtResource("2_w200a")
 theme_override_fonts/font = ExtResource("4_hwwje")
 text = "Score: 0"
@@ -66,11 +66,17 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="PauseButton" type="TextureButton" parent="."]
-offset_left = 1238.0
-offset_top = 1.0
-offset_right = 1534.0
-offset_bottom = 297.0
-scale = Vector2(0.139, 0.139)
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -119.0
+offset_top = 30.0
+offset_right = 177.0
+offset_bottom = 326.0
+grow_horizontal = 0
+scale = Vector2(0.3, 0.3)
+size_flags_horizontal = 8
+size_flags_vertical = 0
 texture_normal = ExtResource("3_vn2o3")
 
 [node name="GameOverHUD" parent="." instance=ExtResource("2_ysbhh")]
