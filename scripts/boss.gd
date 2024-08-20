@@ -45,8 +45,8 @@ var charge_target := Vector2.ZERO
 func _ready() -> void:
 	delay_attack()
 
-	Events.on_game_victory.connect(_on_game_terminated)
-	Events.on_game_failed.connect(_on_game_terminated)
+	Events.on_game_victory.connect(on_game_victory)
+	Events.on_game_failed.connect(on_game_failed)
 
 	# debug
 #	await get_tree().create_timer(1.0).timeout
@@ -271,5 +271,12 @@ func _on_attack_timer_timeout() -> void:
 		AttackType.Charge: attack_charge()
 
 
-func _on_game_terminated() -> void:
+func on_game_victory() -> void:
 	$AttackTimer.stop()
+
+
+func on_game_failed() -> void:
+	$AttackTimer.stop()
+
+	# Play taunt on defeated player
+	play_cast_animation()
