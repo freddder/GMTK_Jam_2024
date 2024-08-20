@@ -46,7 +46,7 @@ signal health_changed
 @export_category("Ground Pound")
 @export var default_ground_pound_radius: float = 50.0
 @export var default_ground_pound_damage: float = 7.0
-@export var ground_pound_charge_speed: float = 0.4
+@export var ground_pound_charge_speed: float = 0.5
 @export var default_ground_pound_knockback_strength: float = 35.0
 @export var default_ground_pound_cooldown: float = 10.0
 

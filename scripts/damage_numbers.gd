@@ -1,7 +1,5 @@
 extends Node
 
-var max_damage: int = 100
-
 
 func display_damage_number(value: int, position: Vector2):
 	var number: Label = Label.new()
@@ -9,9 +7,19 @@ func display_damage_number(value: int, position: Vector2):
 	number.text = str(value)
 	number.z_index = 25
 	number.label_settings = LabelSettings.new()
-
-	number.label_settings.font_color = "#FFF"
-	number.label_settings.font_size = lerpf(18, 40, clampf(value / max_damage, 0.0, 1.0))
+	
+	var damage_color = "#FFF"
+	var label_size = 18
+	if value > 120: 
+		damage_color = Color.FIREBRICK
+		label_size = 32
+	elif value > 60: 
+		damage_color = Color.DARK_ORANGE
+		label_size = 24
+	
+	number.label_settings.font = preload("res://content/fonts/Adumu.ttf")
+	number.label_settings.font_color = damage_color
+	number.label_settings.font_size = label_size
 	number.label_settings.outline_color = "#000"
 	number.label_settings.outline_size = 1
 

@@ -106,7 +106,8 @@ func _physics_process(delta: float) -> void:
 func take_hit(damage: float, knockback_strength: float) -> void:
 	if is_dying:
 		return
-
+	
+	damage += randi() % 10 - 5
 	health -= damage
 	DamageNumbers.display_damage_number(damage, global_position)
 	play_animation("take_hit")
