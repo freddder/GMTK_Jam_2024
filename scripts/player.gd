@@ -30,8 +30,8 @@ signal health_changed
 @export var default_swing_radius: float = 120.0
 @export var default_swing_angle: float = 60.0
 @export var swing_angle_limit: float = 150.0
-@export var default_swing_damage: float = 40.0
-@export var swing_charge_speed: float = 0.45
+@export var default_swing_damage: float = 35.0
+@export var swing_charge_speed: float = 0.35
 @export var default_swing_knockback_strength: float = 20.0
 @export var default_swing_cooldown: float = 1
 
@@ -39,8 +39,8 @@ signal health_changed
 @export var default_thrust_radius: float = 150.0
 @export var default_thrust_thickness: float = 30.0
 @export var default_thrust_damage: float = 50.0
-@export var thrust_charge_speed: float = 0.6
-@export var default_thrust_knockback_strength: float = 30
+@export var thrust_charge_speed: float = 0.5
+@export var default_thrust_knockback_strength: float = 50
 @export var default_thrust_cooldown: float = 1.5
 
 @export_category("Ground Pound")
