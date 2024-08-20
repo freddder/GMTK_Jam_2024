@@ -51,18 +51,3 @@ bus = &"BGM"
 
 [node name="Boss" parent="." instance=ExtResource("8_qat0o")]
 position = Vector2(306, 396)
-default_speed = 35.0
-default_health = 1000.0
-default_damage = 19.5
-default_attack_cooldown = 1.0
-default_knockback_strength = 200.0
-attack_min_delay = 3.0
-attack_max_delay = 15.0
-explosion_min_amount = 15
-explosion_max_amount = 25
-pre_explosion_delay = 0.75
-explosion_animation_duration = 2.5
-charge_damage = 45.0
-charge_speed = 600.0
-charge_knockback_strength = 300.0
-charge_stun_duration = 6.0
