@@ -1,9 +1,10 @@
-[gd_scene load_steps=67 format=3 uid="uid://lh11v325wtko"]
+[gd_scene load_steps=68 format=3 uid="uid://lh11v325wtko"]
 
 [ext_resource type="Script" path="res://scripts/boss.gd" id="1_7rlbb"]
 [ext_resource type="Texture2D" uid="uid://bymay4dyeq4s5" path="res://content/sprites/boss/boss_chicken_idle.png" id="1_gotnm"]
 [ext_resource type="Texture2D" uid="uid://tc5kglo33dht" path="res://content/sprites/boss/boss_chicken_cast_loop.png" id="2_6wgte"]
 [ext_resource type="Texture2D" uid="uid://ci6o7oupfx5rj" path="res://content/sprites/boss/boss_chicken_walk.png" id="2_amfyi"]
+[ext_resource type="PackedScene" uid="uid://deisfx6qntnlq" path="res://scenes/explosion.tscn" id="2_asbit"]
 [ext_resource type="Texture2D" uid="uid://ospmwyyrbls8" path="res://content/sprites/boss/boss_chicken_death.png" id="2_qr6ud"]
 [ext_resource type="Texture2D" uid="uid://bdcc4hy122r0h" path="res://content/sprites/boss/boss_chicken_stun.png" id="2_scmm8"]
 [ext_resource type="Texture2D" uid="uid://t6pmtrra1t6l" path="res://content/sprites/boss/boss_chicken_cast_start.png" id="3_3tove"]
@@ -476,12 +477,11 @@ z_index = 5
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("1_7rlbb")
+explosion_scene = ExtResource("2_asbit")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_rcyij")
-animation = &"cast_start"
-frame = 3
-frame_progress = 1.0
+animation = &"idle"
 
 [node name="HeadSocket" type="Node2D" parent="AnimatedSprite2D"]
 position = Vector2(-82, -71)
