@@ -12,7 +12,7 @@ func _ready() -> void:
 	AudioServer.set_bus_mute(bgm_bus_idx, bgm_slider_value == 0.0)
 
 	var sfx_slider_value := 1.0 - (AudioServer.get_bus_volume_db(sfx_bus_idx) / min_volume_db)
-	$OptionsTab/MusicSlider.set_value_no_signal(sfx_slider_value)
+	$OptionsTab/SFXSlider.set_value_no_signal(sfx_slider_value)
 	AudioServer.set_bus_mute(sfx_bus_idx, sfx_slider_value == 0.0)
 
 
