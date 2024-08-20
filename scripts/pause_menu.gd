@@ -2,6 +2,9 @@ class_name PauseMenu
 extends CanvasLayer
 
 
+var theme_time: float = 0.0
+
+
 func _ready() -> void:
 	hide()
 	$SettingsMenu.hide()
@@ -15,9 +18,13 @@ func _input(event: InputEvent) -> void:
 func toggle_pause_game() -> void:
 	get_tree().paused = not get_tree().paused
 	if get_tree().paused:
-		show() 
+		$PauseTheme.play()
+		$PauseTheme.seek(theme_time)
+		show()
 		$SettingsMenu.show()
-	else: 
+	else:
+		theme_time = $PauseTheme.get_playback_position()
+		$PauseTheme.stop()
 		hide()
 		$SettingsMenu.hide()
 
@@ -30,7 +37,7 @@ func _on_settings_button_pressed() -> void:
 	hide()
 	#$SettingsMenu.show()
 	await $SettingsMenu.visibility_changed
-	show()	
+	show()
 
 
 func _on_quit_button_pressed() -> void:

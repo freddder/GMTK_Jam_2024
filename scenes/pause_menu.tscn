@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://brvq3ts54m1ep"]
+[gd_scene load_steps=7 format=3 uid="uid://brvq3ts54m1ep"]
 
 [ext_resource type="Script" path="res://scripts/pause_menu.gd" id="1_q243c"]
 [ext_resource type="Theme" uid="uid://bkbdw0jadsuqp" path="res://content/ui/default_theme.tres" id="2_d7j75"]
 [ext_resource type="Shortcut" uid="uid://ldicu5hglvp2" path="res://content/ui/default_button_shortcut.tres" id="3_nxt2r"]
 [ext_resource type="FontFile" uid="uid://bi0gex0agxwfh" path="res://content/fonts/Adumu.ttf" id="3_wtqal"]
 [ext_resource type="PackedScene" uid="uid://b581mq5i0olgm" path="res://scenes/settings_menu.tscn" id="4_bfene"]
+[ext_resource type="AudioStream" uid="uid://bo5ufhh1f420n" path="res://music/pause-theme.wav" id="6_l4rp1"]
 
 [node name="PauseMenu" type="CanvasLayer"]
 process_mode = 3
@@ -71,6 +72,10 @@ text = "Game Paused
 "
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="PauseTheme" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_l4rp1")
+volume_db = -17.0
 
 [connection signal="pressed" from="SettingsMenu/ResumeButton" to="." method="_on_resume_button_pressed"]
 [connection signal="pressed" from="SettingsMenu/QuitButton" to="." method="_on_quit_button_pressed"]
