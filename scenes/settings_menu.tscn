@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dj3c2202x78v7"]
+[gd_scene load_steps=5 format=3 uid="uid://dj3c2202x78v7"]
 
 [ext_resource type="Script" path="res://scripts/settings_menu.gd" id="1_2l747"]
-[ext_resource type="Theme" uid="uid://bkbdw0jadsuqp" path="res://content/ui/default_theme.tres" id="2_ncm81"]
-[ext_resource type="FontFile" uid="uid://bi0gex0agxwfh" path="res://content/fonts/Adumu.ttf" id="3_0fety"]
+[ext_resource type="Texture2D" uid="uid://b7eff5sl4omxs" path="res://content/ui/options_ui.png" id="2_6gvys"]
+[ext_resource type="Texture2D" uid="uid://cg8kgn06em5lb" path="res://content/ui/controls_ui.png" id="3_35d07"]
+[ext_resource type="Texture2D" uid="uid://c1v2n3dwtcm4" path="res://content/ui/credits_ui.png" id="4_btxrc"]
 
 [node name="SettingsMenu" type="CanvasLayer"]
 script = ExtResource("1_2l747")
@@ -15,41 +16,50 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.145098, 0.145098, 0.145098, 0.407843)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -10.0
-offset_right = 200.0
-offset_bottom = 150.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="ControlsTab" type="Sprite2D" parent="."]
+position = Vector2(644, 366)
+scale = Vector2(0.341293, 0.341293)
+texture = ExtResource("3_35d07")
 
-[node name="Label" type="Label" parent="VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-theme = ExtResource("2_ncm81")
-theme_override_fonts/font = ExtResource("3_0fety")
-text = "Volume"
-vertical_alignment = 1
+[node name="CreditsTab" type="Sprite2D" parent="."]
+position = Vector2(644, 366)
+scale = Vector2(0.341293, 0.341293)
+texture = ExtResource("4_btxrc")
 
-[node name="HSlider" type="HSlider" parent="VBoxContainer"]
-layout_mode = 2
+[node name="OptionsTab" type="Sprite2D" parent="."]
+position = Vector2(644, 366)
+scale = Vector2(0.341293, 0.341293)
+texture = ExtResource("2_6gvys")
+
+[node name="HSlider" type="HSlider" parent="OptionsTab"]
+offset_left = -377.974
+offset_top = -307.653
+offset_right = 732.026
+offset_bottom = -260.653
 size_flags_vertical = 4
 max_value = 1.0
 step = 0.02
 value = 1.0
 
-[node name="Button" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("2_ncm81")
-theme_override_fonts/font = ExtResource("3_0fety")
-text = "Back"
+[node name="OptionsButton" type="TextureButton" parent="."]
+offset_left = 363.0
+offset_top = 143.0
+offset_right = 518.0
+offset_bottom = 181.0
 
-[connection signal="value_changed" from="VBoxContainer/HSlider" to="." method="_on_h_slider_value_changed"]
-[connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_button_pressed"]
+[node name="ControlsButton" type="TextureButton" parent="."]
+offset_left = 527.0
+offset_top = 143.0
+offset_right = 683.0
+offset_bottom = 183.0
+
+[node name="CreditsButton" type="TextureButton" parent="."]
+offset_left = 775.0
+offset_top = 142.0
+offset_right = 932.0
+offset_bottom = 182.0
+
+[connection signal="value_changed" from="OptionsTab/HSlider" to="." method="_on_h_slider_value_changed"]
+[connection signal="pressed" from="OptionsButton" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="ControlsButton" to="." method="_on_controls_button_pressed"]
+[connection signal="pressed" from="CreditsButton" to="." method="_on_credits_button_pressed"]

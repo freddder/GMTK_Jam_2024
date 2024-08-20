@@ -31,14 +31,6 @@ shader_parameter/noise = SubResource("NoiseTexture2D_htk0c")
 [node name="GameHUD" type="CanvasLayer"]
 script = ExtResource("1_5bthv")
 
-[node name="ChargeEffect" type="ColorRect" parent="."]
-material = SubResource("ShaderMaterial_in1ai")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(51, 42)
 scale = Vector2(0.359375, 0.359375)
@@ -61,6 +53,14 @@ offset_bottom = 143.0
 theme = ExtResource("2_w200a")
 theme_override_fonts/font = ExtResource("4_hwwje")
 text = "Score: 0"
+
+[node name="ChargeEffect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_in1ai")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="GameOverHUD" parent="." instance=ExtResource("2_ysbhh")]
 visible = false

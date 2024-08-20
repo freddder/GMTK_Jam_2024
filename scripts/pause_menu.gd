@@ -14,7 +14,12 @@ func _input(event: InputEvent) -> void:
 
 func toggle_pause_game() -> void:
 	get_tree().paused = not get_tree().paused
-	show() if get_tree().paused else hide()
+	if get_tree().paused:
+		show() 
+		$SettingsMenu.show()
+	else: 
+		hide()
+		$SettingsMenu.hide()
 
 
 func _on_resume_button_pressed() -> void:
@@ -23,7 +28,7 @@ func _on_resume_button_pressed() -> void:
 
 func _on_settings_button_pressed() -> void:
 	hide()
-	$SettingsMenu.show()
+	#$SettingsMenu.show()
 	await $SettingsMenu.visibility_changed
 	show()	
 

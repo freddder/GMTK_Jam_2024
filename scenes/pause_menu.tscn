@@ -10,24 +10,55 @@
 process_mode = 3
 script = ExtResource("1_q243c")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.145098, 0.145098, 0.145098, 0.407843)
+[node name="SettingsMenu" parent="." instance=ExtResource("4_bfene")]
 
-[node name="Label" type="Label" parent="."]
+[node name="ResumeButton" type="TextureButton" parent="SettingsMenu"]
+offset_left = 404.0
+offset_top = 470.0
+offset_right = 624.0
+offset_bottom = 569.0
+theme = ExtResource("2_d7j75")
+shortcut = ExtResource("3_nxt2r")
+
+[node name="Label" type="Label" parent="SettingsMenu/ResumeButton"]
+layout_mode = 0
+offset_right = 220.0
+offset_bottom = 98.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_wtqal")
+text = "Resume"
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+
+[node name="QuitButton" type="TextureButton" parent="SettingsMenu"]
+offset_left = 663.0
+offset_top = 470.0
+offset_right = 882.0
+offset_bottom = 569.0
+theme = ExtResource("2_d7j75")
+
+[node name="Label" type="Label" parent="SettingsMenu/QuitButton"]
+layout_mode = 0
+offset_right = 218.0
+offset_bottom = 98.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_wtqal")
+theme_override_font_sizes/font_size = 38
+text = "Main Menu"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="SettingsMenu"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -290.5
-offset_top = -160.0
-offset_right = 290.5
-offset_bottom = -63.0
+offset_left = -287.0
+offset_top = -325.0
+offset_right = 294.0
+offset_bottom = -228.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_d7j75")
@@ -38,42 +69,5 @@ text = "Game Paused
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -158.0
-offset_top = -2.0
-offset_right = 162.0
-offset_bottom = 189.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="ResumeButton" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-theme = ExtResource("2_d7j75")
-theme_override_fonts/font = ExtResource("3_wtqal")
-shortcut = ExtResource("3_nxt2r")
-text = "Resume"
-
-[node name="SettingsButton" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-theme = ExtResource("2_d7j75")
-theme_override_fonts/font = ExtResource("3_wtqal")
-text = "Settings"
-
-[node name="QuitButton" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-theme = ExtResource("2_d7j75")
-theme_override_fonts/font = ExtResource("3_wtqal")
-text = "Quit"
-
-[node name="SettingsMenu" parent="." instance=ExtResource("4_bfene")]
-
-[connection signal="pressed" from="VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="SettingsMenu/ResumeButton" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="SettingsMenu/QuitButton" to="." method="_on_quit_button_pressed"]
