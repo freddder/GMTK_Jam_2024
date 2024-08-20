@@ -10,6 +10,7 @@ func _ready() -> void:
 
 func _on_player_death() -> void:
 	Events.on_game_failed.emit()
+	$BattleTheme.stop()
 
 
 func _on_enemy_spawned(enemy: EnemyCharacter) -> void:
