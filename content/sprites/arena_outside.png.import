@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bpe6b3uy8ik3i"
-path="res://.godot/imported/arena_floor_mask.png-3622023468a6e33a5b00696a76c201f2.ctex"
+uid="uid://csagcs1xdl6tm"
+path="res://.godot/imported/arena_outside.png-2aa83cae9d4499bd82a2efb38261d0ec.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://content/sprites/arena_floor_mask.png"
-dest_files=["res://.godot/imported/arena_floor_mask.png-3622023468a6e33a5b00696a76c201f2.ctex"]
+source_file="res://content/sprites/arena_outside.png"
+dest_files=["res://.godot/imported/arena_outside.png-2aa83cae9d4499bd82a2efb38261d0ec.ctex"]
 
 [params]
 

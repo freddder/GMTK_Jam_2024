@@ -2,15 +2,16 @@
 
 [ext_resource type="Script" path="res://scripts/main_level.gd" id="1_opo1r"]
 [ext_resource type="PackedScene" uid="uid://c7kaxi3ghjur4" path="res://scenes/player.tscn" id="1_wu7kq"]
-[ext_resource type="Texture2D" uid="uid://3qdfit0pa1iq" path="res://content/sprites/arena.png" id="2_2uvne"]
+[ext_resource type="Texture2D" uid="uid://bkmia8as60sfo" path="res://content/sprites/arena_floor.png" id="2_53sg7"]
+[ext_resource type="Texture2D" uid="uid://csagcs1xdl6tm" path="res://content/sprites/arena_outside.png" id="2_cl2ry"]
 [ext_resource type="PackedScene" uid="uid://be2uc3fhga108" path="res://scenes/game_hud.tscn" id="4_nefjf"]
 [ext_resource type="AudioStream" uid="uid://8lmxkeje6s6x" path="res://music/battle-theme.wav" id="5_tduye"]
-[ext_resource type="AudioStream" uid="uid://dvre62quxjyn3" path="res://music/death-theme.wav" id="6_pxwht"]
 
 [node name="MainLevel" type="Node"]
 script = ExtResource("1_opo1r")
 
 [node name="ColorRect" type="ColorRect" parent="."]
+z_index = -100
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -23,8 +24,12 @@ grow_vertical = 2
 scale = Vector2(5, 5)
 color = Color(0.203922, 0.262745, 0.290196, 1)
 
-[node name="ArenaBackground" type="Sprite2D" parent="."]
-texture = ExtResource("2_2uvne")
+[node name="ArenaOutside" type="Sprite2D" parent="."]
+texture = ExtResource("2_cl2ry")
+
+[node name="ArenaFloor" type="Sprite2D" parent="."]
+z_index = -50
+texture = ExtResource("2_53sg7")
 
 [node name="Player" parent="." instance=ExtResource("1_wu7kq")]
 collision_mask = 7
@@ -35,7 +40,3 @@ collision_mask = 7
 stream = ExtResource("5_tduye")
 volume_db = -11.0
 autoplay = true
-
-[node name="DeathTheme" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("6_pxwht")
-volume_db = -11.0

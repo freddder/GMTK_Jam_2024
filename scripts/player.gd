@@ -23,6 +23,8 @@ signal health_changed
 @export var knockback_limit: float = 1000.0
 @export var default_health: float = 100.0
 @export var camera_offset_distance_from_arena_bounds: float = 250.0
+@export var ground_pound_texture: Texture2D = load("res://content/sprites/ground_pound.png")
+@export var wipe_area_scene: PackedScene = load("res://scenes/wipe_area.tscn")
 
 @export_category("Swing")
 @export var default_swing_radius: float = 90.0
@@ -596,6 +598,25 @@ func release_secondary_attack() -> void:
 		collider.take_hit(scale_damage(default_thrust_damage), scale_knockback(default_thrust_knockback_strength))
 
 
+func create_ground_pound_sprite(uniform_size: float) -> void:
+	var ground_pound_sprite: Sprite2D = Sprite2D.new()
+
+	ground_pound_sprite.texture = ground_pound_texture
+	ground_pound_sprite.global_position = $AnimatedSprite2D/SwordSocket.global_position
+	ground_pound_sprite.z_index = -10
+
+	uniform_size = minf(uniform_size, 2000.0)
+	var uniform_scale := uniform_size / ground_pound_sprite.texture.get_size().x
+	ground_pound_sprite.scale = Vector2(uniform_scale, uniform_scale)
+
+	get_parent().add_child(ground_pound_sprite)
+
+	await get_tree().create_timer(maxf(1.0, uniform_size / 2000.0 * 3.0)).timeout
+
+	var tween := get_tree().create_tween()
+	tween.tween_property(ground_pound_sprite , "modulate", Color.TRANSPARENT, 1.0)
+
+
 func release_heavy_attack() -> void:
 	var attack_circle_shape := CircleShape2D.new()
 	$AttackShapeCast2D.shape = attack_circle_shape
@@ -605,6 +626,8 @@ func release_heavy_attack() -> void:
 	for collider_index in $AttackShapeCast2D.get_collision_count():
 		var collider := $AttackShapeCast2D.get_collider(collider_index) as EnemyCharacter
 		collider.take_hit(scale_damage(default_ground_pound_damage), scale_knockback(default_ground_pound_knockback_strength))
+
+	create_ground_pound_sprite(active_attack_zone_data.radius * 2.0)
 
 
 func can_dash() -> bool:
@@ -769,7 +792,7 @@ func die() -> void:
 
 	# Fade out
 	var tween := get_tree().create_tween()
-	tween.tween_property(self, "modulate", Color(1.0, 1.0, 1.0, 0.0), 1.0)
+	tween.tween_property(self, "modulate", Color.TRANSPARENT, 1.0)
 
 
 func is_alive() -> bool:
@@ -825,7 +848,6 @@ func use_heal_pickup() -> void:
 
 
 func wipe_enemies() -> void:
-	var wipe_area_scene: PackedScene = load("res://scenes/wipe_area.tscn")
 	var wipe_area := wipe_area_scene.instantiate()
 	add_child(wipe_area)
 
