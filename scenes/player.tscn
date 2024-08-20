@@ -861,7 +861,7 @@ position = Vector2(129, 11)
 collision_layer = 2
 collision_mask = 15
 script = ExtResource("1_r52mo")
-default_ground_pound_cooldown = 5.0
+default_ground_pound_cooldown = 7.5
 shake_scale_rate = 90.0
 metadata/_edit_group_ = true
 
