@@ -845,3 +845,7 @@ func _on_haste_timer_timeout() -> void:
 
 func _on_haste_trail_timer_timeout() -> void:
 	create_motion_trail_copy(haste_motion_trail_color, haste_motion_trail_mix_color)
+
+
+func _on_death_sfx_finished():
+	Events.done_playing_death_sfx.emit()

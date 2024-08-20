@@ -943,6 +943,7 @@ one_shot = true
 
 [node name="HasteTrailTimer" type="Timer" parent="."]
 
+[connection signal="finished" from="DeathSFX" to="." method="_on_death_sfx_finished"]
 [connection signal="timeout" from="DashMotionTrailTimer" to="." method="_on_dash_motion_trail_timer_timeout"]
 [connection signal="timeout" from="HasteTimer" to="." method="_on_haste_timer_timeout"]
 [connection signal="timeout" from="HasteTrailTimer" to="." method="_on_haste_trail_timer_timeout"]

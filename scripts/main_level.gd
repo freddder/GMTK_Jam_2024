@@ -6,6 +6,7 @@ func _ready() -> void:
 	Events.on_game_started.emit()
 	Events.on_player_death.connect(_on_player_death)
 	Events.on_enemy_spawned.connect(_on_enemy_spawned)
+	Events.done_playing_death_sfx.connect(play_death_theme)
 
 
 func _on_player_death() -> void:
@@ -24,3 +25,7 @@ func _on_enemy_death(enemy: EnemyCharacter) -> void:
 func add_score(_score: float) -> void:
 	score += _score
 	$GameHUD/ScoreLabel.text = "Score: " + str(score)
+
+
+func play_death_theme() -> void:
+	$DeathTheme.play()

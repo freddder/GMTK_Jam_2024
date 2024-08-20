@@ -4,6 +4,7 @@ signal on_game_started
 signal on_game_victory
 signal on_game_failed
 signal on_player_death
+signal done_playing_death_sfx
 signal on_enemy_spawned(enemy: EnemyCharacter)
 
 var is_game_terminated := false
