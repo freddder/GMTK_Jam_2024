@@ -97,6 +97,7 @@ func take_hit(damage: float, knockback_strength: float) -> void:
 		return
 
 	health -= damage
+	DamageNumbers.display_damage_number(damage, global_position)
 	$AnimationPlayer.play("hit_react")
 	if health <= 0:
 		start_dying()
