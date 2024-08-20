@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dj3c2202x78v7"]
+[gd_scene load_steps=5 format=3 uid="uid://b581mq5i0olgm"]
 
 [ext_resource type="Script" path="res://scripts/settings_menu.gd" id="1_2l747"]
 [ext_resource type="Texture2D" uid="uid://b7eff5sl4omxs" path="res://content/ui/options_ui.png" id="2_6gvys"]
@@ -57,18 +57,21 @@ offset_left = 363.0
 offset_top = 143.0
 offset_right = 518.0
 offset_bottom = 181.0
+shortcut_in_tooltip = false
 
 [node name="ControlsButton" type="TextureButton" parent="."]
 offset_left = 527.0
 offset_top = 143.0
 offset_right = 683.0
 offset_bottom = 183.0
+shortcut_in_tooltip = false
 
 [node name="CreditsButton" type="TextureButton" parent="."]
 offset_left = 775.0
 offset_top = 142.0
 offset_right = 932.0
 offset_bottom = 182.0
+shortcut_in_tooltip = false
 
 [connection signal="value_changed" from="OptionsTab/MusicSlider" to="." method="_on_music_slider_value_changed"]
 [connection signal="value_changed" from="OptionsTab/SFXSlider" to="." method="_on_sfx_slider_value_changed"]

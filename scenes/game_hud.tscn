@@ -77,6 +77,7 @@ grow_horizontal = 0
 scale = Vector2(0.3, 0.3)
 size_flags_horizontal = 8
 size_flags_vertical = 0
+shortcut_in_tooltip = false
 texture_normal = ExtResource("3_vn2o3")
 
 [node name="GameOverHUD" parent="." instance=ExtResource("2_ysbhh")]

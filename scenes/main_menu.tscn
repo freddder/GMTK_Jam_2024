@@ -31,6 +31,7 @@ offset_top = 485.0
 offset_right = 1191.0
 offset_bottom = 775.0
 scale = Vector2(0.317665, 0.317665)
+shortcut_in_tooltip = false
 texture_normal = ExtResource("4_5376x")
 
 [node name="Label" type="Label" parent="SettingsMenu/MainMenuButton"]
@@ -41,7 +42,8 @@ scale = Vector2(2.89703, 2.89703)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("4_gpti7")
 theme_override_font_sizes/font_size = 38
-text = "Main Menu"
+text = "Back
+"
 horizontal_alignment = 1
 vertical_alignment = 1
 clip_text = true

@@ -23,6 +23,7 @@ offset_bottom = 770.0
 scale = Vector2(0.31148, 0.31148)
 theme = ExtResource("2_d7j75")
 shortcut = ExtResource("3_nxt2r")
+shortcut_in_tooltip = false
 texture_normal = ExtResource("5_grys5")
 
 [node name="Label" type="Label" parent="SettingsMenu/ResumeButton"]
@@ -45,6 +46,7 @@ offset_right = 1307.0
 offset_bottom = 770.0
 scale = Vector2(0.317513, 0.317513)
 theme = ExtResource("2_d7j75")
+shortcut_in_tooltip = false
 texture_normal = ExtResource("5_grys5")
 
 [node name="Label" type="Label" parent="SettingsMenu/MainMenuButton"]
