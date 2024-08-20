@@ -5,7 +5,7 @@ extends Node
 @export var boss_scene: PackedScene = preload("res://scenes/boss.tscn")
 @export var spawn_rate: float = 1.0
 @export var enemy_limit: int = 100
-@export var boss_spawn_time_seconds: float = 10.0
+@export var boss_spawn_time_seconds: float = 90.0
 
 var enemy_count: int = 0
 var should_spawn_enemies: bool = false
