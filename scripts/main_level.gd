@@ -34,6 +34,8 @@ func _on_enemy_death(enemy: EnemyCharacter) -> void:
 
 func _on_boss_spawned(boss: BossCharacter) -> void:
 	boss.on_death.connect(_on_boss_death)
+	$BattleTheme.stop()
+	$BossTheme.play()
 
 func _on_boss_death(boss: BossCharacter)-> void:
 	add_score(boss.default_score)
