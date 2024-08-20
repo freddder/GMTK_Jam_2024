@@ -69,6 +69,7 @@ layout_mode = 2
 theme = ExtResource("1_mnbn2")
 theme_override_fonts/font = ExtResource("4_gpti7")
 shortcut = SubResource("Shortcut_20qb5")
+shortcut_in_tooltip = false
 text = "Play
 "
 
@@ -76,6 +77,7 @@ text = "Play
 layout_mode = 2
 theme = ExtResource("1_mnbn2")
 theme_override_fonts/font = ExtResource("4_gpti7")
+shortcut_in_tooltip = false
 text = "Settings
 "
 
@@ -83,6 +85,7 @@ text = "Settings
 layout_mode = 2
 theme = ExtResource("1_mnbn2")
 theme_override_fonts/font = ExtResource("4_gpti7")
+shortcut_in_tooltip = false
 text = "Exit
 "
 
