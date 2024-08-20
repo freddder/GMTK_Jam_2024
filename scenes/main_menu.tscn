@@ -95,10 +95,12 @@ text = "Exit
 stream = ExtResource("3_o4xmn")
 volume_db = -15.0
 autoplay = true
+bus = &"BGM"
 
 [node name="PlaySFX" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("8_1h0ge")
 volume_db = -20.0
+bus = &"BGM"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = 100
