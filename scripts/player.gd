@@ -693,9 +693,6 @@ func _input(event: InputEvent) -> void:
 		if event.is_action_pressed("dash"):
 			handle_dash_input(event)
 
-	if event.is_action_pressed("debug"):
-		create_debug_explosions()
-
 
 func create_debug_explosions() -> void:
 	var explosion_scene: PackedScene = load("res://scenes/explosion.tscn")
