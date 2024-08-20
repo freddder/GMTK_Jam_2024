@@ -12,6 +12,9 @@ func _on_game_failed() -> void:
 
 
 func _on_restart_button_pressed() -> void:
+	EnemySpawnManager.boss_spawned = false
+	EnemySpawnManager.boss_timer = 0.0
+	FreePlayManager._should_scale = false
 	get_tree().call_group("enemy", "queue_free")
 	get_tree().call_group("boss", "queue_free")
 	get_tree().call_group("pickups", "queue_free")
