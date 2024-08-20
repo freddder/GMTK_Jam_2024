@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/game_hud.gd" id="1_5bthv"]
 [ext_resource type="Theme" uid="uid://bkbdw0jadsuqp" path="res://content/ui/default_theme.tres" id="2_w200a"]
-[ext_resource type="PackedScene" uid="uid://kvuk00qldxat" path="res://scenes/game_over_menu.tscn" id="2_ysbhh"]
+[ext_resource type="PackedScene" uid="uid://dkgiymwqjtg2d" path="res://scenes/game_over_menu.tscn" id="2_ysbhh"]
 [ext_resource type="PackedScene" uid="uid://bed63462bdd1j" path="res://scenes/game_victory_menu.tscn" id="3_ihwa7"]
 [ext_resource type="Texture2D" uid="uid://b0umboai2s0rm" path="res://content/ui/pause_icon.png" id="3_vn2o3"]
 [ext_resource type="Texture2D" uid="uid://5f5d4wba2gj6" path="res://content/ui/health-bar-bg.png" id="3_ylupe"]

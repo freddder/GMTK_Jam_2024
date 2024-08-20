@@ -1,10 +1,12 @@
-[gd_scene load_steps=38 format=3 uid="uid://lh11v325wtko"]
+[gd_scene load_steps=51 format=3 uid="uid://lh11v325wtko"]
 
 [ext_resource type="Script" path="res://scripts/boss.gd" id="1_7rlbb"]
 [ext_resource type="Texture2D" uid="uid://bymay4dyeq4s5" path="res://content/sprites/boss/boss_chicken_idle.png" id="1_gotnm"]
 [ext_resource type="Texture2D" uid="uid://ci6o7oupfx5rj" path="res://content/sprites/boss/boss_chicken_walk.png" id="2_amfyi"]
 [ext_resource type="Texture2D" uid="uid://ospmwyyrbls8" path="res://content/sprites/boss/boss_chicken_death.png" id="2_qr6ud"]
 [ext_resource type="Texture2D" uid="uid://bdcc4hy122r0h" path="res://content/sprites/boss/boss_chicken_stun.png" id="2_scmm8"]
+[ext_resource type="Texture2D" uid="uid://t6deui0wbh32" path="res://content/sprites/boss/boss_chicken_stun_recover.png" id="4_xy1ml"]
+[ext_resource type="Texture2D" uid="uid://defixfettwjbk" path="res://content/sprites/boss/boss_chicken_charge_warmup.png" id="5_fc4vl"]
 [ext_resource type="Texture2D" uid="uid://dqsodbcnx6stb" path="res://content/sprites/boss/boss_chicken_hit_react.png" id="5_mq7oc"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_d1vh4"]
@@ -42,6 +44,50 @@ region = Rect2(1120, 0, 560, 350)
 [sub_resource type="AtlasTexture" id="AtlasTexture_t8goa"]
 atlas = ExtResource("2_scmm8")
 region = Rect2(1680, 0, 560, 350)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_svtt3"]
+atlas = ExtResource("4_xy1ml")
+region = Rect2(0, 0, 560, 350)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1snp6"]
+atlas = ExtResource("4_xy1ml")
+region = Rect2(560, 0, 560, 350)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aea6a"]
+atlas = ExtResource("4_xy1ml")
+region = Rect2(1120, 0, 560, 350)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e1hhx"]
+atlas = ExtResource("4_xy1ml")
+region = Rect2(1680, 0, 560, 350)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_68w25"]
+atlas = ExtResource("4_xy1ml")
+region = Rect2(2240, 0, 560, 350)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mhafy"]
+atlas = ExtResource("4_xy1ml")
+region = Rect2(2800, 0, 560, 350)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yr8iu"]
+atlas = ExtResource("5_fc4vl")
+region = Rect2(0, 0, 560, 350)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bxrfr"]
+atlas = ExtResource("5_fc4vl")
+region = Rect2(560, 0, 560, 350)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d5njo"]
+atlas = ExtResource("5_fc4vl")
+region = Rect2(1120, 0, 560, 350)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ugg8u"]
+atlas = ExtResource("5_fc4vl")
+region = Rect2(1680, 0, 560, 350)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c1i0o"]
+atlas = ExtResource("5_fc4vl")
+region = Rect2(2240, 0, 560, 350)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_h8bva"]
 atlas = ExtResource("2_qr6ud")
@@ -148,6 +194,49 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_svtt3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1snp6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aea6a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e1hhx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_68w25")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_mhafy")
+}],
+"loop": false,
+"name": &"charge_stun_recover",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 4.0,
+"texture": SubResource("AtlasTexture_yr8iu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bxrfr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d5njo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ugg8u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c1i0o")
+}],
+"loop": true,
+"name": &"charge_warmup",
+"speed": 9.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_h8bva")
 }, {
 "duration": 1.0,
@@ -219,22 +308,6 @@ animations = [{
 radius = 75.46
 height = 300.55
 
-[sub_resource type="Animation" id="Animation_c4aaa"]
-resource_name = "hit_react"
-length = 0.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(0.796875, 0.090271, 0.090271, 1), Color(1, 1, 1, 1)]
-}
-
 [sub_resource type="Animation" id="Animation_myh3d"]
 length = 0.001
 tracks/0/type = "value"
@@ -266,6 +339,22 @@ tracks/0/keys = {
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_c4aaa"]
+resource_name = "hit_react"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.796875, 0.090271, 0.090271, 1), Color(1, 1, 1, 1)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_puexm"]
 _data = {
 "RESET": SubResource("Animation_myh3d"),
@@ -281,7 +370,9 @@ script = ExtResource("1_7rlbb")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_rcyij")
-animation = &"idle"
+animation = &"charge_stun_recover"
+frame = 5
+frame_progress = 0.416302
 
 [node name="HeadSocket" type="Node2D" parent="AnimatedSprite2D"]
 position = Vector2(-82, -71)

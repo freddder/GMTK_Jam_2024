@@ -26,7 +26,8 @@ enum AttackType {
 @export var charge_damage: float = 45.0
 @export var charge_speed: float = 600.0
 @export var charge_knockback_strength: float = 300.0
-@export var charge_warmup: float = 0.75
+@export var charge_warmup_min_duration: float = 2.5
+@export var charge_warmup_max_duration: float = 6.0
 @export var charge_stun_duration: float = 6.0
 
 @onready var player: PlayerCharacter = get_tree().get_first_node_in_group("player")
@@ -209,7 +210,7 @@ func attack_explosions() -> void:
 func attack_charge() -> void:
 	is_casting = true
 	$AnimatedSprite2D.play("charge_warmup")
-	await get_tree().create_timer(charge_warmup).timeout
+	await get_tree().create_timer(randf_range(charge_warmup_min_duration, charge_warmup_max_duration)).timeout
 
 	# Try to charge way off arena
 	charge_target = global_position.direction_to(player.global_position) * 9999.0
@@ -226,9 +227,8 @@ func on_charge_hit_wall() -> void:
 	$AnimatedSprite2D.play("charge_stun")
 	await get_tree().create_timer(charge_stun_duration).timeout
 
-	# TODO uncomment
-#	$AnimatedSprite2D.play("charge_stun_get_up")
-#	await $AnimatedSprite2D.animation_finished
+	$AnimatedSprite2D.play("charge_stun_recover")
+	await $AnimatedSprite2D.animation_finished
 
 	is_stunned = false
 	delay_attack()
