@@ -8,6 +8,11 @@ func _ready() -> void:
 	Events.on_enemy_spawned.connect(_on_enemy_spawned)
 	Events.done_playing_death_sfx.connect(play_death_theme)
 
+	var tween := get_tree().create_tween()
+	var original_volume: float = $BattleTheme.volume_db
+	$BattleTheme.volume_db = -20.0
+	tween.tween_property($BattleTheme, "volume_db", original_volume, 1.0)
+
 
 func _on_player_death() -> void:
 	Events.on_game_failed.emit()
