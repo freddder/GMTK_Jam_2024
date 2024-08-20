@@ -30,30 +30,30 @@ signal health_changed
 @export var default_swing_radius: float = 90.0
 @export var default_swing_angle: float = 60.0
 @export var swing_angle_limit: float = 150.0
-@export var default_swing_damage: float = 35.0
-@export var swing_charge_speed: float = 0.2
+@export var default_swing_damage: float = 40.0
+@export var swing_charge_speed: float = 0.3
 @export var default_swing_knockback_strength: float = 20.0
 @export var default_swing_cooldown: float = 1
 
 @export_category("Thrust")
 @export var default_thrust_radius: float = 130.0
 @export var default_thrust_thickness: float = 30.0
-@export var default_thrust_damage: float = 40.0
-@export var thrust_charge_speed: float = 0.2
-@export var default_thrust_knockback_strength: float = 40
+@export var default_thrust_damage: float = 50.0
+@export var thrust_charge_speed: float = 0.4
+@export var default_thrust_knockback_strength: float = 30
 @export var default_thrust_cooldown: float = 1.5
 
 @export_category("Ground Pound")
 @export var default_ground_pound_radius: float = 50.0
-@export var default_ground_pound_damage: float = 30.0
-@export var ground_pound_charge_speed: float = 0.2
-@export var default_ground_pound_knockback_strength: float = 15.0
-@export var default_ground_pound_cooldown: float = 2.0
+@export var default_ground_pound_damage: float = 7.0
+@export var ground_pound_charge_speed: float = 0.4
+@export var default_ground_pound_knockback_strength: float = 35.0
+@export var default_ground_pound_cooldown: float = 10.0
 
 @export_category("Charge")
 @export var charge_delay: float = 0.5
 @export var charge_boost_power: float = 1.3
-@export var seconds_for_charge_boost: float = 10.0
+@export var seconds_for_charge_boost: float = 13.0
 
 @export_category("Dash")
 @export var default_dash_duration: float = 0.3
@@ -69,10 +69,10 @@ signal health_changed
 @export var shake_scale_delay: float = 3.0
 
 @export_category("Haste")
-@export var haste_duration: float = 10.0
+@export var haste_duration: float = 7.0
 @export var haste_move_speed_multiplier : float = 1.6
-@export var haste_dash_speed_multiplier: float = 1.6
-@export var haste_charge_speed_multiplier: float = 2.0
+@export var haste_dash_speed_multiplier: float = 2
+@export var haste_charge_speed_multiplier: float = 1.7
 @export var haste_motion_trail_creation_cooldown: float = 0.06
 @export var haste_motion_trail_color := Color(0.0, 0.78, 0.8, 0.3)
 @export var haste_motion_trail_mix_color: float = 0.7
