@@ -51,22 +51,6 @@ clip_text = true
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
-[node name="ButtonsContainer" type="VBoxContainer" parent="HUD"]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -150.0
-offset_top = -300.0
-offset_right = 150.0
-offset_bottom = -100.0
-grow_horizontal = 2
-grow_vertical = 0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-alignment = 1
-
 [node name="PlayButton" type="TextureButton" parent="HUD"]
 offset_left = 490.0
 offset_top = 377.0
@@ -80,19 +64,20 @@ texture_normal = ExtResource("4_5376x")
 
 [node name="Label" type="Label" parent="HUD/PlayButton"]
 layout_mode = 0
-offset_left = 229.91
-offset_top = 43.9932
-offset_right = 338.91
-offset_bottom = 107.993
+offset_left = 234.167
+offset_top = 62.3236
+offset_right = 343.167
+offset_bottom = 126.323
 scale = Vector2(1.84882, 3.62451)
 theme_override_fonts/font = ExtResource("4_gpti7")
+theme_override_font_sizes/font_size = 46
 text = "Play"
 
 [node name="SettingsButton" type="TextureButton" parent="HUD"]
 offset_left = 490.0
-offset_top = 460.0
+offset_top = 470.0
 offset_right = 1128.0
-offset_bottom = 750.0
+offset_bottom = 760.0
 scale = Vector2(0.470279, 0.265476)
 theme = ExtResource("1_mnbn2")
 shortcut_in_tooltip = false
@@ -100,19 +85,20 @@ texture_normal = ExtResource("4_5376x")
 
 [node name="Label" type="Label" parent="HUD/SettingsButton"]
 layout_mode = 0
-offset_left = 95.688
-offset_top = 37.6682
-offset_right = 320.688
-offset_bottom = 101.668
+offset_left = 119.078
+offset_top = 64.036
+offset_right = 344.078
+offset_bottom = 128.036
 scale = Vector2(2.05969, 3.742)
 theme_override_fonts/font = ExtResource("4_gpti7")
+theme_override_font_sizes/font_size = 46
 text = "Settings"
 
 [node name="ExitButton" type="TextureButton" parent="HUD"]
 offset_left = 490.0
-offset_top = 542.0
-offset_right = 790.0
-offset_bottom = 603.0
+offset_top = 562.0
+offset_right = 1128.0
+offset_bottom = 852.0
 scale = Vector2(0.46975, 0.272769)
 theme = ExtResource("1_mnbn2")
 shortcut_in_tooltip = false
@@ -120,12 +106,13 @@ texture_normal = ExtResource("4_5376x")
 
 [node name="Label" type="Label" parent="HUD/ExitButton"]
 layout_mode = 0
-offset_left = 229.91
-offset_top = 62.3238
-offset_right = 329.91
-offset_bottom = 126.324
+offset_left = 234.168
+offset_top = 73.3224
+offset_right = 334.168
+offset_bottom = 137.323
 scale = Vector2(1.84882, 3.62451)
 theme_override_fonts/font = ExtResource("4_gpti7")
+theme_override_font_sizes/font_size = 46
 text = "Exit
 "
 
