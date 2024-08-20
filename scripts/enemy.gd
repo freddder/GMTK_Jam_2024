@@ -20,6 +20,7 @@ enum Type {
 @export var min_strength_scale: float = 0.5
 @export var max_strength_scale: float = 2.0
 @export_range(0, 100) var pickup_drop_chance: float = 10.0
+@export var pickup_scene: PackedScene = load("res://scenes/pickup.tscn")
 
 @export var colors: Array[Gradient]
 @export var hit_sounds: Array[AudioStream]
@@ -117,7 +118,6 @@ func take_hit(damage: float, knockback_strength: float) -> void:
 
 
 func drop_pickup() -> void:
-	var pickup_scene: PackedScene = load("res://scenes/pickup.tscn")
 	var pickup: Pickup = pickup_scene.instantiate()
 	pickup.global_position = global_position
 	get_tree().get_root().add_child(pickup)
