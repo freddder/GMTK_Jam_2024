@@ -133,6 +133,7 @@ func start_dying(can_drop_pickup: bool = true) -> void:
 	$DeathSFX.play()
 	await $AnimatedSprite2D.animation_finished
 
+	Events.on_game_victory.emit()
 	# TODO wait on_free_play_started
 	#$AnimationPlayer.play("death")
 	#await $AnimationPlayer.animation_finished

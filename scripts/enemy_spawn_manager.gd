@@ -2,11 +2,15 @@ extends Node
 
 @export_group("Enemy")
 @export var enemy_scene: PackedScene = preload("res://scenes/enemy.tscn")
+@export var boss_scene: PackedScene = preload("res://scenes/boss.tscn")
 @export var spawn_rate: float = 1.0
 @export var enemy_limit: int = 100
+@export var boss_spawn_time_seconds: float = 10.0
 
 var enemy_count: int = 0
 var should_spawn_enemies: bool = false
+var boss_timer: float = 0.0
+var boss_spawned: bool = false
 
 func get_spawn_timer_delay() -> float:
 	# Relative scale
@@ -42,6 +46,15 @@ func _ready() -> void:
 	Events.on_game_started.connect(on_game_started)
 	Events.on_game_victory.connect(on_game_terminated)
 	Events.on_game_failed.connect(on_game_terminated)
+	
+	
+func _process(delta):
+	if not should_spawn_enemies: return
+
+	boss_timer += delta
+	if boss_timer >= boss_spawn_time_seconds and not FreePlayManager._should_scale and not boss_spawned:
+		spawn_boss()
+		boss_timer = 0
 
 func on_game_started() -> void:
 	should_spawn_enemies = true
@@ -64,6 +77,15 @@ func spawn_enemy() -> void:
 	enemy_count += 1
 
 	get_tree().root.add_child(enemy)
+	
+func spawn_boss() -> void:
+	var boss := boss_scene.instantiate() as BossCharacter
+
+	boss.global_position = get_random_spawn_point()
+	boss_spawned = true
+	enemy_count += 1
+
+	get_tree().root.add_child(boss)
 
 func _on_enemy_death(enemy: EnemyCharacter) -> void:
 	enemy_count -= 1
