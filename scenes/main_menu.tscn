@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://d04rb4qsoiyfe"]
+[gd_scene load_steps=10 format=3 uid="uid://d04rb4qsoiyfe"]
 
 [ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_e5ys8"]
 [ext_resource type="Theme" uid="uid://bkbdw0jadsuqp" path="res://content/ui/default_theme.tres" id="1_mnbn2"]
 [ext_resource type="Texture2D" uid="uid://b61m5ygna3b1" path="res://content/ui/TitleCard.png" id="2_xmcm2"]
 [ext_resource type="PackedScene" uid="uid://dj3c2202x78v7" path="res://scenes/settings_menu.tscn" id="3_lrfn7"]
 [ext_resource type="AudioStream" uid="uid://yvp61qar4qc" path="res://music/intro-theme.wav" id="3_o4xmn"]
+[ext_resource type="Texture2D" uid="uid://dlpjm5qqqwt8e" path="res://content/ui/button_bg_ui.png" id="4_5376x"]
 [ext_resource type="FontFile" uid="uid://bi0gex0agxwfh" path="res://content/fonts/Adumu.ttf" id="4_gpti7"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_ako2q"]
@@ -24,38 +25,22 @@ texture = ExtResource("2_xmcm2")
 [node name="SettingsMenu" parent="." instance=ExtResource("3_lrfn7")]
 
 [node name="MainMenuButton" type="TextureButton" parent="SettingsMenu"]
-offset_left = 404.0
+offset_left = 553.0
 offset_top = 468.0
-offset_right = 622.0
-offset_bottom = 568.0
+offset_right = 1191.0
+offset_bottom = 758.0
+scale = Vector2(0.317665, 0.317665)
+texture_normal = ExtResource("4_5376x")
 
 [node name="Label" type="Label" parent="SettingsMenu/MainMenuButton"]
 layout_mode = 0
 offset_right = 220.0
 offset_bottom = 98.0
+scale = Vector2(2.89703, 2.89703)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("4_gpti7")
 theme_override_font_sizes/font_size = 38
 text = "Main Menu"
-horizontal_alignment = 1
-vertical_alignment = 1
-clip_text = true
-
-[node name="ExitButton2" type="TextureButton" parent="SettingsMenu"]
-offset_left = 662.0
-offset_top = 468.0
-offset_right = 880.0
-offset_bottom = 568.0
-
-[node name="Label" type="Label" parent="SettingsMenu/ExitButton2"]
-layout_mode = 0
-offset_right = 220.0
-offset_bottom = 98.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("4_gpti7")
-theme_override_font_sizes/font_size = 38
-text = "Exit
-"
 horizontal_alignment = 1
 vertical_alignment = 1
 clip_text = true
@@ -106,7 +91,6 @@ volume_db = -11.0
 autoplay = true
 
 [connection signal="pressed" from="SettingsMenu/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
-[connection signal="pressed" from="SettingsMenu/ExitButton2" to="." method="_on_exit_button_pressed"]
 [connection signal="pressed" from="HUD/ButtonsContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="HUD/ButtonsContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="HUD/ButtonsContainer/ExitButton" to="." method="_on_exit_button_pressed"]
