@@ -4,7 +4,7 @@
 
 [sub_resource type="Gradient" id="Gradient_ogqcc"]
 interpolation_mode = 1
-offsets = PackedFloat32Array(0, 0.408521, 0.691729)
+offsets = PackedFloat32Array(0, 0.477012, 0.691729)
 colors = PackedColorArray(1, 0, 0, 1, 0.453125, 0, 1, 1, 0.214844, 0.815979, 1, 1)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_saqou"]
