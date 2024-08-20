@@ -371,11 +371,12 @@ script = ExtResource("1_7rlbb")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_rcyij")
 animation = &"charge_stun_recover"
-frame = 5
-frame_progress = 0.416302
 
 [node name="HeadSocket" type="Node2D" parent="AnimatedSprite2D"]
 position = Vector2(-82, -71)
+
+[node name="LegsSocket" type="Node2D" parent="AnimatedSprite2D"]
+position = Vector2(-82, 120)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-6, 17)

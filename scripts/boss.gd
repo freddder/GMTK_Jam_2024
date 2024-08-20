@@ -45,9 +45,23 @@ var charge_target := Vector2.ZERO
 func _ready() -> void:
 	delay_attack()
 
+	Events.on_game_victory.connect(_on_game_terminated)
+	Events.on_game_failed.connect(_on_game_terminated)
+
+	# debug
+#	await get_tree().create_timer(1.0).timeout
+#	$AttackTimer.stop()
+#	#	create_explosions()
+#	attack_charge()
+
 
 func check_charge_run_wall_collision() -> void:
-	var distance_from_centre: float = $AnimatedSprite2D/HeadSocket.global_position.length()
+	var distance_from_centre: float
+	if global_position.y < 0.0:
+		distance_from_centre = $AnimatedSprite2D/HeadSocket.global_position.length()
+	else:
+		distance_from_centre = $AnimatedSprite2D/LegsSocket.global_position.length()
+
 	if distance_from_centre > Arena.radius:
 		on_charge_hit_wall()
 
@@ -239,3 +253,7 @@ func _on_attack_timer_timeout() -> void:
 	match attack_type:
 		AttackType.Explosions: attack_explosions()
 		AttackType.Charge: attack_charge()
+
+
+func _on_game_terminated() -> void:
+	$AttackTimer.stop()
