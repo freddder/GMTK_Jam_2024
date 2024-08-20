@@ -21,6 +21,7 @@ EnemySpawnManager="*res://scenes/enemy_spawn_manager.tscn"
 Arena="*res://scripts/arena.gd"
 Events="*res://scripts/events.gd"
 FreePlayManager="*res://scripts/free_play_manager.gd"
+DamageNumbers="*res://scripts/damage_numbers.gd"
 
 [display]
 

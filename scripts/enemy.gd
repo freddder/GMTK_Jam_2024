@@ -108,6 +108,7 @@ func take_hit(damage: float, knockback_strength: float) -> void:
 		return
 
 	health -= damage
+	DamageNumbers.display_damage_number(damage, global_position)
 	play_animation("take_hit")
 	if health <= 0:
 		start_dying()
