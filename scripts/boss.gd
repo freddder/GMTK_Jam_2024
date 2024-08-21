@@ -40,6 +40,7 @@ var is_dying := false
 var is_casting := false
 var is_stunned := false
 var is_in_charge := false
+var is_about_to_charge := false
 var should_damage_player := true
 var is_overlapping_with_player := false
 var charge_target := Vector2.ZERO
@@ -47,17 +48,17 @@ var charge_target := Vector2.ZERO
 
 func _ready() -> void:
 	delay_attack()
-	
+
 	Events.on_game_victory.connect(on_game_victory)
 	Events.on_game_failed.connect(on_game_failed)
-	
+
 	Events.on_boss_spawned.emit(self)
 
 	# debug
-#	await get_tree().create_timer(1.0).timeout
-#	$AttackTimer.stop()
+	await get_tree().create_timer(1.0).timeout
+	$AttackTimer.stop()
 #	attack_explosions()
-#	attack_charge()
+	attack_charge()
 
 
 func check_charge_run_wall_collision() -> void:
@@ -74,6 +75,37 @@ func check_charge_run_wall_collision() -> void:
 func _process(delta: float) -> void:
 	if is_in_charge:
 		check_charge_run_wall_collision()
+	if is_about_to_charge:
+		queue_redraw()
+
+
+func draw_charging_area() -> void:
+	var half_thickness := 75.0
+	var radius := 9999
+	var local_coords_rect: Array = [
+		[ half_thickness, 0.0 ], [ half_thickness, radius ],
+		[ -half_thickness, radius ], [ -half_thickness, 0.0 ]
+	]
+
+	var direction := global_position.direction_to(player.global_position)
+	var angle := atan2(direction.y, direction.x) + PI / 2.0
+
+	var local_rotated_coords_rect: Array
+	for coord in local_coords_rect:
+		local_rotated_coords_rect.append(Vector2(coord[0], coord[1]).rotated(angle + PI))
+
+	var color := Color.RED
+	var width := 2.0
+
+	draw_line(local_rotated_coords_rect[0], local_rotated_coords_rect[1], color, width)
+	draw_line(local_rotated_coords_rect[1], local_rotated_coords_rect[2], color, width)
+	draw_line(local_rotated_coords_rect[2], local_rotated_coords_rect[3], color, width)
+	draw_line(local_rotated_coords_rect[3], local_rotated_coords_rect[0], color, width)
+
+
+func _draw() -> void:
+	if is_about_to_charge:
+		draw_charging_area()
 
 
 func handle_regular_movement(delta: float) -> void:
@@ -247,8 +279,13 @@ func attack_explosions() -> void:
 
 func attack_charge() -> void:
 	is_casting = true
+	is_about_to_charge = true
+
 	$AnimatedSprite2D.play("charge_warmup")
 	await get_tree().create_timer(randf_range(charge_warmup_min_duration, charge_warmup_max_duration)).timeout
+
+	# Stop drawing charge area
+	queue_redraw()
 
 	if is_dying:
 		return
@@ -257,6 +294,7 @@ func attack_charge() -> void:
 	charge_target = global_position.direction_to(player.global_position) * 9999.0
 	$AnimatedSprite2D.flip_h = charge_target.x - position.x > 0
 
+	is_about_to_charge = false
 	is_casting = false
 	is_in_charge = true
 
