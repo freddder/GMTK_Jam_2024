@@ -8,6 +8,7 @@ func _ready() -> void:
 	Events.on_enemy_spawned.connect(_on_enemy_spawned)
 	Events.on_boss_spawned.connect(_on_boss_spawned)
 	Events.on_game_victory.connect(play_victory_theme)
+	Events.on_game_failed.connect(on_game_failed)
 	Events.done_playing_death_sfx.connect(play_death_theme)
 	FreePlayManager.on_started.connect(on_freeplay_started)
 
@@ -55,6 +56,11 @@ func play_death_theme() -> void:
 func play_victory_theme() -> void:
 	$VictoryTheme.play()
 	$BossTheme.stop()
+
+
+func on_game_failed() -> void:
+	$BossTheme.stop()
+	$BattleTheme.stop()
 
 
 func on_freeplay_started() -> void:
