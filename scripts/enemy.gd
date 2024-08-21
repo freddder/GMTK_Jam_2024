@@ -106,7 +106,7 @@ func _physics_process(delta: float) -> void:
 func take_hit(damage: float, knockback_strength: float) -> void:
 	if is_dying:
 		return
-	
+
 	damage += randi() % 10 - 5
 	health -= damage
 	DamageNumbers.display_damage_number(damage, global_position)
@@ -193,7 +193,7 @@ func is_in_hit_react() -> bool:
 
 
 func should_move() -> bool:
-	return not is_dying and not Events.is_game_terminated and not is_in_hit_react() and player
+	return not is_dying and not Events.is_game_terminated and not is_in_hit_react() and player != null
 
 
 func get_type_string() -> String:

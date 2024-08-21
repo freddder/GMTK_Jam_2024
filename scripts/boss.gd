@@ -109,7 +109,7 @@ func is_in_hit_react() -> bool:
 
 func should_move() -> bool:
 	return (not is_in_hit_react() and not is_dying and not Events.is_game_terminated and not is_casting
-		and not is_in_charge and not is_stunned and player)
+		and not is_in_charge and not is_stunned and player != null)
 
 
 func take_hit(damage: float, knockback_strength: float) -> void:
