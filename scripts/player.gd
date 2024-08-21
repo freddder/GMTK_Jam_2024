@@ -276,7 +276,9 @@ func handle_mouse_direction() -> void:
 	# Add half PI (90 degrees) because sprite looks upwards by default,
 	# but rotation at 0 radians faces west
 	mouse_direction_angle_rad = atan2(mouse_position.y, mouse_position.x) + PI / 2.0
-	$AnimatedSprite2D/MouseDirectionSprite.rotation = mouse_direction_angle_rad
+	var mouse_position_sprite: Vector2 = mouse_position - $AnimatedSprite2D/MouseDirectionSprite.position
+	var mouse_direction_sprite_angle_rad = atan2(mouse_position_sprite.y, mouse_position_sprite.x) + PI / 2.0
+	$AnimatedSprite2D/MouseDirectionSprite.rotation = mouse_direction_sprite_angle_rad
 
 
 func get_facing_direction() -> int:
