@@ -153,9 +153,11 @@ func take_hit(damage: float, knockback_strength: float) -> void:
 	$AnimationPlayer.play("hit_react")
 	if health <= 0:
 		start_dying()
-	elif not is_casting and not is_in_charge and not is_stunned:
+	else:
 		$HitSFX.play()
-		$AnimatedSprite2D.play("hit_react")
+
+		if not is_casting and not is_in_charge and not is_stunned:
+			$AnimatedSprite2D.play("hit_react")
 
 
 func start_dying(can_drop_pickup: bool = true) -> void:
