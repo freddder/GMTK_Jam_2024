@@ -42,5 +42,8 @@ func _on_settings_button_pressed() -> void:
 
 func _on_quit_button_pressed() -> void:
 	get_tree().call_group("enemy", "queue_free")
+	get_tree().call_group("boss", "queue_free")
+	get_tree().call_group("pickups", "queue_free")
+	get_tree().call_group("special_attack", "queue_free")
 	toggle_pause_game()
 	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
