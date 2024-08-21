@@ -563,18 +563,49 @@ func on_attack_animations_finished() -> void:
 
 
 func release_primary_attack() -> void:
-	var attack_circle_shape := CircleShape2D.new()
-	wants_release_attack = false
-	$AttackShapeCast2D.shape = attack_circle_shape
-	attack_circle_shape.radius = active_attack_zone_data.radius
+	var attack_polygon_shape: ConcavePolygonShape2D = ConcavePolygonShape2D.new()
+	$AttackShapeCast2D.shape = attack_polygon_shape
+
+	# Find cone center
+	var center_angle := mouse_direction_angle_rad  - PI / 2.0
+	var half_cone := active_attack_zone_data.angle / 2.0
+	var cone_start_angle := center_angle - half_cone
+
+	# Define segments amount
+	var angle_step: float = 10.0
+	var segmentsf: float = active_attack_zone_data.angle / deg_to_rad(angle_step)
+	var segmentsi: int = segmentsf
+
+	# Start from character center
+	var polygon: PackedVector2Array
+	polygon.push_back(Vector2.ZERO)
+
+	for i in segmentsi + 1:
+		# Find the angle
+		var step := (segmentsf / segmentsi)
+		var alpha := (i * step) / segmentsf
+		var local_angle := alpha * active_attack_zone_data.angle
+		var global_angle := cone_start_angle + local_angle
+
+		# Translate angle to the world position
+		var direction := Vector2(cos(global_angle), sin(global_angle))
+		var vertex_position := direction * active_attack_zone_data.radius
+
+		# Close last edge; start a new one
+		polygon.push_back(vertex_position)
+		polygon.push_back(vertex_position)
+
+	# Finish on character centre
+	polygon.push_back(Vector2.ZERO)
+
+	# Apply the polygon
+	attack_polygon_shape.set_segments(polygon)
 
 	$AttackShapeCast2D.force_shapecast_update()
 	for collider_index in $AttackShapeCast2D.get_collision_count():
-		var enemy = $AttackShapeCast2D.get_collider(collider_index)
-		var direction_to := global_position.direction_to(enemy.global_position)
-		var angle_to := atan2(direction_to.y, direction_to.x) + PI / 2.0
-		if active_attack_zone_data.start_angle <= angle_to && active_attack_zone_data.end_angle >= angle_to:
-			enemy.take_hit(scale_damage(default_swing_damage), scale_knockback(default_swing_knockback_strength))
+		$AttackShapeCast2D.get_collider(collider_index).take_hit(
+			scale_damage(default_swing_damage),
+			scale_knockback(default_swing_knockback_strength))
 
 
 func attack_start_fail_due_cooldown(attack_type: AttackType) -> void:
