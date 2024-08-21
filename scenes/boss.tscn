@@ -506,6 +506,7 @@ libraries = {
 bus = &"SFX"
 
 [node name="DeathSFX" type="AudioStreamPlayer" parent="."]
+process_mode = 3
 stream = ExtResource("11_ikuay")
 volume_db = -10.0
 bus = &"SFX"
