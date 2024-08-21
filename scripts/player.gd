@@ -116,6 +116,7 @@ var power_interpolation_speed: float = 2.0
 
 
 func _ready() -> void:
+	activate_haste()
 	var zoom: float = default_camera_zoom.x * (get_viewport_rect().size.x / 1280)
 	default_camera_zoom = Vector2(zoom, zoom)
 
@@ -910,6 +911,7 @@ func wipe_enemies() -> void:
 
 func activate_haste() -> void:
 	$HasteTimer.start(haste_duration)
+	$HasteSFX.play()
 	$HasteTrailTimer.start(haste_motion_trail_creation_cooldown)
 
 

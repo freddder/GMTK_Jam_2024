@@ -1,4 +1,4 @@
-[gd_scene load_steps=142 format=3 uid="uid://c7kaxi3ghjur4"]
+[gd_scene load_steps=143 format=3 uid="uid://c7kaxi3ghjur4"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_r52mo"]
 [ext_resource type="Shader" path="res://content/shaders/motion_trail.gdshader" id="2_kw3n5"]
@@ -31,6 +31,7 @@
 [ext_resource type="AudioStream" uid="uid://twqlw3oxcabt" path="res://sfx/heal_sfx.wav" id="29_ggblw"]
 [ext_resource type="AudioStream" uid="uid://ci63lc0is61gn" path="res://sfx/dash_sfx.wav" id="30_1ish3"]
 [ext_resource type="AudioStream" uid="uid://dk7lsdolk06lg" path="res://sfx/attack_cooldown3.wav" id="30_8peem"]
+[ext_resource type="AudioStream" uid="uid://cjg84om7njya7" path="res://sfx/haste.wav" id="31_5qyuu"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_asjqi"]
 shader = ExtResource("2_kw3n5")
@@ -945,6 +946,11 @@ bus = &"SFX"
 
 [node name="HealSFX" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("29_ggblw")
+volume_db = -10.0
+bus = &"SFX"
+
+[node name="HasteSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("31_5qyuu")
 volume_db = -10.0
 bus = &"SFX"
 
